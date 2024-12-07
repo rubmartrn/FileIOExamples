@@ -1,4 +1,7 @@
-﻿
+﻿const string folderName = "A";
+const string fileName = "data.my";
+string path = Path.Combine(folderName, fileName);
+
 IEnumerable<Student> students = new List<Student>()
 {
     new Student() {Id = 1, Address = "Yerevan", Name = "Պողոս", UniversityId = 1},
@@ -7,14 +10,12 @@ IEnumerable<Student> students = new List<Student>()
     new Student() {Id = 4, Address = "Yerevan", Name = "Բարդուղեմիոս", UniversityId = 1}
 };
 
-Writer(students);
+IEnumerable<Student> Result = Read().ToList();
+
+//Writer(students);
 
 void Writer(IEnumerable<Student> students)
 {
-    string folderName = "A";
-    string fileName = "data.my";
-
-    string path = Path.Combine(folderName, fileName);
     if (!Directory.Exists(path))
     {
         Directory.CreateDirectory(folderName);
@@ -34,6 +35,28 @@ void Writer(IEnumerable<Student> students)
         {
             string line = $"{nameof(Student)},{student.Id},{student.Name},{student.Address},{student.UniversityId}";
             writer.WriteLine(line);
+        }
+    }
+}
+
+IEnumerable<Student> Read()
+{
+    using (StreamReader reader = new StreamReader(path))
+    {
+        while (true)
+        {
+            string? l = reader.ReadLine();
+            if (l is null)
+            {
+                break;
+            }
+            string[] @params = l!.Split(",");
+            Student newStudent = new Student();
+            newStudent.Id = int.Parse(@params[1]);
+            newStudent.Name = @params[2];
+            newStudent.Address = @params[3];
+            newStudent.UniversityId = int.Parse(@params[4]);
+            yield return newStudent;
         }
     }
 }
