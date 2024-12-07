@@ -10,11 +10,25 @@ IEnumerable<Student> students = new List<Student>()
     new Student() {Id = 4, Address = "Yerevan", Name = "Բարդուղեմիոս", UniversityId = 1}
 };
 
-IEnumerable<Student> Result = Read().ToList();
+IEnumerable<University> universities = new List<University>()
+{
+    new University()
+    {
+        Id = 1, City = "Yerevan", Name = "Առաջին",
+    },
+    new University()
+    {
+        Id = 3, City = "Yerevan", Name = "Երրորդ",
+    }
+};
 
-//Writer(students);
+List<object> allData = new List<object>();
+allData.AddRange(students);
+allData.AddRange(universities);
 
-void Writer(IEnumerable<Student> students)
+Write(allData);
+
+void Write<T>(IEnumerable<T> items)
 {
     if (!Directory.Exists(path))
     {
@@ -31,9 +45,14 @@ void Writer(IEnumerable<Student> students)
 
     using (StreamWriter writer = new StreamWriter(path))
     {
-        foreach (var student in students)
+        foreach (var item in items)
         {
-            string line = $"{nameof(Student)},{student.Id},{student.Name},{student.Address},{student.UniversityId}";
+            Type t = item.GetType();
+            string line = $"{t.FullName}";
+            foreach (var prop in t.GetProperties())
+            {
+                line += $",{prop.GetValue(item)}";
+            }
             writer.WriteLine(line);
         }
     }
