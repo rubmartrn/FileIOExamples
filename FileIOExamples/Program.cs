@@ -27,6 +27,60 @@ IEnumerable<University> universities = new List<University>()
     }
 };
 
+if (!Directory.Exists(folderName))
+{
+    Directory.CreateDirectory(folderName);
+}
+
+
+FileSystemWatcher watcher = new FileSystemWatcher(folderName);
+watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+watcher.Filter = "*.*";
+
+watcher.Changed += OnChanged;
+watcher.Deleted += OnDeleted;
+watcher.Created += OnCreated;
+watcher.Renamed += OnRenamed;
+
+watcher.EnableRaisingEvents = true;
+
+void OnCreated(object sender, FileSystemEventArgs e)
+{
+    Console.WriteLine($"File {e.Name} has been created");
+}
+
+void OnDeleted(object sender, FileSystemEventArgs e)
+{
+    Console.WriteLine($"File {e.Name} has been deleted");
+}
+
+void OnRenamed(object sender, RenamedEventArgs e)
+{
+    Console.WriteLine($"File {e.Name} has been renamed");
+}
+
+void OnChanged(object sender, FileSystemEventArgs e)
+{
+    List<object> data = Read().ToList();
+    List<Student> readStudents = data.Where(e => e.GetType().Name == nameof(Student)).Cast<Student>().ToList();
+    List<University> readUniversities = data.Where(e => e.GetType().Name == "University")
+        .Select(
+            e => (e as University)!
+        ).ToList();
+
+    foreach (var student in readStudents)
+    {
+        Console.WriteLine($"id: {student.Id}, name: {student.Name}");
+    }
+}
+
+Console.WriteLine("Write Q to exit");
+
+while (Console.ReadKey().Key != ConsoleKey.Q)
+{
+}
+
+
 List<object> allData = new List<object>();
 allData.AddRange(students);
 allData.AddRange(universities);
@@ -54,7 +108,6 @@ while (true)
     Console.WriteLine($"{current.Name} ուսանողը սովորում է {university.Name} համասլարանում");
 
 }
-
 void Write<T>(IEnumerable<T> items)
 {
     if (!Directory.Exists(path))
