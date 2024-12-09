@@ -1,203 +1,91 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
+using FileIOExamples;
+using System.Text.Json;
+using FileIOExamples.Converters;
 
+string fileName = "student.json";
+string newFileName = "students.json";
 Console.OutputEncoding = Encoding.UTF8;
 
-const string folderName = "A";
-const string fileName = "data.my";
-string path = Path.Combine(folderName, fileName);
-
-IEnumerable<Student> students = new List<Student>()
+if (!File.Exists(fileName))
 {
-    new Student() {Id = 1, Address = "Yerevan", Name = "Պողոս", UniversityId = 1},
-    new Student() {Id = 2, Address = "Yerevan", Name = "Պետրոս", UniversityId = 1},
-    new Student() {Id = 3, Address = "Yerevan", Name = "Մարտիրոս", UniversityId = 3},
-    new Student() {Id = 4, Address = "Yerevan", Name = "Բարդուղեմիոս", UniversityId = 1}
-};
-
-IEnumerable<University> universities = new List<University>()
-{
-    new University()
+    using (FileStream f = File.Create(fileName))
     {
-        Id = 1, City = "Yerevan", Name = "Առաջին",
+    }
+}
+
+if (!File.Exists(newFileName))
+{
+    using (FileStream f = File.Create(newFileName))
+    {
+    }
+}
+List<Student> students = new List<Student>()
+{
+    new Student()
+    {
+        Id = 7,
+        Name = "Poghos",
+        Address = "Yerevan",
+        UniversityName = "University",
+        Type = StudentType.Type1,
+        Date = DateTime.Now
+
     },
-    new University()
+    new Student()
     {
-        Id = 3, City = "Yerevan", Name = "Երրորդ",
-    }
+        Id = 7,
+        Name = "Petros",
+        Address = "Yerevan",
+        UniversityName = "University",
+        Type = StudentType.Type3,
+        Date = DateTime.Now
+    },
+    new Student()
+    {
+        Id = 7,
+        Name = "Martiros",
+        Address = "Yerevan",
+        UniversityName = "University",
+        Type = StudentType.Type2,
+        Date = DateTime.Now
+    },
+    new Student()
+    {
+        Id = 7,
+        Name = "John",
+        Address = "Yerevan",
+        Type = StudentType.Type1,
+        Date = DateTime.Now
+    },
 };
 
-if (!Directory.Exists(folderName))
+Student student = new Student()
 {
-    Directory.CreateDirectory(folderName);
+    Id = 7,
+    Name = "Poghos",
+    Address = "Yerevan",
+    UniversityName = "University"
+};
+
+Console.WriteLine("Ի՞նչ անել");
+
+string option = Console.ReadLine();
+
+JsonSerializerOptions options = new JsonSerializerOptions();
+options.Converters.Add(new StudentJsonConverter());
+
+if (option == "1")
+{
+    string studentJson = JsonSerializer.Serialize(student, options);
+    string j = JsonSerializer.Serialize(students);
+    Tools.Write(j, newFileName);
+    Tools.Write(studentJson, fileName);
 }
-
-
-FileSystemWatcher watcher = new FileSystemWatcher(folderName);
-watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-watcher.Filter = "*.*";
-
-watcher.Changed += OnChanged;
-watcher.Deleted += OnDeleted;
-watcher.Created += OnCreated;
-watcher.Renamed += OnRenamed;
-
-watcher.EnableRaisingEvents = true;
-
-void OnCreated(object sender, FileSystemEventArgs e)
+else
 {
-    Console.WriteLine($"File {e.Name} has been created");
-}
-
-void OnDeleted(object sender, FileSystemEventArgs e)
-{
-    Console.WriteLine($"File {e.Name} has been deleted");
-}
-
-void OnRenamed(object sender, RenamedEventArgs e)
-{
-    Console.WriteLine($"File {e.Name} has been renamed");
-}
-
-void OnChanged(object sender, FileSystemEventArgs e)
-{
-    List<object> data = Read().ToList();
-    List<Student> readStudents = data.Where(e => e.GetType().Name == nameof(Student)).Cast<Student>().ToList();
-    List<University> readUniversities = data.Where(e => e.GetType().Name == "University")
-        .Select(
-            e => (e as University)!
-        ).ToList();
-
-    foreach (var student in readStudents)
-    {
-        Console.WriteLine($"id: {student.Id}, name: {student.Name}");
-    }
-}
-
-Console.WriteLine("Write Q to exit");
-
-while (Console.ReadKey().Key != ConsoleKey.Q)
-{
-}
-
-
-List<object> allData = new List<object>();
-allData.AddRange(students);
-allData.AddRange(universities);
-
-//Write(allData);
-List<object> data = Read().ToList();
-List<Student> readStudents = data.Where(e => e.GetType().Name == nameof(Student)).Cast<Student>().ToList();
-List<University> readUniversities = data.Where(e => e.GetType().Name == "University")
-                                                .Select(
-                                                    e => (e as University)!
-                                                ).ToList();
-
-foreach (var student in readStudents)
-{
-    Console.WriteLine($"id:  {student.Id}, Name: {student.Name}");
-}
-
-while (true)
-{
-    Console.WriteLine("Ո՞ր ուսանողին եք ուզում ստուգել");
-    int id = int.Parse(Console.ReadLine());
-    Student current = readStudents.First(e => e.Id == id);
-    University university = readUniversities.First(e => e.Id == current.UniversityId);
-
-    Console.WriteLine($"{current.Name} ուսանողը սովորում է {university.Name} համասլարանում");
-
-}
-void Write<T>(IEnumerable<T> items)
-{
-    if (!Directory.Exists(path))
-    {
-        Directory.CreateDirectory(folderName);
-    }
-
-    if (!File.Exists(path))
-    {
-        using (var e = File.Create(path))
-        {
-
-        }
-    }
-
-    using (StreamWriter writer = new StreamWriter(path))
-    {
-        foreach (var item in items)
-        {
-            Type t = item.GetType();
-            string line = $"{t.FullName}";
-            foreach (var prop in t.GetProperties())
-            {
-                line += $",{prop.GetValue(item)}";
-            }
-            writer.WriteLine(line);
-        }
-    }
-}
-
-IEnumerable<object> Read()
-{
-    using (StreamReader reader = new StreamReader(path))
-    {
-        while (true)
-        {
-            string? l = reader.ReadLine();
-            if (l is null)
-            {
-                break;
-            }
-            string[] @params = l!.Split(",");
-            string typeName = @params[0];
-            object newType = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, typeName).Unwrap();
-            PropertyInfo[] props = newType.GetType().GetProperties();
-
-            int n = 1;
-            foreach (var prop in props)
-            {
-                string propertyType = prop.PropertyType.Name;
-                if (propertyType == "Int32")
-                {
-                    prop.SetValue(newType, int.Parse(@params[n]));
-                }
-                else
-                {
-                    prop.SetValue(newType, @params[n]);
-                }
-                n++;
-            }
-
-            yield return newType;
-        }
-    }
-}
-
-
-//void Test(params string[] names)
-//{
-
-//}
-
-//Test("Ռուբեն", "Մարտիրոս", "և այլն");
-
-
-public class Student
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = default!;
-
-    public string? Address { get; set; }
-
-    public int UniversityId { get; set; }
-}
-
-public class University
-{
-    public int Id { get; set; }
-
-    public string Name { get; set; } = default!;
-
-    public string? City { get; set; }
+    string studentJ = Tools.Read(fileName);
+    Student stud = JsonSerializer.Deserialize<Student>(studentJ, options);
+    string json = Tools.Read(newFileName);
+    List<Student> studentList = JsonSerializer.Deserialize<List<Student>>(json, options);
 }
