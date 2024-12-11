@@ -1,9 +1,8 @@
 ﻿using System.Text;
 using FileIOExamples;
-using System.Text.Json;
-using FileIOExamples.Converters;
 
 string fileName = "student.json";
+string xmlFileName = "student.xml";
 string newFileName = "students.json";
 Console.OutputEncoding = Encoding.UTF8;
 
@@ -20,6 +19,7 @@ if (!File.Exists(newFileName))
     {
     }
 }
+
 List<Student> students = new List<Student>()
 {
     new Student()
@@ -68,24 +68,18 @@ Student student = new Student()
     UniversityName = "University"
 };
 
-Console.WriteLine("Ի՞նչ անել");
 
+Console.WriteLine("Ո՞ր բաժինն է պետք");
 string option = Console.ReadLine();
 
-JsonSerializerOptions options = new JsonSerializerOptions();
-options.Converters.Add(new StudentJsonConverter());
+if (option == "json")
+{
+    JsonHelper.Run(fileName, newFileName, student, students);
+}
 
-if (option == "1")
+if (option == "xml")
 {
-    string studentJson = JsonSerializer.Serialize(student, options);
-    string j = JsonSerializer.Serialize(students);
-    Tools.Write(j, newFileName);
-    Tools.Write(studentJson, fileName);
+    XmlHelper.Run(xmlFileName, newFileName, student, students);
 }
-else
-{
-    string studentJ = Tools.Read(fileName);
-    Student stud = JsonSerializer.Deserialize<Student>(studentJ, options);
-    string json = Tools.Read(newFileName);
-    List<Student> studentList = JsonSerializer.Deserialize<List<Student>>(json, options);
-}
+
+//xml

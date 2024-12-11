@@ -1,6 +1,6 @@
 ﻿namespace FileIOExamples
 {
-    internal enum StudentType
+    public enum StudentType
     {
         Type1,
         Type2,

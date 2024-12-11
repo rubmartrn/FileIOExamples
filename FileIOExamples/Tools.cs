@@ -2,11 +2,11 @@
 {
     public static class Tools
     {
-        public static void Write(string json, string file)
+        public static void Write(string text, string file)
         {
             using (StreamWriter writer = new StreamWriter(file))
             {
-                writer.Write(json);
+                writer.Write(text);
             }
         }
 
