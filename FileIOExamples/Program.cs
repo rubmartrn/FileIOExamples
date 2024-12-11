@@ -3,6 +3,7 @@ using FileIOExamples;
 
 string fileName = "student.json";
 string xmlFileName = "student.xml";
+string binFileName = "student.bin";
 string newFileName = "students.json";
 Console.OutputEncoding = Encoding.UTF8;
 
@@ -80,6 +81,11 @@ if (option == "json")
 if (option == "xml")
 {
     XmlHelper.Run(xmlFileName, newFileName, student, students);
+}
+
+if (option is "bin")
+{
+    BinaryHelper.Run(binFileName, newFileName, student, students);
 }
 
 //xml

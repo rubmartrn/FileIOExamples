@@ -4,6 +4,13 @@ namespace FileIOExamples
 {
     public class XmlHelper
     {
+        /// <summary>
+        /// Երբեք չգրեք չօգտագործվող պարամետրեր!!!
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="newFileName"></param>
+        /// <param name="student"></param>
+        /// <param name="students"></param>
         public static void Run(string fileName, string newFileName, Student student, IEnumerable<Student> students)
         {
             Console.WriteLine("Ի՞նչ անել");
