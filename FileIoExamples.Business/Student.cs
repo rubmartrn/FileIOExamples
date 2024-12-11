@@ -1,6 +1,6 @@
-﻿using FileIOExamples.Attributes;
+﻿using FileIOExamples.Business.Attributes;
 
-namespace FileIOExamples
+namespace FileIOExamples.Business
 {
     [NameSwitcher("Name", "Anun")]
     public class Student

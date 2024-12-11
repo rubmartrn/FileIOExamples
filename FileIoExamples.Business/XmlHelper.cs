@@ -1,7 +1,10 @@
 ﻿using System.Xml.Serialization;
 
-namespace FileIOExamples
+namespace FileIOExamples.Business
 {
+    /// <summary>
+    /// Բարև
+    /// </summary>
     public class XmlHelper
     {
         /// <summary>

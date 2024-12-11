@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FileIOExamples.Attributes;
+using FileIOExamples.Business.Attributes;
 
-namespace FileIOExamples.Converters
+namespace FileIOExamples.Business.Converters
 {
     internal class StudentJsonConverter : JsonConverter<Student>
     {

@@ -1,7 +1,7 @@
-﻿using FileIOExamples.Converters;
+﻿using FileIOExamples.Business.Converters;
 using System.Text.Json;
 
-namespace FileIOExamples
+namespace FileIOExamples.Business
 {
     public class JsonHelper
     {

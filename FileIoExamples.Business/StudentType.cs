@@ -1,4 +1,4 @@
-﻿namespace FileIOExamples
+﻿namespace FileIOExamples.Business
 {
     public enum StudentType
     {

@@ -1,4 +1,4 @@
-﻿namespace FileIOExamples.Attributes
+﻿namespace FileIOExamples.Business.Attributes
 {
     internal class NameSwitcherAttribute : Attribute
     {

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 
-namespace FileIOExamples
+namespace FileIOExamples.Business
 {
-    internal class BinaryHelper
+    public class BinaryHelper
     {
         /// <summary>
         /// Երբեք չգրեք չօգտագործվող պարամետրեր!!!
