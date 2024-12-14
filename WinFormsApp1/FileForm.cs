@@ -36,15 +36,18 @@ namespace WinFormsApp1
 
             errorTextBox.Visible = false;
 
+            OptionService optionService = new OptionService();
+            Tools tools = new Tools(new ToolsOption());
+
             if (_option == "json")
             {
-                JsonHelper jsonHelper = new JsonHelper(new OptionService());
+                JsonHelper jsonHelper = new JsonHelper(optionService, tools);
                 jsonHelper.Run($"{fileName}.json", null, _student, new List<Student>());
             }
 
             if (_option == "xml")
             {
-                XmlHelper xmlHelper = new XmlHelper(new OptionService());
+                XmlHelper xmlHelper = new XmlHelper(optionService, tools);
                 xmlHelper.Run($"{fileName}.xml", null, _student, new List<Student>());
             }
 

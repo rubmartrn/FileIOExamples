@@ -74,15 +74,18 @@ Student student = new Student()
 Console.WriteLine("Ո՞ր բաժինն է պետք");
 string option = Console.ReadLine();
 
+OptionService optionService = new OptionService();
+Tools tools = new Tools(new ToolsOption());
+
 if (option == "json")
 {
-    JsonHelper jsonHelper = new JsonHelper(new OptionService());
+    JsonHelper jsonHelper = new JsonHelper(optionService, tools);
     jsonHelper.Run($"{fileName}.json", null, student, new List<Student>());
 }
 
 if (option == "xml")
 {
-    XmlHelper xmlHelper = new XmlHelper(new OptionService());
+    XmlHelper xmlHelper = new XmlHelper(optionService, tools);
     xmlHelper.Run($"{fileName}.xml", null, student, new List<Student>());
 }
 
