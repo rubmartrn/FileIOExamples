@@ -2,9 +2,12 @@
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        private readonly FileForm _form;
+
+        public Form1(FileForm form)
         {
             InitializeComponent();
+            _form = form;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -22,8 +25,7 @@
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FileForm f = new FileForm();
-            f.Show();
+            _form.Show();
         }
     }
 }

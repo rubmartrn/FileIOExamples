@@ -4,7 +4,6 @@ namespace WinFormsApp1
 {
     public partial class FileForm : Form
     {
-
         private string _option = string.Empty;
         private Student _student = new Student
         {
@@ -13,19 +12,24 @@ namespace WinFormsApp1
             Address = "Yerevan",
             UniversityName = "University"
         };
+        private readonly JsonHelper _jsonHelper;
+        private readonly XmlHelper _xmlHelper;
+        private readonly BinaryHelper _binaryHelper;
 
-
-        public FileForm()
+        public FileForm(JsonHelper jsonHelper, XmlHelper xmlHelper, BinaryHelper binaryHelper)
         {
             InitializeComponent();
             comboBox1.Items.Add("xml");
             comboBox1.Items.Add("json");
             comboBox1.Items.Add("bin");
+            _jsonHelper = jsonHelper;
+            _xmlHelper = xmlHelper;
+            _binaryHelper = binaryHelper;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
+
             string fileName = textBox1.Text;
             if (string.IsNullOrEmpty(_option) || string.IsNullOrEmpty(fileName))
             {
@@ -36,25 +40,20 @@ namespace WinFormsApp1
 
             errorTextBox.Visible = false;
 
-            OptionService optionService = new OptionService();
-            Tools tools = new Tools(new ToolsOption());
 
             if (_option == "json")
             {
-                JsonHelper jsonHelper = new JsonHelper(optionService, tools);
-                jsonHelper.Run($"{fileName}.json", null, _student, new List<Student>());
+                _jsonHelper.Run($"{fileName}.json", null, _student, new List<Student>());
             }
 
             if (_option == "xml")
             {
-                XmlHelper xmlHelper = new XmlHelper(optionService, tools);
-                xmlHelper.Run($"{fileName}.xml", null, _student, new List<Student>());
+                _xmlHelper.Run($"{fileName}.xml", null, _student, new List<Student>());
             }
 
             if (_option is "bin")
             {
-                BinaryHelper binaryHelper = new BinaryHelper(new OptionService());
-                binaryHelper.Run($"{fileName}.bin", null, _student, new List<Student>());
+                _binaryHelper.Run($"{fileName}.bin", null, _student, new List<Student>());
             }
         }
 
