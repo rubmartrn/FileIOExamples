@@ -76,17 +76,20 @@ string option = Console.ReadLine();
 
 if (option == "json")
 {
-    JsonHelper.Run(fileName, newFileName, student, students);
+    JsonHelper jsonHelper = new JsonHelper(new OptionService());
+    jsonHelper.Run($"{fileName}.json", null, student, new List<Student>());
 }
 
 if (option == "xml")
 {
-    XmlHelper.Run(xmlFileName, newFileName, student, students);
+    XmlHelper xmlHelper = new XmlHelper(new OptionService());
+    xmlHelper.Run($"{fileName}.xml", null, student, new List<Student>());
 }
 
 if (option is "bin")
 {
-    BinaryHelper.Run(binFileName, newFileName, student, students);
+    BinaryHelper binaryHelper = new BinaryHelper(new OptionService());
+    binaryHelper.Run($"{fileName}.bin", null, student, new List<Student>());
 }
 
 //xml

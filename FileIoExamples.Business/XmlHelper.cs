@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using FileIoExamples.Business;
 
 namespace FileIOExamples.Business
 {
@@ -7,6 +8,14 @@ namespace FileIOExamples.Business
     /// </summary>
     public class XmlHelper
     {
+        private readonly IOptionService _optionService;
+        private readonly ITools tools;
+
+        public XmlHelper(IOptionService optionService, ITools tools)
+        {
+            this._optionService = optionService;
+            this.tools = tools;
+        }
         /// <summary>
         /// Երբեք չգրեք չօգտագործվող պարամետրեր!!!
         /// </summary>
@@ -14,10 +23,9 @@ namespace FileIOExamples.Business
         /// <param name="newFileName"></param>
         /// <param name="student"></param>
         /// <param name="students"></param>
-        public static void Run(string fileName, string newFileName, Student student, IEnumerable<Student> students)
+        public void Run(string fileName, string newFileName, Student student, IEnumerable<Student> students)
         {
-            Console.WriteLine("Ի՞նչ անել");
-            string option = Console.ReadLine();
+            string option = _optionService.GetSelectedOption();
             XmlSerializer studentSerializer = new XmlSerializer(typeof(Student));
 
             if (option == "1")
@@ -29,11 +37,11 @@ namespace FileIOExamples.Business
                     result = writer.ToString();
                 }
 
-                Tools.Write(result, fileName);
+                tools.Write(result, fileName);
             }
             else
             {
-                string xml = Tools.Read(fileName);
+                string xml = tools.Read(fileName);
                 using (StringReader reader = new StringReader(xml))
                 {
                     object deserialized = studentSerializer.Deserialize(reader);

@@ -1,8 +1,10 @@
-﻿namespace FileIOExamples
+﻿using FileIoExamples.Business;
+
+namespace FileIOExamples
 {
-    internal class OptionService
+    internal class OptionService : IOptionService
     {
-        internal string GetSelectedOption()
+        public string GetSelectedOption()
         {
             Console.WriteLine("Ի՞նչ անել");
             return Console.ReadLine();

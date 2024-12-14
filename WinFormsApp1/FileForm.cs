@@ -25,9 +25,7 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            OptionService service = new OptionService();
-            service.GetSelectedOption();
-
+           
             string fileName = textBox1.Text;
             if (string.IsNullOrEmpty(_option) || string.IsNullOrEmpty(fileName))
             {
@@ -40,17 +38,20 @@ namespace WinFormsApp1
 
             if (_option == "json")
             {
-                JsonHelper.Run($"{fileName}.json", null, _student, new List<Student>());
+                JsonHelper jsonHelper = new JsonHelper(new OptionService());
+                jsonHelper.Run($"{fileName}.json", null, _student, new List<Student>());
             }
 
             if (_option == "xml")
             {
-                XmlHelper.Run($"{fileName}.xml", null, _student, new List<Student>());
+                XmlHelper xmlHelper = new XmlHelper(new OptionService());
+                xmlHelper.Run($"{fileName}.xml", null, _student, new List<Student>());
             }
 
             if (_option is "bin")
             {
-                BinaryHelper.Run($"{fileName}.bin", null, _student, new List<Student>());
+                BinaryHelper binaryHelper = new BinaryHelper(new OptionService());
+                binaryHelper.Run($"{fileName}.bin", null, _student, new List<Student>());
             }
         }
 

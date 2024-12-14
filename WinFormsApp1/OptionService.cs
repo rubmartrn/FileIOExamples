@@ -1,10 +1,12 @@
 ﻿
+using FileIoExamples.Business;
+
 namespace WinFormsApp1
 {
-    internal class OptionService
+    internal class OptionService : IOptionService
     {
         private string option = string.Empty;
-        internal string GetSelectedOption()
+        public string GetSelectedOption()
         {
             OptionGetter getter = new OptionGetter();
             getter.Closed += onClosed;

@@ -1,8 +1,8 @@
 ﻿namespace FileIOExamples.Business
 {
-    public static class Tools
+    public class Tools : ITools
     {
-        public static void Write(string text, string file)
+        public void Write(string text, string file)
         {
             using (StreamWriter writer = new StreamWriter(file))
             {
@@ -10,7 +10,7 @@
             }
         }
 
-        public static string Read(string file)
+        public string Read(string file)
         {
             using (StreamReader reader = new StreamReader(file))
             {
