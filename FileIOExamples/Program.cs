@@ -1,6 +1,18 @@
 ﻿using System.Text;
 using FileIOExamples;
+using FileIoExamples.Business;
 using FileIOExamples.Business;
+using Microsoft.Extensions.DependencyInjection;
+
+ServiceCollection services = new ServiceCollection();
+
+services.AddTransient<JsonHelper>();
+services.AddTransient<XmlHelper>();
+services.AddTransient<BinaryHelper>();
+services.AddTransient<IOptionService, OptionService>();
+services.AddSingleton<ITools, Tools>();
+services.AddSingleton<IToolsOption, ToolsOption>();
+
 
 string fileName = "student.json";
 string xmlFileName = "student.xml";
@@ -71,28 +83,36 @@ Student student = new Student()
 };
 
 
-Console.WriteLine("Ո՞ր բաժինն է պետք");
-string option = Console.ReadLine();
 
-OptionService optionService = new OptionService();
-Tools tools = new Tools(new ToolsOption());
+var serviceProvider = services.BuildServiceProvider();
 
-if (option == "json")
+while (true)
 {
-    JsonHelper jsonHelper = new JsonHelper(optionService, tools);
-    jsonHelper.Run($"{fileName}.json", null, student, new List<Student>());
-}
+    Console.WriteLine("Ո՞ր բաժինն է պետք");
+    string option = Console.ReadLine();
 
-if (option == "xml")
-{
-    XmlHelper xmlHelper = new XmlHelper(optionService, tools);
-    xmlHelper.Run($"{fileName}.xml", null, student, new List<Student>());
-}
+    try
+    {
+        if (option == "json")
+        {
+            JsonHelper jsonHelper = serviceProvider.GetService<JsonHelper>()!;
+            jsonHelper.Run($"{fileName}.json", null, student, new List<Student>());
+        }
 
-if (option is "bin")
-{
-    BinaryHelper binaryHelper = new BinaryHelper(new OptionService());
-    binaryHelper.Run($"{fileName}.bin", null, student, new List<Student>());
-}
+        if (option == "xml")
+        {
+            XmlHelper xmlHelper = serviceProvider.GetService<XmlHelper>()!;
+            xmlHelper.Run($"{fileName}.xml", null, student, new List<Student>());
+        }
 
-//xml
+        if (option is "bin")
+        {
+            BinaryHelper binaryHelper = serviceProvider.GetService<BinaryHelper>()!;
+            binaryHelper.Run($"{fileName}.bin", null, student, new List<Student>());
+        }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+}
