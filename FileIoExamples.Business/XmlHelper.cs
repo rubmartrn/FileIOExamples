@@ -16,6 +16,7 @@ namespace FileIOExamples.Business
             this._optionService = optionService;
             this.tools = tools;
         }
+
         /// <summary>
         /// Երբեք չգրեք չօգտագործվող պարամետրեր!!!
         /// </summary>
@@ -23,7 +24,7 @@ namespace FileIOExamples.Business
         /// <param name="newFileName"></param>
         /// <param name="student"></param>
         /// <param name="students"></param>
-        public void Run(string fileName, string newFileName, Student student, IEnumerable<Student> students)
+        public bool Run(string fileName, string newFileName, Student student, IEnumerable<Student> students)
         {
             string option = _optionService.GetSelectedOption();
             XmlSerializer studentSerializer = new XmlSerializer(typeof(Student));
@@ -37,7 +38,7 @@ namespace FileIOExamples.Business
                     result = writer.ToString();
                 }
 
-                tools.Write(result, fileName);
+                return tools.Write(result, fileName);
             }
             else
             {
@@ -50,6 +51,8 @@ namespace FileIOExamples.Business
                         Console.WriteLine(newStudent.Name);
                     }
                 }
+
+                return true;
             }
         }
     }

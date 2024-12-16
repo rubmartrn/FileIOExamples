@@ -9,16 +9,19 @@
             _option = option;
         }
 
-        public void Write(string text, string file)
+        public bool Write(string text, string file)
         {
             if (_option.GetOptions() != "Stream")
             {
                 throw new ArgumentException();
             }
+
             using (StreamWriter writer = new StreamWriter(file))
             {
                 writer.Write(text);
             }
+
+            return true;
         }
 
         public string Read(string file)
