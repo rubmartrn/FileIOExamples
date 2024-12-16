@@ -8,7 +8,7 @@ namespace FileIoExamples.Business
         {
             new Student()
             {
-                Id = 7,
+                Id = 1,
                 Name = "Poghos",
                 Address = "Yerevan",
                 UniversityName = "University",
@@ -18,7 +18,7 @@ namespace FileIoExamples.Business
             },
             new Student()
             {
-                Id = 7,
+                Id = 2,
                 Name = "Petros",
                 Address = "Yerevan",
                 UniversityName = "University",
@@ -47,6 +47,18 @@ namespace FileIoExamples.Business
         public IEnumerable<Student> GetStudentsByUniversityName(string universityName)
         {
             return students.Where(e => e.UniversityName == universityName);
+        }
+
+        //1․ վերադարփնել ուսանողին ըստ այդիի
+        // եթե չկա տենց ուսանող, վերադարձնել null
+        // եթե կա մեկից ավել ուսանող տվյալ այդիով, exception
+        public Student? GetById(int id)
+        {
+            if (students.Where(e => e.Id == id).Count() > 1)
+            {
+                throw new Exception();
+            }
+            return students.FirstOrDefault(e => e.Id == id);
         }
     }
 }

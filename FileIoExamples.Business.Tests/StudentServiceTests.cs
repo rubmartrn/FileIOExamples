@@ -34,5 +34,51 @@
             //Arrange
             Assert.Empty(result);
         }
+
+        [Fact]
+        public void GetById_Success()
+        {
+            //Arrange
+            _service = new StudentService();
+            const int id = 1;
+            string name = "Poghos";
+
+            //Act
+            var result = _service.GetById(id);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(name, result.Name);
+        }
+
+
+        [Fact]
+        public void GetById_NotExist_ReturnsNull()
+        {
+            //Arrange
+            _service = new StudentService();
+
+            const int id = 100;
+
+            //Act
+            var result = _service.GetById(id);
+
+            //Assert
+            Assert.Null(result);
+        }
+
+
+        [Fact]
+        public void GetById_MultipleStudents_ThrowsException()
+        {
+            //Arrange
+            _service = new StudentService();
+
+            const int id = 7;
+
+            //Act
+            //Assert
+            Assert.Throws<Exception>(() => _service.GetById(id));
+        }
     }
 }
