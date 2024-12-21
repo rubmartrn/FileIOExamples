@@ -7,15 +7,28 @@ namespace Threads
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
+            int a = 0;
 
-            Example example = new Example();
-            Thread t = new Thread(example.Run);
-            t.Start();
-            Console.WriteLine("Սեղմեք ինչ որ բան ստոպի համար");
-            Console.ReadKey();
-            example.isRunning = false;
-            Console.WriteLine(example.isRunning);
-            t.Join();
+            Thread t1 = new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(500);
+                    a++;
+                }
+            });
+
+            Thread t2 = new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(500);
+                    Console.WriteLine(a);
+                }
+            });
+            t1.Start();
+            t2.Start();
+
         }
     }
 }
