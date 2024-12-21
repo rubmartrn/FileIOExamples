@@ -14,7 +14,7 @@ namespace Threads
                 while (true)
                 {
                     Thread.Sleep(500);
-                    a++;
+                    Interlocked.Increment(ref a);
                 }
             });
 
