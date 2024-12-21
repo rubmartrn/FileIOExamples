@@ -9,6 +9,11 @@ namespace FileIOExamples
             
         }
 
+        public int Urish()
+        {
+            return 1;
+        }
+
         public string GetSelectedOption()
         {
             Console.WriteLine("Ի՞նչ անել");
