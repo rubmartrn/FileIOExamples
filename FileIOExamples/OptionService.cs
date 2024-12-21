@@ -9,9 +9,19 @@ namespace FileIOExamples
             
         }
 
+        public int Urish()
+        {
+            return 1;
+        }
+
         public bool VeriifYOption()
         {
-            return true;
+            return false;
+        }
+
+        public void A()
+        {
+
         }
 
         public string GetSelectedOption()
