@@ -11,6 +11,7 @@
             _service = new StudentService();
             const string universityName = "University";
             const string expectedStudentName = "Poghos";
+            const int NormalName = 7;
 
             //Act
             var result = _service.GetStudentsByUniversityName(universityName);

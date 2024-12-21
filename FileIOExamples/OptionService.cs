@@ -14,6 +14,16 @@ namespace FileIOExamples
             return 1;
         }
 
+        public bool VeriifYOption()
+        {
+            return false;
+        }
+
+        public void A()
+        {
+
+        }
+
         public string GetSelectedOption()
         {
             Console.WriteLine("Ի՞նչ անել");
