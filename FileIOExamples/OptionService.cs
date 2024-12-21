@@ -9,6 +9,11 @@ namespace FileIOExamples
             
         }
 
+        public bool VeriifYOption()
+        {
+            return true;
+        }
+
         public string GetSelectedOption()
         {
             Console.WriteLine("Ի՞նչ անել");
