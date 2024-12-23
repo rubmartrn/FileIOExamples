@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using FileIOExamples.Business;
 
 namespace Threads
 {
@@ -7,13 +8,17 @@ namespace Threads
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            int a = 0;
+
+            List<Student> students = new List<Student>();
+
+            int a = -1;
 
             Thread t1 = new Thread(() =>
             {
                 while (true)
                 {
                     Thread.Sleep(500);
+                    students.Add(new Student() { Date = DateTime.Now });
                     Interlocked.Increment(ref a);
                 }
             });
@@ -23,7 +28,11 @@ namespace Threads
                 while (true)
                 {
                     Thread.Sleep(500);
-                    Console.WriteLine(a);
+                    if (a > -1)
+                    {
+                        Student s = students[a];
+                        Console.WriteLine(s.Date);
+                    }
                 }
             });
             t1.Start();

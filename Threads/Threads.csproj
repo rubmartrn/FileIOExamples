@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FileIoExamples.Business\FileIoExamples.Business.csproj" />
+  </ItemGroup>
+
 </Project>
