@@ -7,18 +7,23 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
+        Task<int> t = Task.Run(() =>
+        {
+            Task.Delay(10000).Wait();
+            return 42;
+        });
 
-        Console.WriteLine("Սկիզբ");
-        Test().Wait();
+        int a = t.Result;
+        Console.WriteLine(a);
 
-        Console.WriteLine("Ավարտ");
+        int b = Test().Result;
+        Console.WriteLine(b);
     }
 
-    static Task Test()
+    static Task<int> Test()
     {
         Console.WriteLine("A");
-        Task.Delay(20000).Wait();
         Console.WriteLine("B");
-        return Task.CompletedTask;
+        return Task.FromResult(43);
     }
 }
