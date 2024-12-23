@@ -1,63 +1,51 @@
 ﻿using System.Text;
 
-namespace Threads
+namespace Threads;
+
+internal class Program
 {
-    internal class Program
+    private static readonly object lock1 = new object();
+    private static readonly object lock2 = new object();
+    private static void Main(string[] args)
     {
-        private static readonly object lockObject = new object();
-        private static readonly object lockObjectForB = new object();
+        Console.OutputEncoding = Encoding.UTF8;
+        Thread t1 = new Thread(Thread1Run);
+        Thread t2 = new Thread(Thread2Run);
 
-        private static void Main(string[] args)
+        t1.Start();
+        t2.Start();
+
+        t1.Join();
+        t2.Join();
+
+        Console.WriteLine("Ավարտ");
+    }
+
+    static void Thread1Run()
+    {
+        lock (lock1)
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
-            int a = -1;
-
-            Thread t1 = new Thread(() =>
+            Console.WriteLine("lock 1 from t1");
+            Thread.Sleep(1000);
+            lock (lock2)
             {
-                while (true)
-                {
-                    lock (lockObject)
-                    {
-                        Thread.Sleep(500);
-                        a++;
-                    }
-                    Console.WriteLine(a);
-                }
-            });
-
-            Thread t2 = new Thread(() =>
-            {
-                while (true)
-                {
-                    lock (lockObject)
-                    {
-                        Console.WriteLine(a);
-                    }
-                }
-            });
-
-            int b = 0;
-
-            Thread t3 = new Thread(() =>
-            {
-                lock (lockObjectForB)
-                {
-                    b++;
-                }
+                Console.WriteLine("lock 2 from t1");
             }
-            );
+        }
+    }
 
-            Thread t4 = new Thread(() =>
+    static void Thread2Run()
+    {
+        lock (lock2)
+        {
+            Console.WriteLine("lock 2 from t2");
+            Thread.Sleep(1000);
+            lock (lock1)
             {
-                lock (lockObjectForB)
-                {
-                    Console.WriteLine(b);
-                }
-            });
-
-            t1.Start();
-            t2.Start();
+                Console.WriteLine("lock 1 from t2");
+            }
         }
     }
 }
+
+
