@@ -8,19 +8,17 @@ internal class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
 
-        Task.Run(() => Console.WriteLine("Task.Run"));
+        Console.WriteLine("Սկիզբ");
+        Test().Wait();
 
-        Task t = new Task(() =>
-        {
-            Console.WriteLine("New Task");
-        });
+        Console.WriteLine("Ավարտ");
+    }
 
-        t.Start();
-
-        Task.Factory.StartNew(() =>
-        {
-            Console.WriteLine("StartNew");
-        },
-            CancellationToken.None);
+    static Task Test()
+    {
+        Console.WriteLine("A");
+        Task.Delay(20000).Wait();
+        Console.WriteLine("B");
+        return Task.CompletedTask;
     }
 }
