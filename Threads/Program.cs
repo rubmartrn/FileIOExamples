@@ -1,15 +1,15 @@
 ﻿using System.Text;
-using FileIOExamples.Business;
 
 namespace Threads
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static readonly object lockObject = new object();
+        private static readonly object lockObjectForB = new object();
+
+        private static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-
-            List<Student> students = new List<Student>();
 
             int a = -1;
 
@@ -17,9 +17,12 @@ namespace Threads
             {
                 while (true)
                 {
-                    Thread.Sleep(500);
-                    students.Add(new Student() { Date = DateTime.Now });
-                    Interlocked.Increment(ref a);
+                    lock (lockObject)
+                    {
+                        Thread.Sleep(500);
+                        a++;
+                    }
+                    Console.WriteLine(a);
                 }
             });
 
@@ -27,17 +30,34 @@ namespace Threads
             {
                 while (true)
                 {
-                    Thread.Sleep(500);
-                    if (a > -1)
+                    lock (lockObject)
                     {
-                        Student s = students[a];
-                        Console.WriteLine(s.Date);
+                        Console.WriteLine(a);
                     }
                 }
             });
+
+            int b = 0;
+
+            Thread t3 = new Thread(() =>
+            {
+                lock (lockObjectForB)
+                {
+                    b++;
+                }
+            }
+            );
+
+            Thread t4 = new Thread(() =>
+            {
+                lock (lockObjectForB)
+                {
+                    Console.WriteLine(b);
+                }
+            });
+
             t1.Start();
             t2.Start();
-
         }
     }
 }
