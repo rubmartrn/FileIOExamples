@@ -10,8 +10,9 @@
             _form = form;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
+            await Task.Delay(10000);
             textBox1.Text = "կոճակը սեղմվեց";
         }
 
