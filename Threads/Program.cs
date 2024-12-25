@@ -9,11 +9,10 @@ internal class Program
         Console.OutputEncoding = Encoding.UTF8;
 
         CancellationTokenSource src = new CancellationTokenSource();
-        src.CancelAfter(5000);
         try
         {
-            int a = Run(src.Token).Result;
-            Console.WriteLine(a);
+            Cancel(src);
+            Run(src.Token);
         }
         catch (OperationCanceledException e)
         {
@@ -26,18 +25,24 @@ internal class Program
         }
     }
 
-    static Task<int> Run(CancellationToken token)
+    static Task Cancel(CancellationTokenSource src)
+    {
+        Task.Delay(5000).Wait();
+        src.Cancel();
+        return Task.CompletedTask;
+    }
+
+    static Task Run(CancellationToken token)
     {
         for (int i = 0; i < 10000; i++)
         {
-            token.ThrowIfCancellationRequested();
-            //if (token.IsCancellationRequested)
-            //{
-            //    return Task.FromCanceled(token);
-            //}
+            if (token.IsCancellationRequested)
+            {
+                return Task.FromCanceled(token);
+            }
             Task.Delay(1000, token).Wait(token);
             Console.WriteLine(i);
         }
-        return Task.FromResult(4);
+        return Task.CompletedTask;
     }
 }
