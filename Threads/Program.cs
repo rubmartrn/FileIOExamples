@@ -8,28 +8,101 @@ internal class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
 
-        await WriteAsync("a.txt", "Բարև Ձեզ");
-
-        string text = await ReadAsync("a.txt");
-        Console.WriteLine(text);
+        await RunSafe();
     }
 
-    static async Task WriteAsync(string filePath, string text)
+    static async Task RunUnSafe()
     {
-        byte[] textBytes = Encoding.UTF8.GetBytes(text);
+        var unsafeAccount = new BankAccountUnSafe(1000);
+        var tasks = new List<Task>();
 
-        await using FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096, useAsync: true);
-        await stream.WriteAsync(textBytes);
+        for (int i = 0; i < 5; i++)
+        {
+            tasks.Add(Task.Run(() => unsafeAccount.Send(200)));
+        }
+
+        await Task.WhenAll(tasks);
+        Console.WriteLine($"Ձեր հաշվին կա {unsafeAccount.GetBalance()}");
     }
 
-    static async Task<string> ReadAsync(string filePath)
+    static async Task RunSafe()
     {
+        var unsafeAccount = new BankAccountSafe(1000);
+        var tasks = new List<Task>();
 
-        await using FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096, useAsync: true);
-        byte[] textBytes = new byte[stream.Length];
+        for (int i = 0; i < 5; i++)
+        {
+            tasks.Add(Task.Run(() => unsafeAccount.Send(200)));
+        }
 
-        await stream.ReadAsync(textBytes, 0, (int)stream.Length);
-        string result = Encoding.UTF8.GetString(textBytes);
-        return result;
+        await Task.WhenAll(tasks);
+        Console.WriteLine($"Ձեր հաշվին կա {unsafeAccount.GetBalance()}");
+    }
+
+}
+
+public class BankAccountSafe
+{
+
+    private decimal balance;
+    private readonly object lockObject = new object();
+
+    public BankAccountSafe(decimal initialBalance)
+    {
+        balance = initialBalance;
+    }
+
+    public void Send(decimal amount)
+    {
+        lock (lockObject)
+        {
+            if (balance >= amount)
+            {
+                Thread.Sleep(100);
+                balance -= amount;
+                Console.WriteLine($"safe sent {amount}, new balance {balance}");
+            }
+            else
+            {
+                Console.WriteLine($"Not enough balance {balance}/{amount}");
+            }
+        }
+    }
+
+    public decimal GetBalance()
+    {
+        lock (lockObject)
+        {
+            return balance;
+        }
+    }
+}
+
+public class BankAccountUnSafe
+{
+    private decimal balance;
+
+    public BankAccountUnSafe(decimal initialBalance)
+    {
+        balance = initialBalance;
+    }
+
+    public void Send(decimal amount)
+    {
+        if (balance >= amount)
+        {
+            Thread.Sleep(100);
+            balance -= amount;
+            Console.WriteLine($"Unsafe sent {amount}, new balance {balance}");
+        }
+        else
+        {
+            Console.WriteLine($"Not enough balance {balance}/{amount}");
+        }
+    }
+
+    public decimal GetBalance()
+    {
+        return balance;
     }
 }
