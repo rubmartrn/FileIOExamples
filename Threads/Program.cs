@@ -13,7 +13,6 @@ internal class Program
     static async Task Run()
     {
         Console.WriteLine("Start");
-        await Task.Delay(5000); //Ինտերնետից ինֆո ստանալ
-        Console.WriteLine("End");
+        throw new Exception("սխալ");
     }
 }
