@@ -4,45 +4,16 @@ namespace Threads;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
-
-        CancellationTokenSource src = new CancellationTokenSource();
-        try
-        {
-            Cancel(src);
-            Run(src.Token);
-        }
-        catch (OperationCanceledException e)
-        {
-            Console.WriteLine("Գործողությունը չեղարկվել է");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+        await Run();
     }
 
-    static Task Cancel(CancellationTokenSource src)
+    static async Task Run()
     {
-        Task.Delay(5000).Wait();
-        src.Cancel();
-        return Task.CompletedTask;
-    }
-
-    static Task Run(CancellationToken token)
-    {
-        for (int i = 0; i < 10000; i++)
-        {
-            if (token.IsCancellationRequested)
-            {
-                return Task.FromCanceled(token);
-            }
-            Task.Delay(1000, token).Wait(token);
-            Console.WriteLine(i);
-        }
-        return Task.CompletedTask;
+        Console.WriteLine("Start");
+        await Task.Delay(5000); //Ինտերնետից ինֆո ստանալ
+        Console.WriteLine("End");
     }
 }
