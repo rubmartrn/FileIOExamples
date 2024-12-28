@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileIoExamples.Business.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threads", "Threads\Threads.csproj", "{FFD4D485-EDF9-490A-8DA0-1F6B069B0952}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{BF5FE4F8-2B06-49E6-B19E-9603656EB4FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FFD4D485-EDF9-490A-8DA0-1F6B069B0952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFD4D485-EDF9-490A-8DA0-1F6B069B0952}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFD4D485-EDF9-490A-8DA0-1F6B069B0952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF5FE4F8-2B06-49E6-B19E-9603656EB4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF5FE4F8-2B06-49E6-B19E-9603656EB4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5FE4F8-2B06-49E6-B19E-9603656EB4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF5FE4F8-2B06-49E6-B19E-9603656EB4FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
