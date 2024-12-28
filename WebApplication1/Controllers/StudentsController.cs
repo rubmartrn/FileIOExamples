@@ -1,5 +1,6 @@
 ﻿using FileIOExamples.Business;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers;
 
@@ -7,28 +8,49 @@ namespace WebApplication1.Controllers;
 [Route("my/[controller]")]
 public class StudentsController : ControllerBase
 {
-    [HttpGet]
-    public int Get()
-    {
-        return 42;
-    }
+
+    private static List<Student> students = new List<Student>();
 
     [HttpPost]
-    public string Post([FromBody] Student s)
+    public void Create([FromBody] Student student)
     {
-        return $"Ձեր ուսանողի անունը {s.Name} է";
+        students.Add(student);
     }
 
-
-    [HttpGet("test/{a}")]
-    public void Test([FromRoute] string a)
+    [HttpGet]
+    public IEnumerable<Student> Get()
     {
-        Console.WriteLine("Test");
+        return students;
     }
 
-    [HttpGet("new")]
-    public string NewTest([FromQuery] string? p, [FromQuery] int? a)
+    [HttpGet("{id}")]
+    public Student GetById([FromRoute] int id)
     {
-        return $"your param is {p}, a is {a}";
+        return students.First(e => e.Id == id);
+    }
+
+    [HttpPut("{id}")]
+    public void Update([FromRoute] int id, [FromBody] StudentUpdateModel model)
+    {
+        var student = students.FirstOrDefault(e => e.Id == id);
+        if (student is null)
+        {
+            throw new Exception($"{id} այդիով ուսանող չկա");
+        }
+        student.Name = model.Name;
+        student.Address = model.Address;
+        student.UniversityName = model.UniversityName;
+    }
+
+    [HttpDelete("id")]
+    public void Delete(int id)
+    {
+        var student = students.FirstOrDefault(e => e.Id == id);
+        if (student is null)
+        {
+            throw new Exception($"{id} այդիով ուսանող չկա");
+        }
+
+        students.Remove(student);
     }
 }
