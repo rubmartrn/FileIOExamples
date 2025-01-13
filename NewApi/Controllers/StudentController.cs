@@ -1,5 +1,6 @@
 ﻿using FileIOExamples.Business;
 using Microsoft.AspNetCore.Mvc;
+using NewApi.Services;
 
 namespace NewApi.Controllers;
 
@@ -7,44 +8,16 @@ namespace NewApi.Controllers;
 [Route("[controller]")]
 public class StudentController : ControllerBase
 {
-    private static List<Student> students = new List<Student>
-    {
-        new Student{
-            Id = 1,
-            Name = "Petros",
-            Address = "Gyumri",
-            Type = StudentType.Type1,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        },
-        new Student{
-            Id = 2,
-            Name = "Poghos",
-            Address = "Yerevan",
-            Type = StudentType.Type2,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        },
-        new Student{
-            Id = 3,
-            Name = "Martiros",
-            Address = "Ararat",
-            Type = StudentType.Type3,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        }
-    };
-
     [HttpGet]
-    public List<Student> Get()
+    public List<Student> Get([FromServices] IStudentService service)
     {
-        return students;
+        return service.GetAll();
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get([FromRoute] int id)//path
+    public IActionResult Get([FromRoute] int id, [FromServices] IStudentService service)//path
     {
-        var student = students.FirstOrDefault(x => x.Id == id);
+        var student = service.GetById(id);
         if (student == null)
         {
             return NotFound();
@@ -56,48 +29,31 @@ public class StudentController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Student student)//body
+    public IActionResult Post([FromBody] Student student, [FromServices] IStudentService service)//body
     {
-        students.Add(student);
+        service.Add(student);
         return Ok();
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] StudentUpdateModel student)
+    public IActionResult Update([FromRoute] int id, [FromBody] StudentUpdateModel student, [FromServices] IStudentService service)
     {
-        var existingStudent = students.FirstOrDefault(x => x.Id == id);
-
-        if (existingStudent != null)
-        {
-            existingStudent.Address = student.Address;
-            existingStudent.Type = student.Type;
-            existingStudent.UniversityName = student.UniversityName;
-            return Ok();
-        }
-        return NotFound();
+        service.Update(id, student);
+        return Ok();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete([FromRoute] int id)
+    public IActionResult Delete([FromRoute] int id, [FromServices] IStudentService service)
     {
-        var student = students.FirstOrDefault(x => x.Id == id);
-        if (student != null)
-        {
-            students.Remove(student);
-            return Ok();
-        }
-        return NotFound();
+        service.Delete(id);
+        return Ok();
     }
-
 
     [HttpGet("filter")]
-    public IEnumerable<Student> Filter([FromQuery] string name, [FromQuery] string address)
+    public IEnumerable<Student> Filter([FromQuery] string name, [FromQuery] string address, [FromServices] IStudentService service)
     {
-        return students.Where(e =>
-       (!string.IsNullOrEmpty(name) && e.Name.ToLower().Contains(name.ToLower()))
-        || (!string.IsNullOrEmpty(address) && e.Address.ToLower().Contains(address.ToLower()))).ToList();
+        return service.Filter(name, address);
     }
-
 
     [HttpGet("Barev/Hajox")]
     public string Barev([FromHeader] string test)

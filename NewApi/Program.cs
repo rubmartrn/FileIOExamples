@@ -13,6 +13,8 @@ builder.Services.AddTransient<ITestServiceTransient, TestServiceTransient>();
 builder.Services.AddSingleton<ITestServiceSingleton, TestServiceSingleton>();
 
 builder.Services.AddScoped<ITestServiceScoped, TestServiceScoped>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
 builder.Services.Configure<BankSettings>(builder.Configuration.GetSection("BankSettings"));
 
 string password = builder.Configuration["BankSettings:Password"]!;
