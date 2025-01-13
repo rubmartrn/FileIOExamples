@@ -1,4 +1,5 @@
-﻿using NewApi.Services;
+﻿using Microsoft.Extensions.Options;
+using NewApi.Services;
 
 namespace NewApi.Middlewares
 {
@@ -8,14 +9,16 @@ namespace NewApi.Middlewares
         private ITestServiceScoped? scoped;
         private readonly ITestServiceTransient transient;
         private readonly ITestServiceSingleton singleton;
+        private readonly BankSettings bankOptions;
 
         public StudentMiddleware(RequestDelegate next,
             ITestServiceTransient transient,
-            ITestServiceSingleton singleton)
+            ITestServiceSingleton singleton, IOptions<BankSettings> bankOptions)
         {
             _next = next;
             this.transient = transient;
             this.singleton = singleton;
+            this.bankOptions = bankOptions.Value;
         }
 
         public async Task InvokeAsync(HttpContext context)

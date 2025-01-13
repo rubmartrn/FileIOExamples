@@ -2,7 +2,6 @@
 
 namespace FileIOExamples.Business
 {
-    [NameSwitcher("Name", "Anun")]
     public class Student
     {
         public int Id { get; set; }

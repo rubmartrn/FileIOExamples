@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using NewApi.Services;
+﻿using FileIOExamples.Business;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NewApi.Controllers;
 
@@ -8,38 +7,91 @@ namespace NewApi.Controllers;
 [Route("[controller]")]
 public class StudentController : ControllerBase
 {
-    private readonly ITestServiceSingleton _testServiceSingleton;
-    private readonly ITestServiceTransient _testServiceTransient;
-    private readonly ITestServiceScoped _testServiceScoped;
-    private BankSettings BankSettings;
-
-    public StudentController(ITestServiceSingleton testServiceSingleton,
-        ITestServiceTransient testServiceTransient,
-        ITestServiceScoped testServiceScoped,
-        IOptions<BankSettings> bankOptions
-        )
+    private static List<Student> students = new List<Student>
     {
-        _testServiceSingleton = testServiceSingleton;
-        _testServiceTransient = testServiceTransient;
-        _testServiceScoped = testServiceScoped;
-        BankSettings = bankOptions.Value;
-    }
+        new Student{
+            Id = 1,
+            Name = "Petros",
+            Address = "Gyumri",
+            Type = StudentType.Type1,
+            UniversityName = "YSU",
+            Date = DateTime.Now
+        },
+        new Student{
+            Id = 2,
+            Name = "Poghos",
+            Address = "Yerevan",
+            Type = StudentType.Type2,
+            UniversityName = "YSU",
+            Date = DateTime.Now
+        },
+        new Student{
+            Id = 3,
+            Name = "Martiros",
+            Address = "Ararat",
+            Type = StudentType.Type3,
+            UniversityName = "YSU",
+            Date = DateTime.Now
+        }
+    };
 
     [HttpGet]
-    public string Get()
+    public List<Student> Get()
     {
-        var t = BankSettings.Username;
+        return students;
+    }
 
-        var a = _testServiceSingleton.Test();
-        var b = _testServiceTransient.Test();
-        var c = _testServiceScoped.Test();
-
-        return "Petros";
+    [HttpGet("{id}")]
+    public Student Get([FromRoute] int id)//path
+    {
+        return students.FirstOrDefault(x => x.Id == id);
     }
 
     [HttpPost]
-    public string Post()
+    public int Post([FromBody] Student student)//body
     {
-        return "Post Petros";
+        students.Add(student);
+        return student.Id;
+    }
+
+    [HttpPut("{id}")]
+    public Student Update([FromRoute] int id, [FromBody] StudentUpdateModel student)
+    {
+        var existingStudent = students.FirstOrDefault(x => x.Id == id);
+
+        if (existingStudent != null)
+        {
+            existingStudent.Address = student.Address;
+            existingStudent.Type = student.Type;
+            existingStudent.UniversityName = student.UniversityName;
+        }
+        return existingStudent;
+    }
+
+    [HttpDelete("{id}")]
+    public int Delete([FromRoute] int id)
+    {
+        var student = students.FirstOrDefault(x => x.Id == id);
+        if (student != null)
+        {
+            students.Remove(student);
+        }
+        return id;
+    }
+
+
+    [HttpGet("filter")]
+    public IEnumerable<Student> Filter([FromQuery] string name, [FromQuery] string address)
+    {
+        return students.Where(e =>
+       (!string.IsNullOrEmpty(name) && e.Name.ToLower().Contains(name.ToLower()))
+        || (!string.IsNullOrEmpty(address) && e.Address.ToLower().Contains(address.ToLower()))).ToList();
+    }
+
+
+    [HttpGet("Barev/Hajox")]
+    public string Barev([FromHeader] string test)
+    {
+        return "Barev";
     }
 }

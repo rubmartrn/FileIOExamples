@@ -19,11 +19,8 @@ string password = builder.Configuration["BankSettings:Password"]!;
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
@@ -31,6 +28,11 @@ app.UseMiddleware<StudentMiddleware>();
 
 app.UseMyMiddleWare();
 
+app.Use(async (context, next) =>
+{
+    var testServiceSingleton = context.RequestServices.GetService<ITestServiceSingleton>();
+    await next();
+});
 
 //minimal API
 app.MapGet("/minimalStudent", async context =>
