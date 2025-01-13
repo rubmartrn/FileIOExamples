@@ -8,10 +8,18 @@ namespace NewApi.Controllers;
 [Route("[controller]")]
 public class StudentController : ControllerBase
 {
-    [HttpGet]
-    public List<Student> Get([FromServices] IStudentService service)
+    private readonly IStudentService _service;
+
+    public StudentController(IStudentService service)
     {
-        return service.GetAll();
+        this._service = service;
+    }
+
+
+    [HttpGet]
+    public List<Student> Get()
+    {
+        return _service.GetAll();
     }
 
     [HttpGet("{id}")]
