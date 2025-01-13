@@ -7,32 +7,31 @@ namespace NewApi.Controllers;
 [Route("[controller]")]
 public class TestController : ControllerBase
 {
-    private readonly ITestServiceSingleton _testServiceSingleton;
-    private readonly ITestServiceTransient _testServiceTransient;
-    private readonly ITestServiceScoped _testServiceScoped;
 
-    public TestController(ITestServiceSingleton testServiceSingleton,
-        ITestServiceTransient testServiceTransient,
-        ITestServiceScoped testServiceScoped)
+    [HttpGet("Content")]
+    public ContentResult GetContent()
     {
-        _testServiceSingleton = testServiceSingleton;
-        _testServiceTransient = testServiceTransient;
-        _testServiceScoped = testServiceScoped;
+        return new ContentResult
+        {
+            Content = "Hello World",
+            StatusCode = 200
+        };
     }
 
-    [HttpGet]
-    public string Get()
+    [HttpGet("Json")]
+    public JsonResult GetJson()
     {
-        var a = _testServiceSingleton.Test();
-        var b = _testServiceTransient.Test();
-        var c = _testServiceScoped.Test();
-
-        return "Petros";
+        return new JsonResult(new
+        {
+            Name = "Petros",
+            Age = 25,
+            suihsdiufsdf = "sdfsd"
+        });
     }
 
-    [HttpPost]
-    public string Post()
+    [HttpGet("Redirect")]
+    public RedirectResult GetRedirect()
     {
-        return "Post Petros";
+        return new RedirectResult("https://www.google.com");
     }
 }

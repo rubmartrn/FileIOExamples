@@ -42,20 +42,28 @@ public class StudentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public Student Get([FromRoute] int id)//path
+    public IActionResult Get([FromRoute] int id)//path
     {
-        return students.FirstOrDefault(x => x.Id == id);
+        var student = students.FirstOrDefault(x => x.Id == id);
+        if (student == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return Ok(student);
+        }
     }
 
     [HttpPost]
-    public int Post([FromBody] Student student)//body
+    public IActionResult Post([FromBody] Student student)//body
     {
         students.Add(student);
-        return student.Id;
+        return Ok();
     }
 
     [HttpPut("{id}")]
-    public Student Update([FromRoute] int id, [FromBody] StudentUpdateModel student)
+    public IActionResult Update([FromRoute] int id, [FromBody] StudentUpdateModel student)
     {
         var existingStudent = students.FirstOrDefault(x => x.Id == id);
 
@@ -64,19 +72,21 @@ public class StudentController : ControllerBase
             existingStudent.Address = student.Address;
             existingStudent.Type = student.Type;
             existingStudent.UniversityName = student.UniversityName;
+            return Ok();
         }
-        return existingStudent;
+        return NotFound();
     }
 
     [HttpDelete("{id}")]
-    public int Delete([FromRoute] int id)
+    public IActionResult Delete([FromRoute] int id)
     {
         var student = students.FirstOrDefault(x => x.Id == id);
         if (student != null)
         {
             students.Remove(student);
+            return Ok();
         }
-        return id;
+        return NotFound();
     }
 
 
