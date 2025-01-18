@@ -2,44 +2,27 @@
 
 Console.OutputEncoding = Encoding.UTF8;
 
-IEnumerable<int> Test1()
-{
-    var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+var a = new A();
+a.AgeInternal = 4;
+a.AgeProtectedInternal = 5;
 
-    foreach (var number in numbers)
-    {
-        yield return number;
-    }
+public class A
+{
+    private int Age;
+    protected int AgeProtected;
+    internal int AgeInternal;
+    public int AgePublic;
+    protected internal int AgeProtectedInternal;
+    private protected int AgePrivateProtected;
 }
 
-IEnumerable<int> Test2()
+public class B : A
 {
-    var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    for (int i = 0; i < numbers.Count; i++)
-    {
-        yield return numbers[i];
-    }
-}
 
-IEnumerable<int> Test3(int a)
-{
-    yield return 1;
-    if (a < 7)
+    private void Test()
     {
-        yield break;
+        AgeProtected = 4;
+        AgeProtectedInternal = 5;
+        AgePrivateProtected = 6;
     }
-
-    var t = Console.ReadLine();
-    if (t == "H")
-    {
-        yield return 6;
-    }
-}
-
-var result1 = Test1().ToList();
-var result2 = Test2().ToList();
-while (true)
-{
-    var result3 = Test3(8).ToList();
-    Console.WriteLine();
 }
