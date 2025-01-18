@@ -7,6 +7,30 @@ namespace NewApi.Services
     {
         private static List<Student> students = new List<Student>
         {
+            new Student{
+                Id = 1,
+                Name = "Petros",
+                Address = "Gyumri",
+                Type = StudentType.Type1,
+                UniversityName = "YSU",
+                Date = DateTime.Now
+            },
+            new Student{
+                Id = 2,
+                Name = "Poghos",
+                Address = "Yerevan",
+                Type = StudentType.Type2,
+                UniversityName = "YSU",
+                Date = DateTime.Now
+            },
+            new Student{
+                Id = 3,
+                Name = "Martiros",
+                Address = "Ararat",
+                Type = StudentType.Type3,
+                UniversityName = "YSU",
+                Date = DateTime.Now
+            }
         };
 
         public List<Student> GetAll()

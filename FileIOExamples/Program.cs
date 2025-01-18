@@ -1,19 +1,45 @@
-﻿
-
-using System.Text;
+﻿using System.Text;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-var list = new List<int> { 1, 2, 3, 4, 5 };
+IEnumerable<int> Test1()
+{
+    var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-var m = new List<int>() { 1, 1, 2, 2 };
+    foreach (var number in numbers)
+    {
+        yield return number;
+    }
+}
 
-var s = list.Where(e => e == 2).ToList();
+IEnumerable<int> Test2()
+{
+    var numbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    for (int i = 0; i < numbers.Count; i++)
+    {
+        yield return numbers[i];
+    }
+}
 
-var result = list.First(e => e == 2);
-var result1 = list.FirstOrDefault(e => e > 3);
+IEnumerable<int> Test3(int a)
+{
+    yield return 1;
+    if (a < 7)
+    {
+        yield break;
+    }
 
-var result2 = list.Single(e => e > 3);
-var result3 = list.SingleOrDefault(e => e > 3);
+    var t = Console.ReadLine();
+    if (t == "H")
+    {
+        yield return 6;
+    }
+}
 
-Console.WriteLine();
+var result1 = Test1().ToList();
+var result2 = Test2().ToList();
+while (true)
+{
+    var result3 = Test3(8).ToList();
+    Console.WriteLine();
+}
