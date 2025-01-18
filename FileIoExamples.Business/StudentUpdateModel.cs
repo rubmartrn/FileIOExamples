@@ -1,6 +1,6 @@
 ﻿namespace FileIOExamples.Business
 {
-    public class StudentUpdateModel
+    public record StudentUpdateModel
     {
         public string? Address { get; set; }
         public StudentType Type { get; set; }

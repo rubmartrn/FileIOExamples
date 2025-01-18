@@ -2,27 +2,44 @@
 
 Console.OutputEncoding = Encoding.UTF8;
 
-var a = new A();
-a.AgeInternal = 4;
-a.AgeProtectedInternal = 5;
-
-public class A
+var a = new A()
 {
-    private int Age;
-    protected int AgeProtected;
-    internal int AgeInternal;
-    public int AgePublic;
-    protected internal int AgeProtectedInternal;
-    private protected int AgePrivateProtected;
+    Name = "Poghos"
+};
+
+var aa = new A()
+{
+    Name = "Poghos"
+};
+
+bool result = a == aa;
+
+
+var t = new T()
+{
+    Name = "Poghos"
+};
+
+var tt = new T()
+{
+    Name = "Poghos"
+};
+
+bool result1 = t == tt;
+
+class A
+{
+    private int a;
+    public string Name { get; set; }
 }
 
-public class B : A
+//memory<= 16byte
+struct MyStruct
 {
+    
+}
 
-    private void Test()
-    {
-        AgeProtected = 4;
-        AgeProtectedInternal = 5;
-        AgePrivateProtected = 6;
-    }
+record T
+{
+    public string Name { get; set; }
 }
