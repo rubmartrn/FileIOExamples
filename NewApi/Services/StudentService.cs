@@ -6,32 +6,8 @@ namespace NewApi.Services
     public class StudentService : IStudentService
     {
         private static List<Student> students = new List<Student>
-     {
-        new Student{
-            Id = 1,
-            Name = "Petros",
-            Address = "Gyumri",
-            Type = StudentType.Type1,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        },
-        new Student{
-            Id = 2,
-            Name = "Poghos",
-            Address = "Yerevan",
-            Type = StudentType.Type2,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        },
-        new Student{
-            Id = 3,
-            Name = "Martiros",
-            Address = "Ararat",
-            Type = StudentType.Type3,
-            UniversityName = "YSU",
-            Date = DateTime.Now
-        }
-    };
+        {
+        };
 
         public List<Student> GetAll()
         {
@@ -40,7 +16,16 @@ namespace NewApi.Services
 
         public Student? GetById(int id)
         {
+            if (!IsValidId(id))
+            {
+                return null;
+            }
             return students.FirstOrDefault(x => x.Id == id);
+        }
+
+        private bool IsValidId(int id)
+        {
+            return id > 0 && id <= 100;
         }
 
         public void Add(Student student)

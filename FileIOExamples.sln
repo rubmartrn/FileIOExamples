@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewApi", "NewApi\NewApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{C2A7CE3A-68D3-4E6E-A593-992E362BB33F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewApi.Tests", "NewApi.Tests\NewApi.Tests.csproj", "{1925CB57-68BB-4C6B-82C3-CC6DB6E7349A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C2A7CE3A-68D3-4E6E-A593-992E362BB33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A7CE3A-68D3-4E6E-A593-992E362BB33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A7CE3A-68D3-4E6E-A593-992E362BB33F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1925CB57-68BB-4C6B-82C3-CC6DB6E7349A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1925CB57-68BB-4C6B-82C3-CC6DB6E7349A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1925CB57-68BB-4C6B-82C3-CC6DB6E7349A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1925CB57-68BB-4C6B-82C3-CC6DB6E7349A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

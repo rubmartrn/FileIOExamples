@@ -1,6 +1,6 @@
 ﻿using FileIOExamples.Business;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
+using StudentUpdateModel = WebApplication1.Models.StudentUpdateModel;
 
 namespace WebApplication1.Controllers;
 
