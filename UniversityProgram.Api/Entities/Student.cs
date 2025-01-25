@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UniversityProgram.Api.Models
+﻿namespace UniversityProgram.Api.Entities
 {
     public class Student
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Entities;
 
 namespace UniversityProgram.Api
 {
