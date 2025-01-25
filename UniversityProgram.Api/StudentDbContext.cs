@@ -21,12 +21,13 @@ namespace UniversityProgram.Api
                 .Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsRequired();
+
+            modelBuilder.Entity<Student>().HasIndex(e => e.Email).IsUnique();
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)
         : base(options)
         {
-
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
