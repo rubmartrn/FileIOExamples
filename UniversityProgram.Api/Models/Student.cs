@@ -1,4 +1,6 @@
-﻿namespace UniversityProgram.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UniversityProgram.Api.Models
 {
     public class Student
     {
