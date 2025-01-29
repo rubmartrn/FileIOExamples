@@ -1,11 +1,9 @@
-﻿namespace UniversityProgram.Api.Entities
+﻿namespace UniversityProgram.Api.Models
 {
-    public class Student
+    public class StudentModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Email { get; set; } = default!;
-
-        public Laptop? Laptop { get; set; } = default!;
     }
 }

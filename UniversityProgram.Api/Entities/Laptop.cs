@@ -1,11 +1,11 @@
 ﻿namespace UniversityProgram.Api.Entities
 {
-    public class Student
+    public class Laptop
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;
-        public string Email { get; set; } = default!;
 
-        public Laptop? Laptop { get; set; } = default!;
+        public int StudentId { get; set; }
+        public Student Student { get; set; } = default!;
     }
 }

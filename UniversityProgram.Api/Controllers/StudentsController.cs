@@ -47,7 +47,43 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
 
-            return Ok(student);
+            var model = new StudentModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email
+            };
+
+            return Ok(model);
+        }
+
+        [HttpGet("{id}/laptop")]
+        public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id)
+        {
+            var student = await _ctx.Students
+                .Include(e => e.Laptop)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var model = new StudentWithLaptopModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                Laptop = student.Laptop is not null
+                                ? new LaptopModel
+                                {
+                                    Id = student.Laptop.Id,
+                                    Name = student.Laptop.Name
+                                }
+                                : null
+            };
+
+            return Ok(model);
         }
 
         [HttpPut("{id}")]
@@ -59,7 +95,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
             student.Name = model.Name ?? student.Name;
-            student.Email = model.Email is not null ? model.Email : student.Email ;
+            student.Email = model.Email is not null ? model.Email : student.Email;
             _ctx.Students.Update(student);
             await _ctx.SaveChangesAsync();
             return Ok();

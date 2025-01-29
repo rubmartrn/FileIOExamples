@@ -7,9 +7,12 @@ namespace UniversityProgram.Api
     {
         public DbSet<Student> Students { get; set; } = default!;
 
+        public DbSet<Laptop> Laptops { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasKey(e => e.Id);
+
 
             modelBuilder.Entity<Student>()
                 .Property(e => e.Name)
@@ -21,8 +24,18 @@ namespace UniversityProgram.Api
                 .Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsRequired();
-
             modelBuilder.Entity<Student>().HasIndex(e => e.Email).IsUnique();
+
+            modelBuilder.Entity<Student>()
+                .HasOne(e=>e.Laptop)
+                .WithOne(e => e.Student)
+                .HasForeignKey<Laptop>(e => e.StudentId);
+
+            modelBuilder.Entity<Laptop>().HasKey(e => e.Id);
+            modelBuilder.Entity<Laptop>()
+                .Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsRequired();
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)
