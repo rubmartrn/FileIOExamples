@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityProgram.Api;
 
@@ -11,9 +12,11 @@ using UniversityProgram.Api;
 namespace UniversityProgram.Api.Migrations
 {
     [DbContext(typeof(StudentDbContext))]
-    partial class StudentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129164708_addLibrary")]
+    partial class addLibrary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace UniversityProgram.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("StudentUniversity", b =>
-                {
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UniversitiesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentsId", "UniversitiesId");
-
-                    b.HasIndex("UniversitiesId");
-
-                    b.ToTable("StudentUniversity");
-                });
 
             modelBuilder.Entity("UniversityProgram.Api.Entities.Cpu", b =>
                 {
@@ -132,39 +120,6 @@ namespace UniversityProgram.Api.Migrations
                     b.HasIndex("LibraryId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("UniversityProgram.Api.Entities.University", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Universities");
-                });
-
-            modelBuilder.Entity("StudentUniversity", b =>
-                {
-                    b.HasOne("UniversityProgram.Api.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversityProgram.Api.Entities.University", null)
-                        .WithMany()
-                        .HasForeignKey("UniversitiesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityProgram.Api.Entities.Cpu", b =>

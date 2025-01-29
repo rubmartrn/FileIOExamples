@@ -11,6 +11,11 @@ namespace UniversityProgram.Api
 
         public DbSet<Cpu> Cpus { get; set; } = default!;
 
+        public DbSet<Library> Libraries { get; set; } = default!;
+
+        public DbSet<University> Universities { get; set; } = default!;
+        public DbSet<Course> Courses { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasKey(e => e.Id);
@@ -49,6 +54,41 @@ namespace UniversityProgram.Api
                 .HasOne(e=>e.Cpu)
                 .WithOne(e => e.Laptop)
                 .HasForeignKey<Cpu>(e => e.LaptopId);
+
+            modelBuilder.Entity<Library>().HasKey(e => e.Id);
+            modelBuilder.Entity<Library>()
+                .Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            modelBuilder.Entity<Student>()
+                .HasOne(e => e.Library)
+                .WithMany(e => e.Students)
+                .HasForeignKey(e => e.LibraryId);
+
+
+            modelBuilder.Entity<University>().HasKey(e => e.Id);
+
+            modelBuilder.Entity<University>()
+                .Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            modelBuilder.Entity<University>().HasMany(e => e.Students)
+                .WithMany(e => e.Universities);
+
+            modelBuilder.Entity<Course>().HasKey(e => e.Id);
+
+            modelBuilder.Entity<Course>()
+                .Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            modelBuilder.Entity<Course>().HasMany(e => e.CourseStudents).WithOne(e => e.Course)
+                .HasForeignKey(e => e.CourseId);
+
+            modelBuilder.Entity<Student>().HasMany(e=>e.CourseStudents).WithOne().HasForeignKey(e => e.StudentId);
+
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)
