@@ -7,5 +7,7 @@
 
         public int StudentId { get; set; }
         public Student Student { get; set; } = default!;
+
+        public Cpu? Cpu { get; set; }
     }
 }

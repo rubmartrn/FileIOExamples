@@ -9,6 +9,8 @@ namespace UniversityProgram.Api
 
         public DbSet<Laptop> Laptops { get; set; } = default!;
 
+        public DbSet<Cpu> Cpus { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasKey(e => e.Id);
@@ -36,6 +38,17 @@ namespace UniversityProgram.Api
                 .Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            modelBuilder.Entity<Cpu>().HasKey(e => e.Id);
+            modelBuilder.Entity<Cpu>()
+                .Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            modelBuilder.Entity<Laptop>()
+                .HasOne(e=>e.Cpu)
+                .WithOne(e => e.Laptop)
+                .HasForeignKey<Cpu>(e => e.LaptopId);
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)

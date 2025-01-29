@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Api.Entities;
+using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
 
 namespace UniversityProgram.Api.Controllers
@@ -19,11 +19,7 @@ namespace UniversityProgram.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] StudentAddModel model)
         {
-            var student = new Student
-            {
-                Name = model.Name,
-                Email = model.Email
-            };
+            var student = model.Map();
 
             _ctx.Students.Add(student);
             await _ctx.SaveChangesAsync();
@@ -34,7 +30,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var students = await _ctx.Students.ToListAsync();
-            return Ok(students);
+            return Ok(students.Select(e => e.Map()));
         }
 
         [HttpGet("{id}")]
@@ -47,14 +43,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
 
-            var model = new StudentModel
-            {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email
-            };
-
-            return Ok(model);
+            return Ok(student.Map());
         }
 
         [HttpGet("{id}/laptop")]
@@ -62,6 +51,7 @@ namespace UniversityProgram.Api.Controllers
         {
             var student = await _ctx.Students
                 .Include(e => e.Laptop)
+                .ThenInclude(e => e.Cpu)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (student == null)
@@ -69,21 +59,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
 
-            var model = new StudentWithLaptopModel
-            {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email,
-                Laptop = student.Laptop is not null
-                                ? new LaptopModel
-                                {
-                                    Id = student.Laptop.Id,
-                                    Name = student.Laptop.Name
-                                }
-                                : null
-            };
-
-            return Ok(model);
+            return Ok(student.MapToStudentWithLaptop());
         }
 
         [HttpPut("{id}")]
