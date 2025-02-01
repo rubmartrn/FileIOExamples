@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Services;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -107,30 +108,62 @@ namespace UniversityProgram.Api.Controllers
             return Ok(student.MapStudentWithCourseModel());
         }
 
-        [HttpPut("{id}/Pay/{courseId}")]
-        public async Task<IActionResult> PayForCourse([FromRoute] int id, [FromRoute] int courseId)
+        [HttpPut("{id}/addmoney")]
+        public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money)
         {
-            var student = await _ctx.Students
-                .Include(e => e.CourseStudents)
-                .ThenInclude(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == id);
+            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
             if (student == null)
             {
                 return NotFound();
             }
-            var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
-            if (courseStudent == null)
-            {
-                return NotFound();
-            }
-
-            courseStudent.Paid = true;
+            student.Money += money;
             await _ctx.SaveChangesAsync();
             return Ok();
         }
 
+        [HttpPut("{id}/Pay/{courseId}")]
+        public async Task<IActionResult> PayForCourse([FromRoute] int id,
+            [FromRoute] int courseId,
+            [FromServices] CourseBankServiceApi bankApi)
+        {
+            using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                var student = await _ctx.Students
+                    .Include(e => e.CourseStudents)
+                    .ThenInclude(e => e.Course)
+                    .FirstOrDefaultAsync(e => e.Id == id);
+                if (student == null)
+                {
+                    return NotFound();
+                }
+                var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
+                if (courseStudent == null)
+                {
+                    return NotFound();
+                }
+
+                if (student.Money < courseStudent.Course.Fee)
+                {
+                    return BadRequest("բավարար գումար չունի");
+                }
+
+                student.Money -= courseStudent.Course.Fee;
+                courseStudent.Paid = true;
+                await _ctx.SaveChangesAsync();
+                bankApi.PayCourse(student.Id);
+                await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                return BadRequest(e.Message);
+            }
+            return Ok();
+        }
+
         [HttpPut("{id}/course")]
-        public  IActionResult AddCourse(int id, [FromQuery] int courseId)
+        public IActionResult AddCourse(int id, [FromQuery] int courseId)
         {
             var student = _ctx.Students.FirstOrDefault(e => e.Id == id);
             if (student == null)
@@ -143,7 +176,7 @@ namespace UniversityProgram.Api.Controllers
             {
                 return NotFound();
             }
-            
+
             var courseStudent = new CourseStudent()
             {
                 Course = course,

@@ -11,6 +11,8 @@
         public int? LibraryId { get; set; }
         public Library? Library { get; set; }
 
+        public  decimal Money { get; set; }
+
         public IEnumerable<University> Universities { get; set; } = new List<University>();
         public ICollection<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
     }

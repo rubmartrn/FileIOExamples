@@ -33,7 +33,8 @@ namespace UniversityProgram.Api.Map
             {
                 Id = student.Id,
                 Name = student.Name,
-                Email = student.Email
+                Email = student.Email,
+                Money = student.Money
             };
         }
 
@@ -60,7 +61,8 @@ namespace UniversityProgram.Api.Map
             {
                 Id = student.Id,
                 Name = student.Name,
-                Email = student.Email
+                Email = student.Email,
+                Money = student.Money
             };
 
             result.Courses.AddRange(models);
