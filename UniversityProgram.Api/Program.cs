@@ -11,10 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration["StudentDb"];
-
 builder.Services.AddDbContext<StudentDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseInMemoryDatabase("Test"));
 
 var app = builder.Build();
 
