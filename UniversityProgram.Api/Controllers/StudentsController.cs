@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
 
@@ -78,15 +79,81 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
         {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
+            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id, token);
             if (student == null)
             {
                 return NotFound();
             }
             _ctx.Students.Remove(student);
+            await _ctx.SaveChangesAsync(token);
+            return Ok();
+        }
+
+        [HttpGet("{id}/course")]
+        public async Task<IActionResult> GetWithCourses([FromRoute] int id)
+        {
+            var student = await _ctx.Students
+                .Include(e => e.CourseStudents)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student.MapStudentWithCourseModel());
+        }
+
+        [HttpPut("{id}/Pay/{courseId}")]
+        public async Task<IActionResult> PayForCourse([FromRoute] int id, [FromRoute] int courseId)
+        {
+            var student = await _ctx.Students
+                .Include(e => e.CourseStudents)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
+            if (courseStudent == null)
+            {
+                return NotFound();
+            }
+
+            courseStudent.Paid = true;
             await _ctx.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("{id}/course")]
+        public  IActionResult AddCourse(int id, [FromQuery] int courseId)
+        {
+            var student = _ctx.Students.FirstOrDefault(e => e.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var course = _ctx.Courses.FirstOrDefault(e => e.Id == courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            
+            var courseStudent = new CourseStudent()
+            {
+                Course = course,
+                Student = student
+            };
+
+            student.CourseStudents.Add(courseStudent);
+
+            _ctx.SaveChanges();
+
             return Ok();
         }
     }

@@ -45,5 +45,27 @@ namespace UniversityProgram.Api.Map
                 Email = studentModel.Email
             };
         }
+
+        public static StudentWithCourseModel MapStudentWithCourseModel(this Student student)
+        {
+            var models = student.CourseStudents.Select(e => new CourseModel()
+            {
+                Id = e.Course.Id,
+                Name = e.Course.Name,
+                Fee = e.Course.Fee,
+                Paid = e.Paid ? "Այո" : "Ոչ"
+            }).ToList();
+
+            var result = new StudentWithCourseModel()
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email
+            };
+
+            result.Courses.AddRange(models);
+
+            return result;
+        }
     }
 }

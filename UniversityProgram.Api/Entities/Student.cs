@@ -12,6 +12,6 @@
         public Library? Library { get; set; }
 
         public IEnumerable<University> Universities { get; set; } = new List<University>();
-        public IEnumerable<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
+        public ICollection<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
     }
 }

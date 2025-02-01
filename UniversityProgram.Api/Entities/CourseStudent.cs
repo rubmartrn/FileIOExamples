@@ -8,5 +8,6 @@
         public int StudentId { get; set; }
         public Student Student { get; set; } = default!;
 
+        public bool Paid { get; set; }
     }
 }
