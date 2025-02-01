@@ -87,8 +87,8 @@ namespace UniversityProgram.Api
             modelBuilder.Entity<Course>().HasMany(e => e.CourseStudents).WithOne(e => e.Course)
                 .HasForeignKey(e => e.CourseId);
 
-            modelBuilder.Entity<Student>().HasMany(e=>e.CourseStudents).WithOne().HasForeignKey(e => e.StudentId);
-
+            modelBuilder.Entity<Student>().HasMany(e=>e.CourseStudents).WithOne(e=>e.Student)
+                .HasForeignKey(e => e.StudentId);
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)
