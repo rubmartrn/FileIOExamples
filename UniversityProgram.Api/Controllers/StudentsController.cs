@@ -65,9 +65,9 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model, CancellationToken token)
         {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
+            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id, token);
             if (student == null)
             {
                 return NotFound();
@@ -75,7 +75,7 @@ namespace UniversityProgram.Api.Controllers
             student.Name = model.Name ?? student.Name;
             student.Email = model.Email is not null ? model.Email : student.Email;
             _ctx.Students.Update(student);
-            await _ctx.SaveChangesAsync();
+            await _ctx.SaveChangesAsync(token);
             return Ok();
         }
 
