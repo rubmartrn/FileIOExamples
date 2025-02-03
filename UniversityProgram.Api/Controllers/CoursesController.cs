@@ -28,7 +28,8 @@ namespace UniversityProgram.Api.Controllers
         {
             var course = new Course()
             {
-                Name = model.Name
+                Name = model.Name,
+                Fee = model.Price
             };
 
             ctx.Courses.Add(course);

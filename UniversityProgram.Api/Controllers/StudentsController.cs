@@ -93,12 +93,12 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpGet("{id}/course")]
-        public async Task<IActionResult> GetWithCourses([FromRoute] int id)
+        public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
         {
             var student = await _ctx.Students
                 .Include(e => e.CourseStudents)
                 .ThenInclude(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.Id == id, token);
 
             if (student == null)
             {
@@ -109,7 +109,7 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpPut("{id}/addmoney")]
-        public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money)
+        public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
         {
             var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
             if (student == null)
@@ -117,7 +117,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
             student.Money += money;
-            await _ctx.SaveChangesAsync();
+            await _ctx.SaveChangesAsync(token);
             return Ok();
         }
 
