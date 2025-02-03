@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Validators;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -24,15 +26,20 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] LaptopAddModel model)
+        public async Task<IActionResult> Add([FromBody] LaptopAddModel model, [FromServices] IValidator<LaptopAddModel> validator, CancellationToken token)
         {
+            var result = await validator.ValidateAsync(model, token);
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var laptop = new Laptop
             {
                 Name = model.Name,
                 StudentId = model.StudentId ?? 0
             };
             _ctx.Laptops.Add(laptop);
-            await _ctx.SaveChangesAsync();
+            await _ctx.SaveChangesAsync(token);
             return Ok();
         }
 
