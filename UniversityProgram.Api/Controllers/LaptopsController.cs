@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Api.Entities;
-using UniversityProgram.Api.Models;
-using UniversityProgram.Api.Validators;
+using UniversityProgram.Api.Models.CpuModels.AddModels;
+using UniversityProgram.Api.Models.LaptopModels.AddModels;
+using UniversityProgram.Api.Models.LaptopModels.UpdateModels;
+using UniversityProgram.Api.Services.LaptopsService.Abstract;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -11,85 +11,53 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class LaptopsController : ControllerBase
     {
-        private readonly StudentDbContext _ctx;
+        private readonly ILaptopsService _laptopsService;
 
-        public LaptopsController(StudentDbContext ctx)
+        public LaptopsController(ILaptopsService laptopsService)
         {
-            _ctx = ctx;
+            _laptopsService = laptopsService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var laptops = await _ctx.Laptops.ToListAsync();
+            var laptops = await _laptopsService.GetAllAsync(token);
             return Ok(laptops);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] LaptopAddModel model, [FromServices] IValidator<LaptopAddModel> validator, CancellationToken token)
+        public async Task<IActionResult> Add([FromBody] LaptopAddModel model,
+                                             [FromServices] IValidator<LaptopAddModel> validator,
+                                             CancellationToken token)
         {
-            var result = await validator.ValidateAsync(model, token);
-            if (!result.IsValid)
-            {
-                return BadRequest(result.Errors);
-            }
-            var laptop = new Laptop
-            {
-                Name = model.Name,
-                StudentId = model.StudentId ?? 0
-            };
-            _ctx.Laptops.Add(laptop);
-            await _ctx.SaveChangesAsync(token);
+            await _laptopsService.AddAsync(model, validator, token);
             return Ok();
         }
 
         [HttpGet("{id}/cpu")]
-        public async Task<IActionResult> GetCpu([FromRoute] int id)
+        public async Task<IActionResult> GetCpu(int id, CancellationToken token)
         {
-            var laptop = await _ctx.Laptops
-                .FirstOrDefaultAsync(e => e.Id == id);
-
-            await _ctx.Entry(laptop).Reference(e => e.Cpu).LoadAsync();
-
-            if (laptop == null)
-            {
-                return NotFound();
-            }
-
-            var model = new LaptopWithCpuModel()
-            {
-                Id = laptop.Id,
-                Name = laptop.Name,
-                Cpu = laptop.Cpu is null
-                    ? null
-                    : new CpuModel()
-                    {
-                        Id = laptop.Cpu.Id,
-                        Name = laptop.Cpu.Name
-                    }
-            };
-
-            return Ok(model);
+            return Ok(await _laptopsService.GetCpuAsync(id, token));
         }
 
         [HttpPut("{id}/cpu")]
-        public async Task<IActionResult> AddCpu([FromRoute] int id, [FromBody] CpuAddModel model)
+        public async Task<IActionResult> AddCpu(int id, int cpuId, CancellationToken token)
         {
-            var laptop = await _ctx.Laptops.FirstOrDefaultAsync(e => e.Id == id);
-            if (laptop == null)
-            {
-                return NotFound();
-            }
-            var cpu = new Cpu
-            {
-                Name = model.Name,
-                LaptopId = laptop.Id
-            };
+            await _laptopsService.AddCpuAsync(id, cpuId, token);
+            return Ok();
+        }
 
-            laptop.Cpu = cpu;
-            _ctx.Update(laptop);
-            await _ctx.SaveChangesAsync();
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken token)
+        {
+            await _laptopsService.DeleteAsync(id, token);
+            return Ok();
+        }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] LaptopUpdateModel model, CancellationToken token)
+        {
+            await _laptopsService.UpdateAsync(id, model, token);
             return Ok();
         }
     }

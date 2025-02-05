@@ -5,16 +5,18 @@ namespace UniversityProgram.Api
 {
     public class StudentDbContext : DbContext
     {
-        public DbSet<Student> Students { get; set; } = default!;
+        public DbSet<Student> Students { get; set; } = default!; //ok
 
         public DbSet<Laptop> Laptops { get; set; } = default!;
 
         public DbSet<Cpu> Cpus { get; set; } = default!;
 
+        public DbSet<Address> Addresses { get; set; } = default!;
+
         public DbSet<Library> Libraries { get; set; } = default!;
 
         public DbSet<University> Universities { get; set; } = default!;
-        public DbSet<Course> Courses { get; set; } = default!;
+        public DbSet<Course> Courses { get; set; } = default!; //ok
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,11 +40,25 @@ namespace UniversityProgram.Api
                 .WithOne(e => e.Student)
                 .HasForeignKey<Laptop>(e => e.StudentId);
 
+            modelBuilder.Entity<Student>()
+                .HasOne(e => e.Address)
+                .WithOne(e => e.Student)
+                .HasForeignKey<Address>(e => e.StudentId);
+
             modelBuilder.Entity<Laptop>().HasKey(e => e.Id);
             modelBuilder.Entity<Laptop>()
                 .Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            modelBuilder.Entity<Address>().HasKey(e => e.Id);
+            modelBuilder.Entity<Address>()
+              .Property(e => e.Street)
+              .HasMaxLength(50)
+              .IsRequired();
+            modelBuilder.Entity<Address>()
+                .Property(e => e.StudentId)
+                .IsRequired(false);
 
             modelBuilder.Entity<Cpu>().HasKey(e => e.Id);
             modelBuilder.Entity<Cpu>()

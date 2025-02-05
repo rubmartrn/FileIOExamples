@@ -37,6 +37,39 @@ namespace UniversityProgram.Api.Migrations
                     b.ToTable("StudentUniversity");
                 });
 
+            modelBuilder.Entity("UniversityProgram.Api.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique()
+                        .HasFilter("[StudentId] IS NOT NULL");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("UniversityProgram.Api.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -52,6 +85,9 @@ namespace UniversityProgram.Api.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Paid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -92,7 +128,7 @@ namespace UniversityProgram.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("LaptopId")
+                    b.Property<int?>("LaptopId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -103,7 +139,8 @@ namespace UniversityProgram.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LaptopId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[LaptopId] IS NOT NULL");
 
                     b.ToTable("Cpus");
                 });
@@ -217,6 +254,15 @@ namespace UniversityProgram.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UniversityProgram.Api.Entities.Address", b =>
+                {
+                    b.HasOne("UniversityProgram.Api.Entities.Student", "Student")
+                        .WithOne("Address")
+                        .HasForeignKey("UniversityProgram.Api.Entities.Address", "StudentId");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("UniversityProgram.Api.Entities.CourseStudent", b =>
                 {
                     b.HasOne("UniversityProgram.Api.Entities.Course", "Course")
@@ -240,9 +286,7 @@ namespace UniversityProgram.Api.Migrations
                 {
                     b.HasOne("UniversityProgram.Api.Entities.Laptop", "Laptop")
                         .WithOne("Cpu")
-                        .HasForeignKey("UniversityProgram.Api.Entities.Cpu", "LaptopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UniversityProgram.Api.Entities.Cpu", "LaptopId");
 
                     b.Navigation("Laptop");
                 });
@@ -274,7 +318,8 @@ namespace UniversityProgram.Api.Migrations
 
             modelBuilder.Entity("UniversityProgram.Api.Entities.Laptop", b =>
                 {
-                    b.Navigation("Cpu");
+                    b.Navigation("Cpu")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityProgram.Api.Entities.Library", b =>
@@ -284,9 +329,13 @@ namespace UniversityProgram.Api.Migrations
 
             modelBuilder.Entity("UniversityProgram.Api.Entities.Student", b =>
                 {
+                    b.Navigation("Address")
+                        .IsRequired();
+
                     b.Navigation("CourseStudents");
 
-                    b.Navigation("Laptop");
+                    b.Navigation("Laptop")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

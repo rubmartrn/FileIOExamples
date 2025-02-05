@@ -1,5 +1,9 @@
 ﻿using UniversityProgram.Api.Entities;
-using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Models.CourseModels.ViewModels;
+using UniversityProgram.Api.Models.CpuModels.ViewModels;
+using UniversityProgram.Api.Models.LaptopModels.ViewModels;
+using UniversityProgram.Api.Models.StudentModels.AddModels;
+using UniversityProgram.Api.Models.StudentModels.ViewModels;
 
 namespace UniversityProgram.Api.Map
 {
@@ -27,6 +31,17 @@ namespace UniversityProgram.Api.Map
             };
         }
 
+        public static StudentWithAddressModel MapToStudentWithAddress(this Student student)
+        {
+            return new StudentWithAddressModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                AddressModel = student.Address.Map()
+            };
+        }
+
         public static StudentModel Map(this Student student)
         {
             return new StudentModel
@@ -43,7 +58,9 @@ namespace UniversityProgram.Api.Map
             return new Student
             {
                 Name = studentModel.Name,
-                Email = studentModel.Email
+                Email = studentModel.Email,
+                Laptop = studentModel.Laptop!.Map(),
+                Address = studentModel.Address!.Map()
             };
         }
 

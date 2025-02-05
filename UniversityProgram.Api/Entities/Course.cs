@@ -8,6 +8,8 @@
 
         public decimal Fee { get; set; }
 
-        public IEnumerable<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
+        public string? Paid { get; set; }
+
+        public ICollection<CourseStudent> CourseStudents { get; set; } = new List<CourseStudent>();
     }
 }
