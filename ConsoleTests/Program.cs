@@ -3,35 +3,31 @@
 //action and func
 
 //events
-
-Test1();
-
-void Test(string s)
+internal class Program
 {
-    Console.WriteLine("Hello " + s);
-}
-void Test2(string s)
-{
-    Console.WriteLine("Hi " + s);
-}
+    private static void Main()
+    {
+        MyEvent += Test;
+        MyEvent += Test1;
 
-int Test3(string n)
-{
-    int a = int.Parse(n);
-    return a * 2;
-}
+        MyEvent.Invoke("World");
 
+        MyEvent -= Test;
 
-Action<string> t;
-Action t1;
-Func<int> t2;
-Func<string, int> t3;
+        MyEvent.Invoke("Barev");
+    }
 
-void Test1()
-{
-    
-    t3 = Test3;
+    private static void Test(string s)
+    {
+        Console.WriteLine("Hello " + s);
+    }
 
-    int result = t3(Console.ReadLine());
-    Console.WriteLine(result);
+    private static void Test1(string m)
+    {
+        Console.WriteLine("Hi " + m);
+    }
+
+    public delegate void MyDelegate(string s);
+
+    public static event MyDelegate MyEvent;
 }
