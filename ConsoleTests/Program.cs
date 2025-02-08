@@ -27,7 +27,5 @@ internal class Program
         Console.WriteLine("Hi " + m);
     }
 
-    public delegate void MyDelegate(string s);
-
-    public static event MyDelegate MyEvent;
+    public static event Action<string> MyEvent;
 }
