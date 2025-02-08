@@ -3,29 +3,29 @@
 //action and func
 
 //events
+using System.Text;
+
 internal class Program
 {
     private static void Main()
     {
-        MyEvent += Test;
-        MyEvent += Test1;
+        Console.OutputEncoding = Encoding.UTF8;
 
-        MyEvent.Invoke("World");
+        Action a = () => Console.WriteLine("Բարև");
 
-        MyEvent -= Test;
+        Action<string> b = s =>
+        { 
+            Console.WriteLine(s);
+            Console.WriteLine(s);
+            Console.WriteLine(s);
+            Console.WriteLine(s);
+            if (s == "Հաջող")
+            {
+                Console.WriteLine("Հաջող");
+            }
+        };
 
-        MyEvent.Invoke("Barev");
+        a.Invoke();
+        b.Invoke("Հաջող");
     }
-
-    private static void Test(string s)
-    {
-        Console.WriteLine("Hello " + s);
-    }
-
-    private static void Test1(string m)
-    {
-        Console.WriteLine("Hi " + m);
-    }
-
-    public static event Action<string> MyEvent;
 }
