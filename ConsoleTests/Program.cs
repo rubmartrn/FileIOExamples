@@ -17,7 +17,7 @@ void Test2(string s)
 
 void Test1()
 {
-    MyDelegate del;
+    Action<string> del;
     while (true)
     {
         var result = Console.ReadLine();
@@ -33,5 +33,3 @@ void Test1()
         del("World");
     }
 }
-
-internal delegate void MyDelegate(string s);
