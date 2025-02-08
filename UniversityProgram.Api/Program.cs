@@ -1,10 +1,8 @@
 
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api;
 using UniversityProgram.Api.Models;
 using UniversityProgram.Api.Services;
-using UniversityProgram.Api.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +19,7 @@ var connectionString = builder.Configuration["StudentDb"];
 builder.Services.AddDbContext<StudentDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
+//builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
 
 var app = builder.Build();
 
