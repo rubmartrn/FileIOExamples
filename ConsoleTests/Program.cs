@@ -15,21 +15,23 @@ void Test2(string s)
     Console.WriteLine("Hi " + s);
 }
 
+int Test3(string n)
+{
+    int a = int.Parse(n);
+    return a * 2;
+}
+
+
+Action<string> t;
+Action t1;
+Func<int> t2;
+Func<string, int> t3;
+
 void Test1()
 {
-    Action<string> del;
-    while (true)
-    {
-        var result = Console.ReadLine();
-        if (result == "1")
-        {
-            del = Test;
-        }
-        else
-        {
-            del = Test2;
-        }
+    
+    t3 = Test3;
 
-        del("World");
-    }
+    int result = t3(Console.ReadLine());
+    Console.WriteLine(result);
 }
