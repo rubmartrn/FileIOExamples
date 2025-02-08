@@ -11,21 +11,14 @@ internal class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
 
-        Action a = () => Console.WriteLine("Բարև");
-
-        Action<string> b = s =>
-        { 
-            Console.WriteLine(s);
-            Console.WriteLine(s);
-            Console.WriteLine(s);
-            Console.WriteLine(s);
-            if (s == "Հաջող")
-            {
-                Console.WriteLine("Հաջող");
-            }
+        Func<string, int> f = s =>
+        {
+            int u = int.Parse(s);
+            int r = u * 2;
+            return r;
         };
 
-        a.Invoke();
-        b.Invoke("Հաջող");
+        var result = f.Invoke("123");
+        Console.WriteLine(result);
     }
 }
