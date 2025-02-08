@@ -23,6 +23,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> Add([FromBody] StudentAddModel model)
         {
             var validator = new AcaValidator(model);
+            validator.AddRule(CheckEmailNotNull);
 
             var result = validator.Validate();
             if (!result.IsValid)
@@ -35,6 +36,15 @@ namespace UniversityProgram.Api.Controllers
             _ctx.Students.Add(student);
             await _ctx.SaveChangesAsync();
             return Ok();
+
+            AcaValidationResult CheckEmailNotNull(StudentAddModel model)
+            {
+                if (model.Email is null)
+                {
+                    return AcaValidationResult.Fail("Email is null");
+                }
+                return AcaValidationResult.Success();
+            }
         }
 
         [HttpGet]

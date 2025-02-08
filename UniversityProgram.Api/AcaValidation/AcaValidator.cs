@@ -10,19 +10,26 @@ public class AcaValidator
         Model = model;
     }
 
-    private AcaValidationResult NotNull(StudentAddModel model)
+    private Func<StudentAddModel, AcaValidationResult> ValidationMethod;
+
+    public void AddRule(Func<StudentAddModel, AcaValidationResult> rule)
     {
-        if (model.Name is null)
-        {
-            return AcaValidationResult.Fail("Model is null");
-        }
-        return AcaValidationResult.Success();
+        ValidationMethod = rule;
     }
+
+
+    //private AcaValidationResult NotNull(StudentAddModel model)
+    //{
+    //    if (model.Name is null)
+    //    {
+    //        return AcaValidationResult.Fail("Model is null");
+    //    }
+    //    return AcaValidationResult.Success();
+    //}
 
     public AcaValidationResult Validate()
     {
-        var result = NotNull(Model);
-        return result;
+        return ValidationMethod.Invoke(Model);
     }
 }
 
