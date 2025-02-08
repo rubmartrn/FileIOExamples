@@ -28,6 +28,7 @@ namespace UniversityProgram.Api.Controllers
             // [FromServices] IValidator<LaptopAddModel> validator,
             CancellationToken token)
         {
+
             //var result = await validator.ValidateAsync(model, token);
             //if (!result.IsValid)
             //{

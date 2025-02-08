@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UniversityProgram.Api.AcaValidation;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
@@ -21,6 +22,14 @@ namespace UniversityProgram.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] StudentAddModel model)
         {
+            var validator = new AcaValidator(model);
+
+            var result = validator.Validate();
+            if (!result.IsValid)
+            {
+                return BadRequest(result.ErrorMessages);
+            }
+
             var student = model.Map();
 
             _ctx.Students.Add(student);
