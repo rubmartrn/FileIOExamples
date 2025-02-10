@@ -24,15 +24,6 @@ namespace UniversityProgram.Api.Controllers
         {
             var validator = new AcaValidator(model);
             validator.AddRule(CheckEmailNotNull, "մեյլը պետք է արժեք ունենա");
-            validator.AddRule(m => m.Name.StartsWith("a"), "անունը պետք է սկսվի ա տառով");
-            validator.AddRule(m =>
-            {
-                return m.Name.Length <= 10;
-            }, "անունը պետք է լինի մինչև տաս նիշ");
-
-            validator.AddRule(async m => await _ctx.Students.AnyAsync(e => e.Name == m.Name), "այդ անունով ուսանող չկա");
-            validator.AddRule(CheckStudentName, "այդ անունով ուսանող չկա");
-
             var result = await validator.Validate();
             if (!result.IsValid)
             {
@@ -50,11 +41,6 @@ namespace UniversityProgram.Api.Controllers
                 return model.Email is not null;
                 //return model.Email != null;
                 //return !string.IsNullOrEmpty(model.Email);
-            }
-
-            async Task<bool> CheckStudentName(StudentAddModel model)
-            {
-                return await _ctx.Students.AnyAsync(e => e.Name == model.Name);
             }
         }
 
