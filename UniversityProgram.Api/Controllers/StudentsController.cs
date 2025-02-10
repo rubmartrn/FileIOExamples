@@ -23,16 +23,13 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> Add([FromBody] StudentAddModel model)
         {
             var validator = new AcaValidator(model);
-            validator.AddRule(CheckEmailNotNull);
-            validator.AddRule(m => m.Name.StartsWith("a") ? AcaValidationResult.Success() : AcaValidationResult.Fail("անունը չի սկսվում ա-ով") );
+            validator.AddRule(CheckEmailNotNull, "մեյլը պետք է արժեք ունենա");
+            validator.AddRule(m => m.Name.StartsWith("a"), "անունը պետք է սկսվի ա տառով");
             validator.AddRule(m =>
             {
-                if (m.Name.Length > 10)
-                {
-                    return AcaValidationResult.Fail("անունը չի կարող լինել 10 նիշից ավել");
-                }
-                return AcaValidationResult.Success();
-            });
+                return m.Name.Length <= 10;
+            }, "անունը պետք է լինի մինչև տաս նիշ");
+
             //validator.AddRule(async m => await _ctx.Students.AnyAsync(e=>e.Name == m.Name));
 
             var result = validator.Validate();
@@ -47,13 +44,11 @@ namespace UniversityProgram.Api.Controllers
             await _ctx.SaveChangesAsync();
             return Ok();
 
-            AcaValidationResult CheckEmailNotNull(StudentAddModel model)
+            bool CheckEmailNotNull(StudentAddModel model)
             {
-                if (model.Email is null)
-                {
-                    return AcaValidationResult.Fail("Email is null");
-                }
-                return AcaValidationResult.Success();
+                return model.Email is not null;
+                //return model.Email != null;
+                //return !string.IsNullOrEmpty(model.Email);
             }
         }
 

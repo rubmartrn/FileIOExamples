@@ -11,13 +11,12 @@ public class AcaValidator
         Model = model;
     }
 
-    private ICollection<Func<StudentAddModel, AcaValidationResult>> ValidationMethods = new List<Func<StudentAddModel, AcaValidationResult>>();
+    private ICollection<Rule> Rules = new List<Rule>();
 
-    public void AddRule(Func<StudentAddModel, AcaValidationResult> rule)
+    public void AddRule(Func<StudentAddModel, bool> rule, string errorMessage)
     {
-        ValidationMethods.Add(rule);
+        Rules.Add(new Rule(rule, errorMessage));
     }
-
 
     //private AcaValidationResult NotNull(StudentAddModel model)
     //{
@@ -31,23 +30,25 @@ public class AcaValidator
     public AcaValidationResult Validate()
     {
         var result = AcaValidationResult.Success();
-        foreach (var method in ValidationMethods)
+        foreach (var rule in Rules)
         {
-            var r = method.Invoke(Model);
-            if (!r.IsValid)
+            var b = rule.Method.Invoke(Model);
+            if (!b)
             {
                 result.IsValid = false;
-                result.ErrorMessages.AddRange(r.ErrorMessages);
+                result.ErrorMessages.Add(rule.ErrorMessage);
             }
         }
         return result;
     }
 }
 
+record Rule(Func<StudentAddModel, bool> Method, string ErrorMessage);
+
 public class AcaValidationResult
 {
     public bool IsValid { get; set; }
-    public List<string> ErrorMessages { get; set; } = new List<string>();
+    public ICollection<string> ErrorMessages { get; set; } = new List<string>();
 
     public void AddError(string message)
     {
