@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api;
+using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Services;
 using UniversityProgram.Api.Validators;
 
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<StudentDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
+builder.Services.AddAutoMapper(typeof(LaptopProfile));
 
 var app = builder.Build();
 

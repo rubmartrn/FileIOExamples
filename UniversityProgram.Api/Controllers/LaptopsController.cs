@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Models;
@@ -10,38 +12,48 @@ namespace UniversityProgram.Api.Controllers
     public class LaptopsController : ControllerBase
     {
         private readonly StudentDbContext _ctx;
+        private readonly IMapper _mapper;
 
-        public LaptopsController(StudentDbContext ctx)
+        public LaptopsController(StudentDbContext ctx, IMapper mapper)
         {
             _ctx = ctx;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var laptops = await _ctx.Laptops.ToListAsync();
-            return Ok(laptops);
+            List<Laptop> laptops = await _ctx.Laptops.ToListAsync();
+            List<LaptopModel> models = _mapper.Map<List<LaptopModel>>(laptops);
+            return Ok(models);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] LaptopAddModel model,
-            // [FromServices] IValidator<LaptopAddModel> validator,
+             [FromServices] IValidator<LaptopAddModel> validator,
             CancellationToken token)
         {
-
-            //var result = await validator.ValidateAsync(model, token);
-            //if (!result.IsValid)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
-            var laptop = new Laptop
+            var result = await validator.ValidateAsync(model, token);
+            if (!result.IsValid)
             {
-                Name = model.Name,
-                StudentId = model.StudentId ?? 0
-            };
+                return BadRequest(result.Errors);
+            }
+            var laptop = _mapper.Map<Laptop>(model);
+
             _ctx.Laptops.Add(laptop);
             await _ctx.SaveChangesAsync(token);
             return Ok();
+        }
+
+        [HttpGet("cpuName")]
+        public async Task<IActionResult> GetCpuName()
+        {
+            var laptops = await _ctx.Laptops
+                .Include(e => e.Cpu)
+                .ToListAsync();
+
+            var result = _mapper.Map<List<LaptopWithCpuName>>(laptops);
+            return Ok(result);
         }
 
         [HttpGet("{id}/cpu")]
