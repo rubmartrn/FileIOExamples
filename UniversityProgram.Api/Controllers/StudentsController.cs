@@ -4,6 +4,7 @@ using UniversityProgram.Api.AcaValidation;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Repositories;
 using UniversityProgram.Api.Services;
 
 namespace UniversityProgram.Api.Controllers
@@ -12,15 +13,17 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class StudentsController : ControllerBase
     {
-        private readonly StudentDbContext _ctx;
+        private readonly IStudentRepository _repository;
+        private readonly ICourseRepository _courseRepository;
 
-        public StudentsController(StudentDbContext ctx)
+        public StudentsController(IStudentRepository repository, ICourseRepository courseRepository)
         {
-            _ctx = ctx;
+            _repository = repository;
+            _courseRepository = courseRepository;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] StudentAddModel model)
+        public async Task<IActionResult> Add([FromBody] StudentAddModel model, CancellationToken token)
         {
             var validator = new AcaValidator(model);
             validator.AddRule(CheckEmailNotNull, "մեյլը պետք է արժեք ունենա");
@@ -32,8 +35,7 @@ namespace UniversityProgram.Api.Controllers
 
             var student = model.Map();
 
-            _ctx.Students.Add(student);
-            await _ctx.SaveChangesAsync();
+            await _repository.AddStudent(student, token);
             return Ok();
 
             bool CheckEmailNotNull(StudentAddModel model)
@@ -45,16 +47,16 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var students = await _ctx.Students.ToListAsync();
+            var students = await _repository.GetStudents(token);
             return Ok(students.Select(e => e.Map()));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken token)
         {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
+            var student = await _repository.GetStudentById(id, token);
 
             if (student == null)
             {
@@ -64,130 +66,128 @@ namespace UniversityProgram.Api.Controllers
             return Ok(student.Map());
         }
 
-        [HttpGet("{id}/laptop")]
-        public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id)
-        {
-            var student = await _ctx.Students
-                .Include(e => e.Laptop)
-                .ThenInclude(e => e.Cpu)
-                .FirstOrDefaultAsync(e => e.Id == id);
+        //[HttpGet("{id}/laptop")]
+        //public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id)
+        //{
+        //    var student = await _ctx.Students
+        //        .Include(e => e.Laptop)
+        //        .ThenInclude(e => e.Cpu)
+        //        .FirstOrDefaultAsync(e => e.Id == id);
 
-            if (student == null)
-            {
-                return NotFound();
-            }
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(student.MapToStudentWithLaptop());
-        }
+        //    return Ok(student.MapToStudentWithLaptop());
+        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model, CancellationToken token)
         {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id, token);
+            var student = await _repository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
             student.Name = model.Name ?? student.Name;
             student.Email = model.Email is not null ? model.Email : student.Email;
-            _ctx.Students.Update(student);
-            await _ctx.SaveChangesAsync(token);
+            await _repository.UpdateStudent(student);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
         {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id, token);
+            var student = await _repository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
-            _ctx.Students.Remove(student);
-            await _ctx.SaveChangesAsync(token);
+            await _repository.DeleteStudent(student, token);
             return Ok();
         }
 
-        [HttpGet("{id}/course")]
-        public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
-        {
-            var student = await _ctx.Students
-                .Include(e => e.CourseStudents)
-                .ThenInclude(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == id, token);
+        //[HttpGet("{id}/course")]
+        //public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
+        //{
+        //    var student = await _ctx.Students
+        //        .Include(e => e.CourseStudents)
+        //        .ThenInclude(e => e.Course)
+        //        .FirstOrDefaultAsync(e => e.Id == id, token);
 
-            if (student == null)
-            {
-                return NotFound();
-            }
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(student.MapStudentWithCourseModel());
-        }
+        //    return Ok(student.MapStudentWithCourseModel());
+        //}
 
-        [HttpPut("{id}/addmoney")]
-        public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
-        {
-            var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            student.Money += money;
-            await _ctx.SaveChangesAsync(token);
-            return Ok();
-        }
+        //[HttpPut("{id}/addmoney")]
+        //public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
+        //{
+        //    var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    student.Money += money;
+        //    await _ctx.SaveChangesAsync(token);
+        //    return Ok();
+        //}
 
-        [HttpPut("{id}/Pay/{courseId}")]
-        public async Task<IActionResult> PayForCourse([FromRoute] int id,
-            [FromRoute] int courseId,
-            [FromServices] CourseBankServiceApi bankApi)
-        {
-            using var transaction = await _ctx.Database.BeginTransactionAsync();
-            try
-            {
-                var student = await _ctx.Students
-                    .Include(e => e.CourseStudents)
-                    .ThenInclude(e => e.Course)
-                    .FirstOrDefaultAsync(e => e.Id == id);
-                if (student == null)
-                {
-                    return NotFound();
-                }
-                var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
-                if (courseStudent == null)
-                {
-                    return NotFound();
-                }
+        //[HttpPut("{id}/Pay/{courseId}")]
+        //public async Task<IActionResult> PayForCourse([FromRoute] int id,
+        //    [FromRoute] int courseId,
+        //    [FromServices] CourseBankServiceApi bankApi)
+        //{
+        //    using var transaction = await _ctx.Database.BeginTransactionAsync();
+        //    try
+        //    {
+        //        var student = await _ctx.Students
+        //            .Include(e => e.CourseStudents)
+        //            .ThenInclude(e => e.Course)
+        //            .FirstOrDefaultAsync(e => e.Id == id);
+        //        if (student == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
+        //        if (courseStudent == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                if (student.Money < courseStudent.Course.Fee)
-                {
-                    return BadRequest("բավարար գումար չունի");
-                }
+        //        if (student.Money < courseStudent.Course.Fee)
+        //        {
+        //            return BadRequest("բավարար գումար չունի");
+        //        }
 
-                student.Money -= courseStudent.Course.Fee;
-                courseStudent.Paid = true;
-                await _ctx.SaveChangesAsync();
-                bankApi.PayCourse(student.Id);
-                await transaction.CommitAsync();
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                return BadRequest(e.Message);
-            }
-            return Ok();
-        }
+        //        student.Money -= courseStudent.Course.Fee;
+        //        courseStudent.Paid = true;
+        //        await _ctx.SaveChangesAsync();
+        //        bankApi.PayCourse(student.Id);
+        //        await transaction.CommitAsync();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        await transaction.RollbackAsync();
+        //        return BadRequest(e.Message);
+        //    }
+        //    return Ok();
+        //}
 
         [HttpPut("{id}/course")]
-        public IActionResult AddCourse(int id, [FromQuery] int courseId)
+        public async Task<IActionResult> AddCourse(int id, [FromQuery] int courseId, CancellationToken token)
         {
-            var student = _ctx.Students.FirstOrDefault(e => e.Id == id);
+            var student = await _repository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
 
-            var course = _ctx.Courses.FirstOrDefault(e => e.Id == courseId);
+            var course =  await _courseRepository.GetCourseById(courseId, token);
             if (course == null)
             {
                 return NotFound();
@@ -201,7 +201,7 @@ namespace UniversityProgram.Api.Controllers
 
             student.CourseStudents.Add(courseStudent);
 
-            _ctx.SaveChanges();
+            await _repository.UpdateStudent(student);
 
             return Ok();
         }
