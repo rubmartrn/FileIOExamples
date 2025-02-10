@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Models;
+using UniversityProgram.Api.Repositories;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -9,22 +10,22 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class CoursesController : ControllerBase
     {
-        private readonly StudentDbContext ctx;
+        private readonly ICourseRepository _repository;
 
-        public CoursesController(StudentDbContext ctx)
+        public CoursesController(ICourseRepository repository)
         {
-            this.ctx = ctx;
+            _repository = repository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            return Ok(await ctx.Courses.ToListAsync());
+            return Ok(await _repository.GetCourses(token));
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CourseAddModel model)
+        public async Task<IActionResult> Add([FromBody] CourseAddModel model, CancellationToken token)
         {
             var course = new Course()
             {
@@ -32,8 +33,7 @@ namespace UniversityProgram.Api.Controllers
                 Fee = model.Price
             };
 
-            ctx.Courses.Add(course);
-            await ctx.SaveChangesAsync();
+            await _repository.AddCourse(course, token);
             return Ok();
         }
 
