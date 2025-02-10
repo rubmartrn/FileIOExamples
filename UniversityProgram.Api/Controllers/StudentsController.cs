@@ -24,6 +24,16 @@ namespace UniversityProgram.Api.Controllers
         {
             var validator = new AcaValidator(model);
             validator.AddRule(CheckEmailNotNull);
+            validator.AddRule(m => m.Name.StartsWith("a") ? AcaValidationResult.Success() : AcaValidationResult.Fail("անունը չի սկսվում ա-ով") );
+            validator.AddRule(m =>
+            {
+                if (m.Name.Length > 10)
+                {
+                    return AcaValidationResult.Fail("անունը չի կարող լինել 10 նիշից ավել");
+                }
+                return AcaValidationResult.Success();
+            });
+            //validator.AddRule(async m => await _ctx.Students.AnyAsync(e=>e.Name == m.Name));
 
             var result = validator.Validate();
             if (!result.IsValid)
