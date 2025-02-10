@@ -30,9 +30,10 @@ namespace UniversityProgram.Api.Controllers
                 return m.Name.Length <= 10;
             }, "անունը պետք է լինի մինչև տաս նիշ");
 
-            //validator.AddRule(async m => await _ctx.Students.AnyAsync(e=>e.Name == m.Name));
+            validator.AddRule(async m => await _ctx.Students.AnyAsync(e => e.Name == m.Name), "այդ անունով ուսանող չկա");
+            validator.AddRule(CheckStudentName, "այդ անունով ուսանող չկա");
 
-            var result = validator.Validate();
+            var result = await validator.Validate();
             if (!result.IsValid)
             {
                 return BadRequest(result.ErrorMessages);
@@ -49,6 +50,11 @@ namespace UniversityProgram.Api.Controllers
                 return model.Email is not null;
                 //return model.Email != null;
                 //return !string.IsNullOrEmpty(model.Email);
+            }
+
+            async Task<bool> CheckStudentName(StudentAddModel model)
+            {
+                return await _ctx.Students.AnyAsync(e => e.Name == model.Name);
             }
         }
 

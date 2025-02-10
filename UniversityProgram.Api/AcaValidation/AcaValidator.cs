@@ -12,10 +12,17 @@ public class AcaValidator
     }
 
     private ICollection<Rule> Rules = new List<Rule>();
+    private ICollection<RuleAsync> RulesAsync = new List<RuleAsync>();
+
 
     public void AddRule(Func<StudentAddModel, bool> rule, string errorMessage)
     {
         Rules.Add(new Rule(rule, errorMessage));
+    }
+
+    public void AddRule(Func<StudentAddModel, Task<bool>> rule, string errorMessage)
+    {
+        RulesAsync.Add(new RuleAsync(rule, errorMessage));
     }
 
     //private AcaValidationResult NotNull(StudentAddModel model)
@@ -27,7 +34,7 @@ public class AcaValidator
     //    return AcaValidationResult.Success();
     //}
 
-    public AcaValidationResult Validate()
+    public async Task<AcaValidationResult> Validate()
     {
         var result = AcaValidationResult.Success();
         foreach (var rule in Rules)
@@ -39,11 +46,23 @@ public class AcaValidator
                 result.ErrorMessages.Add(rule.ErrorMessage);
             }
         }
+
+        foreach (var rule in RulesAsync)
+        {
+            var b = await rule.Method.Invoke(Model);
+            if (!b)
+            {
+                result.IsValid = false;
+                result.ErrorMessages.Add(rule.ErrorMessage);
+            }
+        }
+
         return result;
     }
 }
 
 record Rule(Func<StudentAddModel, bool> Method, string ErrorMessage);
+record RuleAsync(Func<StudentAddModel, Task<bool>> Method, string ErrorMessage);
 
 public class AcaValidationResult
 {
