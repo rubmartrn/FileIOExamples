@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityProgram.Api.AcaValidation;
 using UniversityProgram.Api.Entities;
+using UniversityProgram.Api.Exceptions;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
 using UniversityProgram.Api.Repositories;
+using UniversityProgram.Api.Services;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -11,17 +13,16 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class StudentsController : ControllerBase
     {
-        private readonly IUnitOfWork _uow;
+        private readonly IStudentService _service;
 
-        public StudentsController(IUnitOfWork uow)
+        public StudentsController(IStudentService service)
         {
-            _uow = uow;
+            _service = service;
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] StudentAddModel model, CancellationToken token)
         {
-
             var validator = new AcaValidator(model);
             validator.AddRule(CheckEmailNotNull, "մեյլը պետք է արժեք ունենա");
             var result = await validator.Validate();
@@ -30,10 +31,8 @@ namespace UniversityProgram.Api.Controllers
                 return BadRequest(result.ErrorMessages);
             }
 
-            var student = model.Map();
+            await _service.Add(model, token);
 
-            _uow.StudentRepository.AddStudent(student, token);
-            await _uow.Save(token);
             return Ok();
 
             bool CheckEmailNotNull(StudentAddModel model)
@@ -47,47 +46,50 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var students = await _uow.StudentRepository.GetStudents(token);
-            return Ok(students.Select(e => e.Map()));
+            var students = await _service.GetAll(token);
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
+            var student = await _service.GetById(id, token);
 
             if (student == null)
             {
                 return NotFound();
             }
 
-            return Ok(student.Map());
+            return Ok(student);
         }
 
         [HttpGet("{id}/laptop")]
         public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetByIdWithLaptop(id, token);
+            var student = await _service.GetByIdWithLaptop(id, token);
             if (student == null)
             {
                 return NotFound();
             }
 
-            return Ok(student.MapToStudentWithLaptop());
+            return Ok(student);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
-            if (student == null)
+            try
+            {
+                await _service.Update(id, model, token);
+            }
+            catch (NotFoundException ex)
             {
                 return NotFound();
             }
-            student.Name = model.Name ?? student.Name;
-            student.Email = model.Email is not null ? model.Email : student.Email;
-            _uow.StudentRepository.UpdateStudent(student);
-            await _uow.Save(token);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
 
@@ -144,7 +146,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
 
-            var courseStudent =  await _uow.CourseStudentRepository.GetById(id, courseId, token);
+            var courseStudent = await _uow.CourseStudentRepository.GetById(id, courseId, token);
             if (courseStudent == null)
             {
                 return NotFound();
