@@ -16,6 +16,8 @@ namespace UniversityProgram.Api
         public DbSet<University> Universities { get; set; } = default!;
         public DbSet<Course> Courses { get; set; } = default!;
 
+        public DbSet<CourseStudent> CourseStudent { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().HasKey(e => e.Id);

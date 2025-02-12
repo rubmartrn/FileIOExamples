@@ -10,5 +10,6 @@ namespace UniversityProgram.Api.Repositories
         Task<IEnumerable<Student>> GetStudents(CancellationToken token = default);
         Task UpdateStudent(Student student, CancellationToken token = default);
         Task<Student?> GetByIdWithLaptop(int id, CancellationToken token = default);
+        Task<Student?> GetByIdWithCourse(int id, CancellationToken token = default);
     }
 }

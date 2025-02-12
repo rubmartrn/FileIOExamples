@@ -47,5 +47,13 @@ namespace UniversityProgram.Api.Repositories
                 .ThenInclude(e => e.Cpu)
                 .FirstOrDefaultAsync(e => e.Id == id, token);
         }
+
+        public async Task<Student?> GetByIdWithCourse(int id, CancellationToken token = default)
+        {
+            return await _context.Students
+                .Include(e => e.CourseStudents)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync(e => e.Id == id, token);
+        }
     }
 }

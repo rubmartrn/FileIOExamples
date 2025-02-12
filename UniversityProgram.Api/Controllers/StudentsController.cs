@@ -13,11 +13,15 @@ namespace UniversityProgram.Api.Controllers
     {
         private readonly IStudentRepository _repository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ICourseStudentRepository _courseStudentRepository;
 
-        public StudentsController(IStudentRepository repository, ICourseRepository courseRepository)
+        public StudentsController(IStudentRepository repository,
+            ICourseRepository courseRepository, 
+            ICourseStudentRepository courseStudentRepository)
         {
             _repository = repository;
             _courseRepository = courseRepository;
+            _courseStudentRepository = courseStudentRepository;
         }
 
         [HttpPost]
@@ -102,48 +106,44 @@ namespace UniversityProgram.Api.Controllers
             return Ok();
         }
 
-        //[HttpGet("{id}/course")]
-        //public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
-        //{
-        //    var student = await _ctx.Students
-        //        .Include(e => e.CourseStudents)
-        //        .ThenInclude(e => e.Course)
-        //        .FirstOrDefaultAsync(e => e.Id == id, token);
-
-        //    if (student == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(student.MapStudentWithCourseModel());
-        //}
-
-        //[HttpPut("{id}/addmoney")]
-        //public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
-        //{
-        //    var student = await _ctx.Students.FirstOrDefaultAsync(e => e.Id == id);
-        //    if (student == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    student.Money += money;
-        //    await _ctx.SaveChangesAsync(token);
-        //    return Ok();
-        //}
-
-        [HttpPut("{id}/Pay/{courseId}")]
-        public async Task<IActionResult> PayForCourse([FromRoute] int id,
-            [FromRoute] int courseId)
+        [HttpGet("{id}/course")]
+        public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
         {
-            var student = await _ctx.Students
-                .Include(e => e.CourseStudents)
-                .ThenInclude(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == id);
+            var student = await _repository.GetByIdWithCourse(id, token);
+
             if (student == null)
             {
                 return NotFound();
             }
-            var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
+
+            return Ok(student.MapStudentWithCourseModel());
+        }
+
+        [HttpPut("{id}/addmoney")]
+        public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
+        {
+            var student = await _repository.GetStudentById(id, token);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            student.Money += money;
+
+            await _repository.UpdateStudent(student);
+            return Ok();
+        }
+
+        [HttpPut("{id}/Pay/{courseId}")]
+        public async Task<IActionResult> PayForCourse([FromRoute] int id,
+            [FromRoute] int courseId, CancellationToken token)
+        {
+            var student = await _repository.GetStudentById(id, token);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var courseStudent =  await _courseStudentRepository.GetById(id, courseId, token);
             if (courseStudent == null)
             {
                 return NotFound();
@@ -155,8 +155,9 @@ namespace UniversityProgram.Api.Controllers
             }
 
             student.Money -= courseStudent.Course.Fee;
+            await _repository.UpdateStudent(student);
             courseStudent.Paid = true;
-            await _ctx.SaveChangesAsync();
+            await _courseStudentRepository.Update(courseStudent);
             return Ok();
         }
 
