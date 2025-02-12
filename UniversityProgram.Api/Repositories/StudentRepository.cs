@@ -39,5 +39,13 @@ namespace UniversityProgram.Api.Repositories
             _context.Students.Remove(student);
             await _context.SaveChangesAsync(token);
         }
+
+        public async Task<Student?> GetByIdWithLaptop(int id, CancellationToken token = default)
+        {
+            return await _context.Students
+                .Include(e => e.Laptop)
+                .ThenInclude(e => e.Cpu)
+                .FirstOrDefaultAsync(e => e.Id == id, token);
+        }
     }
 }

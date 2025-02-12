@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api.AcaValidation;
 using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
 using UniversityProgram.Api.Repositories;
-using UniversityProgram.Api.Services;
 
 namespace UniversityProgram.Api.Controllers
 {
@@ -66,21 +64,17 @@ namespace UniversityProgram.Api.Controllers
             return Ok(student.Map());
         }
 
-        //[HttpGet("{id}/laptop")]
-        //public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id)
-        //{
-        //    var student = await _ctx.Students
-        //        .Include(e => e.Laptop)
-        //        .ThenInclude(e => e.Cpu)
-        //        .FirstOrDefaultAsync(e => e.Id == id);
+        [HttpGet("{id}/laptop")]
+        public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id, CancellationToken token)
+        {
+            var student = await _repository.GetByIdWithLaptop(id, token);
+            if (student == null)
+            {
+                return NotFound();
+            }
 
-        //    if (student == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(student.MapToStudentWithLaptop());
-        //}
+            return Ok(student.MapToStudentWithLaptop());
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model, CancellationToken token)
@@ -137,46 +131,34 @@ namespace UniversityProgram.Api.Controllers
         //    return Ok();
         //}
 
-        //[HttpPut("{id}/Pay/{courseId}")]
-        //public async Task<IActionResult> PayForCourse([FromRoute] int id,
-        //    [FromRoute] int courseId,
-        //    [FromServices] CourseBankServiceApi bankApi)
-        //{
-        //    using var transaction = await _ctx.Database.BeginTransactionAsync();
-        //    try
-        //    {
-        //        var student = await _ctx.Students
-        //            .Include(e => e.CourseStudents)
-        //            .ThenInclude(e => e.Course)
-        //            .FirstOrDefaultAsync(e => e.Id == id);
-        //        if (student == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
-        //        if (courseStudent == null)
-        //        {
-        //            return NotFound();
-        //        }
+        [HttpPut("{id}/Pay/{courseId}")]
+        public async Task<IActionResult> PayForCourse([FromRoute] int id,
+            [FromRoute] int courseId)
+        {
+            var student = await _ctx.Students
+                .Include(e => e.CourseStudents)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            var courseStudent = student.CourseStudents.FirstOrDefault(e => e.CourseId == courseId);
+            if (courseStudent == null)
+            {
+                return NotFound();
+            }
 
-        //        if (student.Money < courseStudent.Course.Fee)
-        //        {
-        //            return BadRequest("բավարար գումար չունի");
-        //        }
+            if (student.Money < courseStudent.Course.Fee)
+            {
+                return BadRequest("բավարար գումար չունի");
+            }
 
-        //        student.Money -= courseStudent.Course.Fee;
-        //        courseStudent.Paid = true;
-        //        await _ctx.SaveChangesAsync();
-        //        bankApi.PayCourse(student.Id);
-        //        await transaction.CommitAsync();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        await transaction.RollbackAsync();
-        //        return BadRequest(e.Message);
-        //    }
-        //    return Ok();
-        //}
+            student.Money -= courseStudent.Course.Fee;
+            courseStudent.Paid = true;
+            await _ctx.SaveChangesAsync();
+            return Ok();
+        }
 
         [HttpPut("{id}/course")]
         public async Task<IActionResult> AddCourse(int id, [FromQuery] int courseId, CancellationToken token)
@@ -187,7 +169,7 @@ namespace UniversityProgram.Api.Controllers
                 return NotFound();
             }
 
-            var course =  await _courseRepository.GetCourseById(courseId, token);
+            var course = await _courseRepository.GetCourseById(courseId, token);
             if (course == null)
             {
                 return NotFound();
