@@ -22,22 +22,19 @@ namespace UniversityProgram.Api.Repositories
             return await _context.Students.FirstOrDefaultAsync(e => e.Id == id, token);
         }
 
-        public async Task AddStudent(Student student, CancellationToken token = default)
+        public void AddStudent(Student student, CancellationToken token = default)
         {
             _context.Students.Add(student);
-            await _context.SaveChangesAsync(token);
         }
 
-        public async Task UpdateStudent(Student student, CancellationToken token = default)
+        public void UpdateStudent(Student student, CancellationToken token = default)
         {
             _context.Students.Update(student);
-            await _context.SaveChangesAsync(token);
         }
 
-        public async Task DeleteStudent(Student student, CancellationToken token = default)
+        public void DeleteStudent(Student student, CancellationToken token = default)
         {
             _context.Students.Remove(student);
-            await _context.SaveChangesAsync(token);
         }
 
         public async Task<Student?> GetByIdWithLaptop(int id, CancellationToken token = default)

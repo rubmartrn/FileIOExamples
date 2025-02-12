@@ -24,10 +24,7 @@ builder.Services.AddDbContext<StudentDbContext>(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
 builder.Services.AddAutoMapper(typeof(LaptopProfile));
-
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<ICourseStudentRepository, CourseStudentRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

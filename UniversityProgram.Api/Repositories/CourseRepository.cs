@@ -22,22 +22,19 @@ namespace UniversityProgram.Api.Repositories
             return await _context.Courses.FirstOrDefaultAsync(e => e.Id == id, token);
         }
 
-        public async Task AddCourse(Course course, CancellationToken token = default)
+        public void AddCourse(Course course, CancellationToken token = default)
         {
             _context.Courses.Add(course);
-            await _context.SaveChangesAsync(token);
         }
 
-        public async Task UpdateCourse(Course course, CancellationToken token = default)
+        public void UpdateCourse(Course course, CancellationToken token = default)
         {
             _context.Courses.Update(course);
-            await _context.SaveChangesAsync(token);
         }
 
-        public async Task DeleteCourse(Course course, CancellationToken token = default)
+        public void DeleteCourse(Course course, CancellationToken token = default)
         {
             _context.Courses.Remove(course);
-            await _context.SaveChangesAsync(token);
         }
     }
 }

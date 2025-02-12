@@ -10,17 +10,17 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class CoursesController : ControllerBase
     {
-        private readonly ICourseRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public CoursesController(ICourseRepository repository)
+        public CoursesController(IUnitOfWork uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            return Ok(await _repository.GetCourses(token));
+            return Ok(await _uow.CourseRepository.GetCourses(token));
         }
 
 
@@ -33,7 +33,8 @@ namespace UniversityProgram.Api.Controllers
                 Fee = model.Price
             };
 
-            await _repository.AddCourse(course, token);
+            _uow.CourseRepository.AddCourse(course, token);
+            await _uow.Save(token);
             return Ok();
         }
 

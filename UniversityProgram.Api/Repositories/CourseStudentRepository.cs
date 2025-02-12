@@ -19,10 +19,8 @@ public class CourseStudentRepository : ICourseStudentRepository
             .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId, token);
     }
 
-    public async Task Update(CourseStudent courseStudent, CancellationToken token = default)
+    public void Update(CourseStudent courseStudent, CancellationToken token = default)
     {
-        throw new NotImplementedException();
         _context.CourseStudent.Update(courseStudent);
-        await _context.SaveChangesAsync(token);
     }
 }

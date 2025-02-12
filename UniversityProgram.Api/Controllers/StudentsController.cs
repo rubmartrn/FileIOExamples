@@ -11,22 +11,17 @@ namespace UniversityProgram.Api.Controllers
     [Route("[controller]")]
     public class StudentsController : ControllerBase
     {
-        private readonly IStudentRepository _repository;
-        private readonly ICourseRepository _courseRepository;
-        private readonly ICourseStudentRepository _courseStudentRepository;
+        private readonly IUnitOfWork _uow;
 
-        public StudentsController(IStudentRepository repository,
-            ICourseRepository courseRepository, 
-            ICourseStudentRepository courseStudentRepository)
+        public StudentsController(IUnitOfWork uow)
         {
-            _repository = repository;
-            _courseRepository = courseRepository;
-            _courseStudentRepository = courseStudentRepository;
+            _uow = uow;
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] StudentAddModel model, CancellationToken token)
         {
+
             var validator = new AcaValidator(model);
             validator.AddRule(CheckEmailNotNull, "մեյլը պետք է արժեք ունենա");
             var result = await validator.Validate();
@@ -37,7 +32,8 @@ namespace UniversityProgram.Api.Controllers
 
             var student = model.Map();
 
-            await _repository.AddStudent(student, token);
+            _uow.StudentRepository.AddStudent(student, token);
+            await _uow.Save(token);
             return Ok();
 
             bool CheckEmailNotNull(StudentAddModel model)
@@ -51,14 +47,14 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var students = await _repository.GetStudents(token);
+            var students = await _uow.StudentRepository.GetStudents(token);
             return Ok(students.Select(e => e.Map()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
 
             if (student == null)
             {
@@ -71,7 +67,7 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet("{id}/laptop")]
         public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id, CancellationToken token)
         {
-            var student = await _repository.GetByIdWithLaptop(id, token);
+            var student = await _uow.StudentRepository.GetByIdWithLaptop(id, token);
             if (student == null)
             {
                 return NotFound();
@@ -83,33 +79,36 @@ namespace UniversityProgram.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StudentUpdateModel model, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
             student.Name = model.Name ?? student.Name;
             student.Email = model.Email is not null ? model.Email : student.Email;
-            await _repository.UpdateStudent(student);
+            _uow.StudentRepository.UpdateStudent(student);
+            await _uow.Save(token);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
-            await _repository.DeleteStudent(student, token);
+            _uow.StudentRepository.DeleteStudent(student, token);
+            await _uow.Save(token);
+
             return Ok();
         }
 
         [HttpGet("{id}/course")]
         public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
         {
-            var student = await _repository.GetByIdWithCourse(id, token);
+            var student = await _uow.StudentRepository.GetByIdWithCourse(id, token);
 
             if (student == null)
             {
@@ -122,14 +121,16 @@ namespace UniversityProgram.Api.Controllers
         [HttpPut("{id}/addmoney")]
         public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
             student.Money += money;
 
-            await _repository.UpdateStudent(student);
+            _uow.StudentRepository.UpdateStudent(student);
+            await _uow.Save(token);
+
             return Ok();
         }
 
@@ -137,13 +138,13 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> PayForCourse([FromRoute] int id,
             [FromRoute] int courseId, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
 
-            var courseStudent =  await _courseStudentRepository.GetById(id, courseId, token);
+            var courseStudent =  await _uow.CourseStudentRepository.GetById(id, courseId, token);
             if (courseStudent == null)
             {
                 return NotFound();
@@ -155,22 +156,25 @@ namespace UniversityProgram.Api.Controllers
             }
 
             student.Money -= courseStudent.Course.Fee;
-            await _repository.UpdateStudent(student);
+            _uow.StudentRepository.UpdateStudent(student);
+
             courseStudent.Paid = true;
-            await _courseStudentRepository.Update(courseStudent);
+            _uow.CourseStudentRepository.Update(courseStudent);
+            await _uow.Save(token);
+
             return Ok();
         }
 
         [HttpPut("{id}/course")]
         public async Task<IActionResult> AddCourse(int id, [FromQuery] int courseId, CancellationToken token)
         {
-            var student = await _repository.GetStudentById(id, token);
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
                 return NotFound();
             }
 
-            var course = await _courseRepository.GetCourseById(courseId, token);
+            var course = await _uow.CourseRepository.GetCourseById(courseId, token);
             if (course == null)
             {
                 return NotFound();
@@ -184,7 +188,8 @@ namespace UniversityProgram.Api.Controllers
 
             student.CourseStudents.Add(courseStudent);
 
-            await _repository.UpdateStudent(student);
+            _uow.StudentRepository.UpdateStudent(student);
+            await _uow.Save(token);
 
             return Ok();
         }
