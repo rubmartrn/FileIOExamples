@@ -58,7 +58,7 @@ namespace UniversityProgram.Api.Services
             var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
-                return new Result(false, ErrorCodes.NotFound);
+                return new Result(false, "Չգտա տենց ուսանող", ErrorType.NotFound);
             }
             _uow.StudentRepository.DeleteStudent(student, token);
             await _uow.Save(token);

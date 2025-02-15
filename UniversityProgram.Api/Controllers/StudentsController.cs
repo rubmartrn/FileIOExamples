@@ -100,7 +100,7 @@ namespace UniversityProgram.Api.Controllers
 
             if (!result.Success)
             {
-                if (result.Message == ErrorCodes.NotFound)
+                if (result.ErrorType == ErrorType.NotFound)
                 {
                     return NotFound();
                 }
