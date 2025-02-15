@@ -4,7 +4,6 @@ using UniversityProgram.Api.Entities;
 using UniversityProgram.Api.Exceptions;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
-using UniversityProgram.Api.Repositories;
 using UniversityProgram.Api.Services;
 
 namespace UniversityProgram.Api.Controllers
@@ -47,7 +46,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
             var students = await _service.GetAll(token);
-            return Ok();
+            return Ok(students);
         }
 
         [HttpGet("{id}")]
@@ -66,13 +65,21 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet("{id}/laptop")]
         public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id, CancellationToken token)
         {
-            var student = await _service.GetByIdWithLaptop(id, token);
-            if (student == null)
+            var result = await _service.GetByIdWithLaptop(id, token);
+
+            if (!result.Success)
             {
-                return NotFound();
+                if (result.ErrorType == ErrorType.NotFound)
+                {
+                    return NotFound();
+                }
+                if (result.ErrorType == ErrorType.LaptopNotFound)
+                {
+                    return BadRequest($"{id} այդիով ուսանողը չունի սարք");
+                }
             }
 
-            return Ok(student);
+            return Ok(result.Data);
         }
 
         [HttpPut("{id}")]
@@ -113,28 +120,25 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet("{id}/course")]
         public async Task<IActionResult> GetWithCourses([FromRoute] int id, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetByIdWithCourse(id, token);
+            var result = await _service.GetWithCourses(id, token);
 
-            if (student == null)
+            if (result.ErrorType == ErrorType.NotFound)
             {
                 return NotFound();
             }
 
-            return Ok(student.MapStudentWithCourseModel());
+            return Ok(result.Data);
         }
 
         [HttpPut("{id}/addmoney")]
         public async Task<IActionResult> AddMoney([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
-            if (student == null)
+            var result = await _service.AddMoney(id, money, token);
+
+            if (result.ErrorType == ErrorType.NotFound)
             {
                 return NotFound();
             }
-            student.Money += money;
-
-            _uow.StudentRepository.UpdateStudent(student);
-            await _uow.Save(token);
 
             return Ok();
         }
@@ -143,29 +147,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> PayForCourse([FromRoute] int id,
             [FromRoute] int courseId, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            var courseStudent = await _uow.CourseStudentRepository.GetById(id, courseId, token);
-            if (courseStudent == null)
-            {
-                return NotFound();
-            }
-
-            if (student.Money < courseStudent.Course.Fee)
-            {
-                return BadRequest("բավարար գումար չունի");
-            }
-
-            student.Money -= courseStudent.Course.Fee;
-            _uow.StudentRepository.UpdateStudent(student);
-
-            courseStudent.Paid = true;
-            _uow.CourseStudentRepository.Update(courseStudent);
-            await _uow.Save(token);
+           
 
             return Ok();
         }
@@ -173,28 +155,17 @@ namespace UniversityProgram.Api.Controllers
         [HttpPut("{id}/course")]
         public async Task<IActionResult> AddCourse(int id, [FromQuery] int courseId, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
-            if (student == null)
+            var result = await _service.Pay(id, courseId, token);
+
+            if (result.ErrorType == ErrorType.NotFound)
             {
                 return NotFound();
             }
 
-            var course = await _uow.CourseRepository.GetCourseById(courseId, token);
-            if (course == null)
+            if (result.ErrorType == ErrorType.CommonError)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
-
-            var courseStudent = new CourseStudent()
-            {
-                Course = course,
-                Student = student
-            };
-
-            student.CourseStudents.Add(courseStudent);
-
-            _uow.StudentRepository.UpdateStudent(student);
-            await _uow.Save(token);
 
             return Ok();
         }

@@ -1,4 +1,5 @@
-﻿using UniversityProgram.Api.Exceptions;
+﻿using UniversityProgram.Api.Entities;
+using UniversityProgram.Api.Exceptions;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Models;
 using UniversityProgram.Api.Repositories;
@@ -34,10 +35,23 @@ namespace UniversityProgram.Api.Services
             return student?.Map();
         }
 
-        public async Task<StudentWithLaptopModel?> GetByIdWithLaptop(int id, CancellationToken token)
+        public async Task<Result<StudentWithLaptopModel>> GetByIdWithLaptop(int id, CancellationToken token)
         {
             var student = await _uow.StudentRepository.GetByIdWithLaptop(id, token);
-            return student?.MapToStudentWithLaptop();
+
+            if (student == null)
+            {
+                return Result<StudentWithLaptopModel>.Error(ErrorType.NotFound);
+            }
+
+            if (student.Laptop == null)
+            {
+                return Result<StudentWithLaptopModel>.Error(ErrorType.LaptopNotFound);
+            }
+
+            var data = student.MapToStudentWithLaptop();
+
+            return Result<StudentWithLaptopModel>.Ok(data);
         }
 
         public async Task Update(int id, StudentUpdateModel model, CancellationToken token)
@@ -58,26 +72,83 @@ namespace UniversityProgram.Api.Services
             var student = await _uow.StudentRepository.GetStudentById(id, token);
             if (student == null)
             {
-                return new Result(false, "Չգտա տենց ուսանող", ErrorType.NotFound);
+                return Result.Error(ErrorType.NotFound);
             }
             _uow.StudentRepository.DeleteStudent(student, token);
             await _uow.Save(token);
-            return new Result(true, "Student deleted");
+            return Result.Ok("Student deleted");
+        }
+
+        public async Task<Result<StudentWithCourseModel>> GetWithCourses(int id, CancellationToken token)
+        {
+            var student = await _uow.StudentRepository.GetByIdWithCourse(id, token);
+
+            if (student == null)
+            {
+                return Result<StudentWithCourseModel>.Error(ErrorType.NotFound);
+            }
+
+            return Result<StudentWithCourseModel>.Ok(student.MapStudentWithCourseModel());
+        }
+
+        public async Task<Result> AddMoney(int id, decimal money, CancellationToken token)
+        {
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
+            if (student == null)
+            {
+                return Result.Error(ErrorType.NotFound);
+            }
+            student.Money += money;
+
+            _uow.StudentRepository.UpdateStudent(student);
+            await _uow.Save(token);
+
+            return Result.Ok("Money added");
+        }
+
+        public async Task<Result> Pay(int studentId, int courseId, CancellationToken token)
+        {
+            var student = await _uow.StudentRepository.GetStudentById(studentId, token);
+            if (student == null)
+            {
+                return Result.Error(ErrorType.NotFound);
+            }
+
+            var courseStudent = await _uow.CourseStudentRepository.GetById(studentId, courseId, token);
+            if (courseStudent == null)
+            {
+                return Result.Error(ErrorType.NotFound);
+            }
+
+            if (student.Money < courseStudent.Course.Fee)
+            {
+                return Result.Error(ErrorType.CommonError, "ուսանողը բավարար գումար չունի");
+            }
+
+            student.Money -= courseStudent.Course.Fee;
+            _uow.StudentRepository.UpdateStudent(student);
+
+            courseStudent.Paid = true;
+            _uow.CourseStudentRepository.Update(courseStudent);
+            await _uow.Save(token);
+
+            return Result.Ok("Course paid");
         }
     }
 
     public interface IStudentService
     {
         Task Add(StudentAddModel model, CancellationToken token = default);
-
+        Task<Result> AddMoney(int id, decimal money, CancellationToken token);
         Task<Result> Delete(int id, CancellationToken token);
 
         Task<IEnumerable<StudentModel>> GetAll(CancellationToken token);
 
         Task<StudentModel?> GetById(int id, CancellationToken token);
 
-        Task<StudentWithLaptopModel?> GetByIdWithLaptop(int id, CancellationToken token);
-
+        Task<Result<StudentWithLaptopModel>> GetByIdWithLaptop(int id, CancellationToken token);
+        Task<Result<StudentWithCourseModel>> GetWithCourses(int id, CancellationToken token);
+        Task<Result> Pay(int studentId, int courseId, CancellationToken token);
         Task Update(int id, StudentUpdateModel model, CancellationToken token);
     }
 }
