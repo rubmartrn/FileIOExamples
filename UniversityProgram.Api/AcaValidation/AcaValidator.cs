@@ -1,4 +1,4 @@
-﻿using UniversityProgram.Api.Models;
+﻿using UniversityProgram.BLL.Models;
 
 namespace UniversityProgram.Api.AcaValidation;
 

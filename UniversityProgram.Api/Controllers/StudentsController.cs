@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityProgram.Api.AcaValidation;
-using UniversityProgram.Api.Entities;
-using UniversityProgram.Api.Exceptions;
-using UniversityProgram.Api.Map;
-using UniversityProgram.Api.Models;
-using UniversityProgram.Api.Services;
+using UniversityProgram.BLL.Exceptions;
+using UniversityProgram.BLL.Models;
+using UniversityProgram.BLL.Services;
 
 namespace UniversityProgram.Api.Controllers
 {

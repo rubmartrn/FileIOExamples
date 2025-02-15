@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Api.Models;
+using UniversityProgram.BLL.Models;
+using UniversityProgram.Data;
 
 namespace UniversityProgram.Api.Validators
 {

@@ -3,9 +3,10 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api;
 using UniversityProgram.Api.Map;
-using UniversityProgram.Api.Repositories;
-using UniversityProgram.Api.Services;
 using UniversityProgram.Api.Validators;
+using UniversityProgram.BLL.Services;
+using UniversityProgram.Data;
+using UniversityProgram.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

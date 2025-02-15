@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Api", "Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{B34FE4D4-3DD2-4A48-95FF-F0729B68618C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Data", "UniversityProgram.Data\UniversityProgram.Data.csproj", "{54DDE2DF-29D7-491E-B804-611F78AC69A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.BLL", "UniversityProgram.BLL\UniversityProgram.BLL.csproj", "{F07DE7E3-E173-42A7-8CE9-6A1CBDC068C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{B34FE4D4-3DD2-4A48-95FF-F0729B68618C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B34FE4D4-3DD2-4A48-95FF-F0729B68618C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B34FE4D4-3DD2-4A48-95FF-F0729B68618C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DDE2DF-29D7-491E-B804-611F78AC69A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DDE2DF-29D7-491E-B804-611F78AC69A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DDE2DF-29D7-491E-B804-611F78AC69A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DDE2DF-29D7-491E-B804-611F78AC69A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F07DE7E3-E173-42A7-8CE9-6A1CBDC068C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F07DE7E3-E173-42A7-8CE9-6A1CBDC068C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F07DE7E3-E173-42A7-8CE9-6A1CBDC068C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F07DE7E3-E173-42A7-8CE9-6A1CBDC068C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
