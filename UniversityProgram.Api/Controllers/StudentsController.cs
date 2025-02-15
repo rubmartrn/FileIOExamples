@@ -96,15 +96,18 @@ namespace UniversityProgram.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
         {
-            var student = await _uow.StudentRepository.GetStudentById(id, token);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            _uow.StudentRepository.DeleteStudent(student, token);
-            await _uow.Save(token);
+            var result = await _service.Delete(id, token);
 
-            return Ok();
+            if (!result.Success)
+            {
+                if (result.Message == ErrorCodes.NotFound)
+                {
+                    return NotFound();
+                }
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("{id}/course")]

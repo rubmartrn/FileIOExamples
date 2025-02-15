@@ -52,17 +52,32 @@ namespace UniversityProgram.Api.Services
             _uow.StudentRepository.UpdateStudent(student);
             await _uow.Save(token);
         }
+
+        public async Task<Result> Delete(int id, CancellationToken token)
+        {
+            var student = await _uow.StudentRepository.GetStudentById(id, token);
+            if (student == null)
+            {
+                return new Result(false, ErrorCodes.NotFound);
+            }
+            _uow.StudentRepository.DeleteStudent(student, token);
+            await _uow.Save(token);
+            return new Result(true, "Student deleted");
+        }
     }
 
     public interface IStudentService
     {
         Task Add(StudentAddModel model, CancellationToken token = default);
 
+        Task<Result> Delete(int id, CancellationToken token);
+
         Task<IEnumerable<StudentModel>> GetAll(CancellationToken token);
 
         Task<StudentModel?> GetById(int id, CancellationToken token);
 
         Task<StudentWithLaptopModel?> GetByIdWithLaptop(int id, CancellationToken token);
+
         Task Update(int id, StudentUpdateModel model, CancellationToken token);
     }
 }
