@@ -119,16 +119,16 @@ namespace UniversityProgram.BLL.Services
                 return Result.Error(ErrorType.NotFound);
             }
 
-            if (student.Money < courseStudent.Course.Fee)
+            if (student.Money <= courseStudent.Course.Fee)
             {
                 return Result.Error(ErrorType.CommonError, "ուսանողը բավարար գումար չունի");
             }
+            courseStudent.Paid = true;
+            _uow.CourseStudentRepository.Update(courseStudent);
 
             student.Money -= courseStudent.Course.Fee;
             _uow.StudentRepository.UpdateStudent(student);
 
-            courseStudent.Paid = true;
-            _uow.CourseStudentRepository.Update(courseStudent);
             await _uow.Save(token);
 
             return Result.Ok("Course paid");
