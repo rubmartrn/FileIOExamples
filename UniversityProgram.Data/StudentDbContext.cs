@@ -91,6 +91,16 @@ namespace UniversityProgram.Data
 
             modelBuilder.Entity<Student>().HasMany(e => e.CourseStudents).WithOne(e => e.Student)
                 .HasForeignKey(e => e.StudentId);
+
+            //Seed
+            modelBuilder.Entity<Student>().HasData(
+                new Student
+                {
+                    Id = 1,
+                    Name = "John",
+                    Email = "m@a.com",
+                    Address = "123",
+                });
         }
 
         public StudentDbContext(DbContextOptions<StudentDbContext> options)

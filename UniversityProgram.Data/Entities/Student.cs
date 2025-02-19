@@ -7,6 +7,7 @@
         public string Email { get; set; } = default!;
 
         public string Address { get; set; } = default!;
+        public string? Address2 { get; set; }
         public Laptop? Laptop { get; set; } = default!;
 
         public int? LibraryId { get; set; }
