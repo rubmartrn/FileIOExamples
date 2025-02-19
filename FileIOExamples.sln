@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.BLL", "Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.BLL.Tests", "UniversityProgram.BLL.Tests\UniversityProgram.BLL.Tests.csproj", "{474DBA5E-3CF4-446A-A72B-43405781C5C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewAP", "NewAP\NewAP.csproj", "{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,8 +41,15 @@ Global
 		{474DBA5E-3CF4-446A-A72B-43405781C5C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{474DBA5E-3CF4-446A-A72B-43405781C5C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{474DBA5E-3CF4-446A-A72B-43405781C5C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98B54E6E-D5B3-42CB-8CAA-B367CC071DB0}
 	EndGlobalSection
 EndGlobal
