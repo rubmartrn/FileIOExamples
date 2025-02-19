@@ -50,8 +50,8 @@ namespace UniversityProgram.BLL.Tests
 
             _studentRepositoryMock.Setup(e => e.GetStudentById(studentId, It.IsAny<CancellationToken>())).ReturnsAsync(student);
             _courseStudentRepositoryMock.Setup(e => e.GetById(studentId, courseId, It.IsAny<CancellationToken>())).ReturnsAsync(courseStudent);
-            _studentRepositoryMock.Setup(e => e.UpdateStudent(It.Is<Student>(e=>e.Id == studentId && e.Money == studentFinalMoney), It.IsAny<CancellationToken>()));
-            _courseStudentRepositoryMock.Setup(e=>e.Update(It.Is<CourseStudent>(e => e.StudentId == studentId && e.CourseId == courseId && e.Paid == true), It.IsAny<CancellationToken>()));
+            _studentRepositoryMock.Setup(e => e.UpdateStudent(It.IsAny<Student>(), It.IsAny<CancellationToken>()));
+            _courseStudentRepositoryMock.Setup(e=>e.Update(It.IsAny<CourseStudent>(), It.IsAny<CancellationToken>()));
             _unitOfWorkMock.Setup(e => e.Save(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
             //Act
@@ -60,6 +60,10 @@ namespace UniversityProgram.BLL.Tests
             //Assert
             Assert.True(result.Success);
             Assert.Equal("Course paid", result.Message);
+            _courseStudentRepositoryMock.Verify(e => e.Update(It.Is<CourseStudent>(e => e.Paid == true && e.StudentId == studentId && e.CourseId == courseId), It.IsAny<CancellationToken>()), times: Times.Once);
+            _unitOfWorkMock.Verify(e => e.Save(It.IsAny<CancellationToken>()), times: Times.Once);
+            _studentRepositoryMock.Verify(e => e.UpdateStudent(It.Is<Student>(e => e.Id == studentId && e.Money == studentFinalMoney), It.IsAny<CancellationToken>()), Times.Once);
+
         }
 
         [Fact]
