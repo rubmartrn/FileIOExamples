@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Data.Entities;
+using UniversityProgram.Domain.BaseRepositories;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.Data.Repositories;
 

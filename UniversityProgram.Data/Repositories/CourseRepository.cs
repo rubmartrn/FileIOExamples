@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityProgram.Data.Entities;
+using UniversityProgram.Data;
+using UniversityProgram.Domain.BaseRepositories;
+using UniversityProgram.Domain.Entities;
 
-namespace UniversityProgram.Data.Repositories
+namespace UniversityProgram.Domain.BaseRepositories
 {
     public class CourseRepository : ICourseRepository
     {

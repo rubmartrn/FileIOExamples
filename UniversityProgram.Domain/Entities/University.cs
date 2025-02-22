@@ -1,10 +1,9 @@
-﻿namespace UniversityProgram.Data.Entities
+﻿namespace UniversityProgram.Domain.Entities
 {
-    public class Library
+    public class University
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;
-
         public IEnumerable<Student> Students { get; set; } = new List<Student>();
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UniversityProgram.BLL.Services;
 using UniversityProgram.Data;
 using UniversityProgram.Data.Repositories;
+using UniversityProgram.Domain.BaseRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

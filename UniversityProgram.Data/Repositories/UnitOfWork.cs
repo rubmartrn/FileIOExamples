@@ -1,4 +1,5 @@
 ﻿using UniversityProgram.Data;
+using UniversityProgram.Domain.BaseRepositories;
 
 namespace UniversityProgram.Data.Repositories
 {
@@ -28,15 +29,5 @@ namespace UniversityProgram.Data.Repositories
         {
             _context.Dispose();
         }
-    }
-
-    public interface IUnitOfWork : IDisposable
-    {
-        ICourseStudentRepository CourseStudentRepository { get; }
-
-        ICourseRepository CourseRepository { get; }
-        IStudentRepository StudentRepository { get; }
-
-        Task Save(CancellationToken token = default);
     }
 }

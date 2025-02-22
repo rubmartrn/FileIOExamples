@@ -1,6 +1,6 @@
 ﻿
 using UniversityProgram.BLL.Models;
-using UniversityProgram.Data.Entities;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.BLL.Map
 {

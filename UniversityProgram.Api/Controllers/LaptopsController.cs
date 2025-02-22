@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.BLL.Models;
 using UniversityProgram.Data;
-using UniversityProgram.Data.Entities;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.Api.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityProgram.BLL.Models;
-using UniversityProgram.Data.Entities;
-using UniversityProgram.Data.Repositories;
+using UniversityProgram.Domain.BaseRepositories;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.Api.Controllers
 {

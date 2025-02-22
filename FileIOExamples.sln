@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.BLL.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewAP", "NewAP\NewAP.csproj", "{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.LocalData", "UniversityProgram.LocalData\UniversityProgram.LocalData.csproj", "{873F099B-3B9D-4FAC-833D-CFB8FE6D7B61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Domain", "UniversityProgram.Domain\UniversityProgram.Domain.csproj", "{5003E5FE-F958-4843-9B74-1F23810D6D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{597B4EF4-4C56-4071-B644-0D6BBD6CDA53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{873F099B-3B9D-4FAC-833D-CFB8FE6D7B61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{873F099B-3B9D-4FAC-833D-CFB8FE6D7B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{873F099B-3B9D-4FAC-833D-CFB8FE6D7B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{873F099B-3B9D-4FAC-833D-CFB8FE6D7B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5003E5FE-F958-4843-9B74-1F23810D6D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5003E5FE-F958-4843-9B74-1F23810D6D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5003E5FE-F958-4843-9B74-1F23810D6D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5003E5FE-F958-4843-9B74-1F23810D6D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

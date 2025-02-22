@@ -1,8 +1,9 @@
 using Moq;
 using UniversityProgram.BLL.Models;
 using UniversityProgram.BLL.Services;
-using UniversityProgram.Data.Entities;
 using UniversityProgram.Data.Repositories;
+using UniversityProgram.Domain.BaseRepositories;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.BLL.Tests
 {
@@ -29,7 +30,7 @@ namespace UniversityProgram.BLL.Tests
             const decimal studentMoney = 500;
             const decimal coursePrice = 100;
             const decimal studentFinalMoney = studentMoney - coursePrice;
-            var student = new Data.Entities.Student
+            var student = new Domain.Entities.Student
             {
                 Id = studentId,
                 Money = studentMoney
