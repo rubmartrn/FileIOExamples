@@ -17,13 +17,9 @@ namespace UniversityProgram.LocalData.Repositories
 
         public IStudentRepository StudentRepository => new StudentRepositoryJson(_service);
 
-        public void Dispose()
+        public async Task Save(CancellationToken token = default)
         {
-        }
-
-        public Task Save(CancellationToken token = default)
-        {
-            throw new NotImplementedException();
+           await  _service.SaveChangesAsync();
         }
     }
 }

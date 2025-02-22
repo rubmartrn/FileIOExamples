@@ -3,7 +3,7 @@ using UniversityProgram.Domain.BaseRepositories;
 
 namespace UniversityProgram.Data.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly StudentDbContext _context;
         Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction;

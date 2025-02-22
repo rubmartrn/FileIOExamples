@@ -1,7 +1,7 @@
 ﻿namespace UniversityProgram.Domain.BaseRepositories
 {
 
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         ICourseStudentRepository CourseStudentRepository { get; }
 
