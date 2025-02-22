@@ -14,7 +14,7 @@ namespace UniversityProgram.LocalData.Repositories
 
         public void AddStudent(Student student, CancellationToken token = default)
         {
-            _service.WriteData(student);
+            _service.Add(student);
         }
 
         public void DeleteStudent(Student student, CancellationToken token = default)
@@ -37,10 +37,10 @@ namespace UniversityProgram.LocalData.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Student>> GetStudents(CancellationToken token = default)
+        public async Task<IEnumerable<Student>> GetStudents(CancellationToken token = default)
         {
-           var student = _service.ReadData<Student>();
-            return Task.FromResult(new List<Student> { student }.AsEnumerable());
+            var student = await _service.GetStudents();
+            return student;
         }       
 
         public void UpdateStudent(Student student, CancellationToken token = default)

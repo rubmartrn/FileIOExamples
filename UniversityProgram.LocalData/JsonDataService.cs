@@ -1,33 +1,56 @@
 ﻿using System.Text.Json;
+using System.Threading.Tasks;
+using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.LocalData
 {
     public class JsonDataService : IJsonDataService
     {
-        const string filePath = "data.json";
+        const string filePath = "./students.json";
 
-        public void WriteData<T>(T data)
+        private List<Student> Students = new List<Student>();
+
+        public void Add(Student student)
         {
+            Students.Add(student);
+        }
+
+        public async Task<IEnumerable<Student>> GetStudents()
+        {
+            var students = await ReadDataAsync<Student>();
+            return Students;
+        }
+
+        private async Task WriteDataAsync<T>()
+        {
+            var students = await ReadDataAsync<Student>();
+            Students.AddRange(students);
             using (StreamWriter streamWriter = new StreamWriter(filePath))
             {
-                string json = JsonSerializer.Serialize(data);
-                streamWriter.Write(json);
+                string json = JsonSerializer.Serialize(Students);
+                await streamWriter.WriteAsync(json);
             }
         }
 
-        public T ReadData<T>()
+        private async Task<IEnumerable<T>> ReadDataAsync<T>()
         {
             using (StreamReader streamReader = new StreamReader(filePath))
             {
-                string json = streamReader.ReadToEnd();
-                return JsonSerializer.Deserialize<T>(json);
+                string json = await streamReader.ReadToEndAsync();
+                return JsonSerializer.Deserialize<List<T>>(json);
             }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await WriteDataAsync<Student>();
         }
     }
 
     public interface IJsonDataService
     {
-        void WriteData<T>(T data);
-        T ReadData<T>();
+        void Add(Student student);
+        Task<IEnumerable<Student>> GetStudents();
+        Task SaveChangesAsync();
     }
 }
