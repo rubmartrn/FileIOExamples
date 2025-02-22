@@ -8,6 +8,8 @@ using UniversityProgram.BLL.Services;
 using UniversityProgram.Data;
 using UniversityProgram.Data.Repositories;
 using UniversityProgram.Domain.BaseRepositories;
+using UniversityProgram.LocalData;
+using UniversityProgram.LocalData.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,8 @@ builder.Services.AddDbContext<StudentDbContext>(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
 builder.Services.AddAutoMapper(typeof(LaptopProfile));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWorkJson>();
+builder.Services.AddScoped<IJsonDataService, JsonDataService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 
