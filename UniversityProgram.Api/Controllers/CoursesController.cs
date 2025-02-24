@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UniversityProgram.BLL.Models;
+using UniversityProgram.BLL.Services;
 using UniversityProgram.Domain.BaseRepositories;
 using UniversityProgram.Domain.Entities;
 
@@ -10,15 +11,20 @@ namespace UniversityProgram.Api.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly ITestService _testService;
 
-        public CoursesController(IUnitOfWork uow)
+        public CoursesController(IUnitOfWork uow, ITestService testService)
         {
             _uow = uow;
+            _testService = testService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
+            var name = _testService.Name;
+            var age = _testService.Age;
+            var @enum = _testService.TestEnum;
             return Ok(await _uow.CourseRepository.GetCourses(token));
         }
 

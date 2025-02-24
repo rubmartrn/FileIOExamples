@@ -1,4 +1,4 @@
-
+﻿
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api;
@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJsonDataService, JsonDataService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ITestService>((s) => new TestService() { Name = "Պողոս", Age=150});
 
 var app = builder.Build();
 
