@@ -36,14 +36,24 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<TestService>();
 builder.Services.AddScoped<TestService3>();
 
-builder.Services.AddScoped<IEnumerable<ITestService>>((serviceProvider) =>
+builder.Services.AddScoped<Func<string, ITestService>>((serviceProvider) => key =>
 {
-    var list = new List<ITestService>()
+    return key switch
     {
-        serviceProvider.GetRequiredService<TestService>(),
-        serviceProvider.GetRequiredService<TestService3>()
+        nameof(TestService) => serviceProvider.GetRequiredService<TestService>(),
+        nameof(TestService3) => serviceProvider.GetRequiredService<TestService3>(),
+        _ => serviceProvider.GetRequiredService<TestService>()
     };
-    return list;
+
+    //switch(key)
+    //{
+    //    case nameof(TestService):
+    //        return serviceProvider.GetRequiredService<TestService>();
+    //    case nameof(TestService3):
+    //        return serviceProvider.GetRequiredService<TestService3>();
+    //    default:
+    //        return serviceProvider.GetRequiredService<TestService>();
+    //}
 });
 
 var app = builder.Build();
