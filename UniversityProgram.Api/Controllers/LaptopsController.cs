@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,11 @@ namespace UniversityProgram.Api.Controllers
             var laptops = await _ctx.Laptops
                 .Include(e => e.Cpu)
                 .ToListAsync();
+
+            var laptopQuery = _ctx.Laptops
+                .Include(e => e.Cpu)
+                .ProjectTo<LaptopWithCpuName>(_mapper.ConfigurationProvider)
+                .ToQueryString();
 
             var result = _mapper.Map<List<LaptopWithCpuName>>(laptops);
             return Ok(result);

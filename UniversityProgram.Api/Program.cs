@@ -27,7 +27,8 @@ builder.Services.AddDbContext<StudentDbContext>(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<LaptopAddModelValidator>(ServiceLifetime.Transient);
 builder.Services.AddAutoMapper(typeof(LaptopProfile));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWorkJson>();
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWorkJson>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJsonDataService, JsonDataService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();

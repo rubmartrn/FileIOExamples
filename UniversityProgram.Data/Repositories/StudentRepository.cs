@@ -16,6 +16,11 @@ namespace UniversityProgram.Data.Repositories
 
         public async Task<IEnumerable<Student>> GetStudents(CancellationToken token = default)
         {
+            var s = _context.Students.Where(e=>e.Id > 1)
+                .Select(e => new { e.Name, e.Id }).ToQueryString();
+
+            //նեյմն ու այդին վերցնել
+            var s1 = await _context.Students.Where(e => e.Id > 1).Select(e=> new { e.Name, e.Id}).ToListAsync();
             return await _context.Students.ToListAsync(token);
         }
 

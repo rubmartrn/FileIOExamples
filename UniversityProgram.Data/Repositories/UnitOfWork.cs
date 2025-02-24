@@ -42,7 +42,7 @@ namespace UniversityProgram.Data.Repositories
 
         public void Dispose()
         {
-            transaction.Dispose();
+            transaction?.Dispose();
             _context.Dispose();
         }
     }

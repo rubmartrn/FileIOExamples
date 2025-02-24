@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using UniversityProgram.Domain.BaseRepositories;
 using UniversityProgram.Domain.Entities;
 
 namespace UniversityProgram.Data
