@@ -11,20 +11,19 @@ namespace UniversityProgram.Api.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
-        private readonly ITestService _testService;
+        private readonly Dictionary<string, ITestService> _testServices;
 
-        public CoursesController(IUnitOfWork uow, ITestService testService)
+        public CoursesController(IUnitOfWork uow, IEnumerable<ITestService> testServices)
         {
             _uow = uow;
-            _testService = testService;
+            _testServices = testServices.ToDictionary(e=>e.GetType().Name, e=>e);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var name = _testService.Name;
-            var age = _testService.Age;
-            var @enum = _testService.TestEnum;
+            var testService = _testServices[nameof(TestService3)];
+
             return Ok(await _uow.CourseRepository.GetCourses(token));
         }
 

@@ -32,7 +32,19 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJsonDataService, JsonDataService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<ITestService>((s) => new TestService() { Name = "Պողոս", Age=150});
+
+builder.Services.AddScoped<TestService>();
+builder.Services.AddScoped<TestService3>();
+
+builder.Services.AddScoped<IEnumerable<ITestService>>((serviceProvider) =>
+{
+    var list = new List<ITestService>()
+    {
+        serviceProvider.GetRequiredService<TestService>(),
+        serviceProvider.GetRequiredService<TestService3>()
+    };
+    return list;
+});
 
 var app = builder.Build();
 

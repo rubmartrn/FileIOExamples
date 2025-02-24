@@ -15,6 +15,13 @@ namespace UniversityProgram.BLL.Services
         public TestEnum TestEnum { get; set; }
     }
 
+    public class TestService3 : ITestService
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public TestEnum TestEnum { get; set; }
+    }
+
 
     public interface ITestService
     {
