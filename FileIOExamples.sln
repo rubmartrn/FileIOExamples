@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFirst.Api", "DbFirst.Api\DbFirst.Api.csproj", "{11AED8C5-ECAE-46BC-849E-5B5C4C1F1AEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFirst.console", "DbFirst.console\DbFirst.console.csproj", "{838E7BC5-A042-4DCC-BD0B-247B8C7FD883}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{11AED8C5-ECAE-46BC-849E-5B5C4C1F1AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11AED8C5-ECAE-46BC-849E-5B5C4C1F1AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11AED8C5-ECAE-46BC-849E-5B5C4C1F1AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838E7BC5-A042-4DCC-BD0B-247B8C7FD883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838E7BC5-A042-4DCC-BD0B-247B8C7FD883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838E7BC5-A042-4DCC-BD0B-247B8C7FD883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838E7BC5-A042-4DCC-BD0B-247B8C7FD883}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
