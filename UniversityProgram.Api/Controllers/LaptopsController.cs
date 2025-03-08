@@ -23,8 +23,15 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken token)
         {
+            while (true)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return BadRequest();
+                }
+            }
             List<Laptop> laptops = await _ctx.Laptops.ToListAsync();
             List<LaptopModel> models = _mapper.Map<List<LaptopModel>>(laptops);
             return Ok(models);
