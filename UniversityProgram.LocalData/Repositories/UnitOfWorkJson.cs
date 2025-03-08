@@ -17,6 +17,11 @@ namespace UniversityProgram.LocalData.Repositories
 
         public IStudentRepository StudentRepository => new StudentRepositoryJson(_service);
 
+        public void Test()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Save(CancellationToken token = default)
         {
            await  _service.SaveChangesAsync();
