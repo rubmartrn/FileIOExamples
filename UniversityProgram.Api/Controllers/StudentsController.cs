@@ -61,6 +61,19 @@ namespace UniversityProgram.Api.Controllers
             return Ok(student);
         }
 
+        [HttpGet("Query")]
+        public async Task<IActionResult> GetByIdQuery([FromQuery] int id, [FromQuery] string name, CancellationToken token)
+        {
+            var student = await _service.GetById(id, token);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
+
         [HttpGet("{id}/laptop")]
         public async Task<IActionResult> GetByIdWithLaptop([FromRoute] int id, CancellationToken token)
         {
