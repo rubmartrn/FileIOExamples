@@ -12,13 +12,19 @@ while (true)
     {
         var cts = new CancellationTokenSource();
         using var client = new HttpClient();
-        cts.CancelAfter(10000);
+        var responseTask = client.GetAsync("http://localhost:5260/Laptops", cts.Token);
+        Console.WriteLine("Press esc to cancel");
 
-        var response = await client.GetAsync("http://localhost:5260/Laptops", cts.Token);
+        if (Console.ReadKey().Key == ConsoleKey.Escape)
+        {
+            cts.Cancel();
+        }
 
+        var response = await responseTask;
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
+ 
             List<LaptopUrish> laptops = JsonSerializer.Deserialize<List<LaptopUrish>>(content);
             Console.WriteLine(content);
         }
