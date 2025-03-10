@@ -62,7 +62,7 @@ namespace UniversityProgram.Api.Controllers
         }
 
         [HttpGet("Query")]
-        public async Task<IActionResult> GetByIdQuery([FromQuery] int id, [FromQuery] string name, CancellationToken token)
+        public async Task<IActionResult> GetByIdQuery([FromQuery] int id, [FromQuery] string name, [FromHeader] string test, CancellationToken token)
         {
             var student = await _service.GetById(id, token);
 

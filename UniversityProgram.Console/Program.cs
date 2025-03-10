@@ -13,8 +13,9 @@ while (true)
         var cts = new CancellationTokenSource();
         using var client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:5260/");
-        var response1 = await client.GetAsync("Students/1", cts.Token);
-        var response2 = await client.GetAsync("Students/Query?id=1&name=sjkhfsd", cts.Token);
+        var message = new HttpRequestMessage(HttpMethod.Get, "/Students/Query?id=1&name=sjfod");
+        message.Headers.Add("test", "ijdsoijg");
+        var response1 = await client.SendAsync(message, cts.Token);
 
 
         if (response1.IsSuccessStatusCode)
