@@ -1,8 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Text;
 using System.Text.Json;
 
 Console.WriteLine("Hello, World!");
-
+Console.OutputEncoding = Encoding.UTF8; 
 
 while (true)
 {
@@ -13,9 +14,25 @@ while (true)
         var cts = new CancellationTokenSource();
         using var client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:5260/");
-        var message = new HttpRequestMessage(HttpMethod.Get, "/Students/Query?id=1&name=sjfod");
-        message.Headers.Add("test", "ijdsoijg");
-        var response1 = await client.SendAsync(message, cts.Token);
+        var request = new HttpRequestMessage(HttpMethod.Post, "/Students");
+
+        Console.WriteLine("Գրեք ուսանողի անունը");
+        string name = Console.ReadLine();
+
+        Console.WriteLine("Գրեք ուսանողի մեյլը");
+        string email = Console.ReadLine();
+
+        var model = new Model()
+        {
+            Name = name,
+            Email = email
+        };
+
+        var json = JsonSerializer.Serialize(model);
+
+        request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response1 = await client.SendAsync(request, cts.Token);
 
 
         if (response1.IsSuccessStatusCode)
@@ -48,4 +65,11 @@ public class LaptopUrish
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;
+}
+
+public class Model
+{
+    public string? Name { get; set; } = default!;
+
+    public string? Email { get; set; } = default!;
 }
