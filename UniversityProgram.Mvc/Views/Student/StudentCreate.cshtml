@@ -1,0 +1,17 @@
+﻿@model UserViewModel
+<form asp-controller="Student" asp-action="Create" method="post">
+    <div>
+        <label asp-for="Name">ԱՆուն:</label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="Age">Տարիք:</label>
+        <input asp-for="Age" />
+    </div>
+    <div>
+        <label asp-for="Email">մեյլ:</label>
+        <input asp-for="Email" />
+    </div>
+
+    <button type="submit">Ստեղծել</button>
+</form>
