@@ -6,8 +6,9 @@ namespace UniversityProgram.Mvc.Controllers
     {
         public IActionResult Index()
         {
-            ViewData["StudentName"] = "John";
-            ViewData["StudentAge"] = 20;
+            ViewBag.StudentName = "John";
+            ViewBag.Title = 4;
+            ViewBag.dskfjhsdkf = "Բարև ձեզ";
             return View();
         }
 
