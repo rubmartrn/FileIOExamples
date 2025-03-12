@@ -12,7 +12,8 @@ namespace UniversityProgram.Mvc.Controllers
 
         public IActionResult New()
         {
-            return View();
+            TempData["StudentName"] = "Պողոս";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

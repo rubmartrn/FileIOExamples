@@ -3,9 +3,10 @@
 *@
 @{
     var student = TempData["Student"];
+    var studentName = TempData["StudentName"];
 }
 
 <p>Սա իմ ուսանողների էջն է</p>
-<p>Ուսանողի անունն է @student</p>
+<p>Ուսանողի անունն է @student, new-ից եկած ուսանողի անունն է @studentName</p>
 <a class="nav-link text-dark" asp-controller="Student" asp-action="New">New</a>
 
