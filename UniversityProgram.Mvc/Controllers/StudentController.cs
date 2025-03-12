@@ -6,7 +6,9 @@ namespace UniversityProgram.Mvc.Controllers
     {
         public IActionResult Index()
         {
-            return View("New");
+            ViewData["StudentName"] = "John";
+            ViewData["StudentAge"] = 20;
+            return View();
         }
 
         public IActionResult New()
