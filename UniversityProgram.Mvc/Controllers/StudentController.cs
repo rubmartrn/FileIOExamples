@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityProgram.Mvc.Models;
 
 namespace UniversityProgram.Mvc.Controllers
 {
@@ -14,6 +15,12 @@ namespace UniversityProgram.Mvc.Controllers
         {
             TempData["StudentName"] = "Պողոս";
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult UserPage()
+        {
+            var user = new UserViewModel() { Age = 20, Name = "Բարդուղեմիոս" };
+            return View("User", user);
         }
     }
 }
