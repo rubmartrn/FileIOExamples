@@ -1,0 +1,14 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+
+    <NotFound>
+        <PageTitle>Չգտա</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Տվյալ հասցեով ոչ մի բան չկա</p>
+        </LayoutView>
+    </NotFound>
+</Router>

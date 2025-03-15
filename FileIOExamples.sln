@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Console",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.Mvc", "UniversityProgram.Mvc\UniversityProgram.Mvc.csproj", "{EE5241CD-585E-459A-8E64-E8FC86FDDEDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.blazor", "UniversityProgram.blazor\UniversityProgram.blazor.csproj", "{B16DC415-FC0E-4173-928A-EC001F56CA54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{EE5241CD-585E-459A-8E64-E8FC86FDDEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE5241CD-585E-459A-8E64-E8FC86FDDEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE5241CD-585E-459A-8E64-E8FC86FDDEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16DC415-FC0E-4173-928A-EC001F56CA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16DC415-FC0E-4173-928A-EC001F56CA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16DC415-FC0E-4173-928A-EC001F56CA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16DC415-FC0E-4173-928A-EC001F56CA54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
