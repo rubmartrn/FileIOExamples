@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using UniversityProgram.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<StudentDbContext>(options =>
+    options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Aca11"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
