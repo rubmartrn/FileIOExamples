@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UniversityProgram.Data\UniversityProgram.Data.csproj" />
+    <ProjectReference Include="..\UniversityProgram.Domain\UniversityProgram.Domain.csproj" />
+    <ProjectReference Include="..\UniversityProgram.LocalData\UniversityProgram.LocalData.csproj" />
+  </ItemGroup>
+
+</Project>

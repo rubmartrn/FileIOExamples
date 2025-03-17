@@ -1,0 +1,51 @@
+﻿@page "/student"
+@using UniversityProgram.blazor.Models
+@inject HttpClient Http
+
+<PageTitle>Student</PageTitle>
+<h3>StudentComponent</h3>
+@if (!Students.Any())
+{
+    <p>Loading..</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Անուն</th>
+                <th>Մեյլ</th>
+                <th>Գումար</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Students)
+            {
+
+                <tr>
+                    <td>@student.Name</td>
+                    <td>@student.Email</td>
+                    <td>@student.Money</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    public List<StudentModel> Students { get; set; } = new List<StudentModel>();
+
+    override protected async Task OnInitializedAsync()
+    {
+        try
+        {
+            Students = await Http.GetFromJsonAsync<List<StudentModel>>("http://localhost:5260/Students");
+            Console.WriteLine(Students);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    @if (1 > 3)
+    {
+        if (true)
+        {
+            
+        }
+        <h1>այո, մեկը երեքից փոքր է</h1>
+    }
+    else
+    {
+        <a asp-controller="Courses" asp-action="Index">Courses</a>
+    }
+    @{
+        Console.WriteLine("aaa");
+        if (true)
+        {
+            
+        }
+        <p>բարև</p>
+    }
+
+    <h3>Ես էլ եմ վերնագիր</h3>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
