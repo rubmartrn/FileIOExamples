@@ -1,10 +1,12 @@
-﻿@page "/student"
+﻿@page "/student/{name}/{id:int?}"
 @using UniversityProgram.blazor.Apis
 @using UniversityProgram.blazor.Models
 @inject IStudentApi StudentApi
 
 <PageTitle>Student</PageTitle>
 <h3>StudentComponent</h3>
+<p>ուսանողի անունը։ @Name, այդին՝ @Id</p>
+
 @if (isLoading)
 {
     <p>Loading..</p>
@@ -39,6 +41,11 @@ else
 
 @code {
 
+    [Parameter]
+    public string? Name { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; }
     private bool isLoading = true;
     public List<StudentModel> Students { get; set; } = new List<StudentModel>();
 
