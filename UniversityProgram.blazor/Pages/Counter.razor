@@ -10,21 +10,3 @@
 <input type="text" @bind="UserName" />
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-@code {
-
-    [Parameter]
-    public string UserName { get; set; }
-
-    [Parameter]
-    public EventCallback<string> OnChanged { get; set; }
-
-    private int currentCount = 0;
-
-    private async Task IncrementCount()
-    {
-        await OnChanged.InvokeAsync("տեքտս");
-        UserName = "Բարև Ձեզ";
-        currentCount++;
-    }
-}

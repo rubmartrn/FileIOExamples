@@ -2,6 +2,10 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.myButton {
+    background-color: chartreuse;
+}
+
 h1:focus {
     outline: none;
 }
