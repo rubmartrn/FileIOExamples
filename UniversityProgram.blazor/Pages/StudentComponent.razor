@@ -1,12 +1,17 @@
 ﻿@page "/student"
+@using UniversityProgram.blazor.Apis
 @using UniversityProgram.blazor.Models
-@inject HttpClient Http
+@inject IStudentApi StudentApi
 
 <PageTitle>Student</PageTitle>
 <h3>StudentComponent</h3>
-@if (!Students.Any())
+@if (isLoading)
 {
     <p>Loading..</p>
+}
+else if (Students.Count == 0)
+{
+    <p>Ուսանող չկար</p>
 }
 else
 {
@@ -34,18 +39,12 @@ else
 
 @code {
 
+    private bool isLoading = true;
     public List<StudentModel> Students { get; set; } = new List<StudentModel>();
 
     override protected async Task OnInitializedAsync()
     {
-        try
-        {
-            Students = await Http.GetFromJsonAsync<List<StudentModel>>("http://localhost:5260/Students");
-            Console.WriteLine(Students);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        Students = (await StudentApi.GetAll()).ToList();
+        isLoading = false;
     }
 }

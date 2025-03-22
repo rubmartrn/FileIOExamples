@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using UniversityProgram.blazor.Models;
-using static System.Net.WebRequestMethods;
 
 namespace UniversityProgram.blazor.Apis
 {
@@ -15,11 +14,22 @@ namespace UniversityProgram.blazor.Apis
 
         public async Task<IEnumerable<StudentModel>> GetAll()
         {
-           return await _client.GetFromJsonAsync<List<StudentModel>>("/Students");
+            var response = await _client.GetAsync("/Students");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<StudentModel>>();
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("Error " + response.ReasonPhrase);
+                return Array.Empty<StudentModel>();
+            }
+            else
+            {
+                throw new Exception("Error " + response.ReasonPhrase);
+            }
         }
-    }
-    public interface IStudentApi
-    {
-        Task<IEnumerable<StudentModel>> GetAll();
     }
 }

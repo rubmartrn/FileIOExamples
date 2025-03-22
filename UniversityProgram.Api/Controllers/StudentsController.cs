@@ -46,6 +46,15 @@ namespace UniversityProgram.Api.Controllers
         {
             var students = await _service.GetAll(token);
             return Ok(students);
+            bool test = false;
+            if (test)
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw new Exception("սխալ գնաց մի բան");
+            }
         }
 
         [HttpGet("{id}")]
@@ -159,7 +168,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> PayForCourse([FromRoute] int id,
             [FromRoute] int courseId, CancellationToken token)
         {
-           
+
 
             return Ok();
         }
