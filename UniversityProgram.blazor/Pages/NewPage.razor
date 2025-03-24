@@ -1,0 +1,12 @@
+﻿<h3>NewPage</h3>
+<button class="myButton" @onclick="Click">click</button>
+
+<p id="myText">user name: @UserName</p>
+
+@code {
+    private string UserName { get; set; } = default!;
+    private void Click()
+    {
+        UserName = "Պողոս";
+    }
+}
