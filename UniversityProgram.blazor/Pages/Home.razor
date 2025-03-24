@@ -5,24 +5,21 @@
 <button type="button" class="myButton">Success</button>
 <button type="button" class="myButton2">Success2</button>
 <h1>Hello, world!</h1>
-@{
-    Console.WriteLine("Բարև");
-}
-<StudentComponent></StudentComponent>
 
-<MudButton Variant="Variant.Filled" Color="Color.Secondary">Secondary</MudButton>
+<p>սեղմեք <a href="/student/Պողոս/4">այստեղ</a> ուսանողների էջ գնալու համար</p>
 
-<Counter UserName="Ինչ որ բան" OnChanged="@NewMethod" />
-
-@for (int i = 0; i < 10; i++)
-{
-    <p>Welcome to your new app.</p>
-}
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="ButtonClick">Secondary</MudButton>
 
 @code{
 
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     private void NewMethod(string text)
     {
         Console.WriteLine(text);
+    }
+
+    private void ButtonClick()
+    {
+        NavigationManager.NavigateTo("/student/Պողոս/9");
     }
 }
