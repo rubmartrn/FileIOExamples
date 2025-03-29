@@ -51,5 +51,14 @@ namespace UniversityProgram.blazor.Apis
                 throw new Exception("Error " + response.ReasonPhrase);
             }
         }
+
+        public async Task Update(int id, StudentUpdateModel student)
+        {
+            var response = await _client.PutAsJsonAsync($"/Students/{id}", student);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error " + response.ReasonPhrase);
+            }
+        }
     }
 }

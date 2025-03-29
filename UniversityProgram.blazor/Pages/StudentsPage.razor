@@ -33,6 +33,7 @@ else
         </Columns>
     </MudDataGrid>
 
+    <MudButton OnClick="OpenEditPage" Color="Color.Dark" >Փոփոխել</MudButton>
     <MudButton OnClick="OpenStudent">Open</MudButton>
 }
 
@@ -46,7 +47,7 @@ else
     {
         await GetStudents();
     }
-    private StudentModel Selected { get; set; } = new StudentModel();
+    private StudentModel? Selected { get; set; }
 
     private async Task GetStudents()
     {
@@ -61,8 +62,21 @@ else
         await GetStudents();
     }
 
+    private void OpenEditPage()
+    {
+        if (Selected == null)
+        {
+            return;
+        }
+        NavigationManager.NavigateTo($"/student/edit/{Selected.Id}");
+    }
+    
     private void OpenStudent()
     {
+        if (Selected == null)
+        {
+            return;
+        }
         NavigationManager.NavigateTo($"/student/{Selected.Id}");
     }
 
