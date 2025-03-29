@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UniversityProgram.Api;
+using UniversityProgram.Api.Hubs;
 using UniversityProgram.Api.Map;
 using UniversityProgram.Api.Validators;
 using UniversityProgram.BLL.Services;
@@ -32,7 +33,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJsonDataService, JsonDataService>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
-
+builder.Services.AddSignalR();
 builder.Services.AddScoped<TestService>();
 builder.Services.AddScoped<TestService3>();
 
@@ -69,6 +70,7 @@ app.UseSwaggerUI();
 
 app.UseAuthorization();
 
+app.MapHub<StudentHub>("/studentHub");
 app.MapControllers();
 
 app.MapGet("test", () => 100);

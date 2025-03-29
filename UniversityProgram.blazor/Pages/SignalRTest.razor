@@ -1,0 +1,40 @@
+﻿@page "/signalrtest"
+@using Microsoft.AspNetCore.SignalR.Client
+
+<h3>SignalRTest</h3>
+
+<p>@message</p>
+
+<input type="text" @bind="text" @bind:event="oninput" @onkeyup="OnPress" />
+<MudButton OnClick="Send">Send</MudButton>
+
+@code {
+    private HubConnection? hubConnection;
+    private string message = "";
+    private string text = "";
+    override protected async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl("http://localhost:5260/studentHub")
+        .WithAutomaticReconnect()
+        .Build();
+
+        hubConnection.On<string>("ReceiveMessage", (m) =>
+        {
+            message = m;
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task OnPress(KeyboardEventArgs e)
+    {
+        await Send();
+    }
+
+    private async Task Send()
+    {
+        await hubConnection.SendAsync("SendMessage", text);
+    }
+}
