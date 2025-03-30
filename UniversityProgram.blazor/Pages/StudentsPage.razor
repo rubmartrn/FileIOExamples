@@ -1,10 +1,12 @@
 ﻿@page "/students"
+@using Microsoft.AspNetCore.SignalR.Client
 @using UniversityProgram.blazor.Apis
 @using UniversityProgram.blazor.Models
 @inject IStudentApi StudentApi
 
 <PageTitle>Student</PageTitle>
 <h3>StudentComponent</h3>
+<h1>@message</h1>
 
 @if (isLoading)
 {
@@ -26,25 +28,41 @@ else
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudStack Row>
-                        <MudButton onclick="async() => await DeleteAsync(context.Item.Id)" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Hire</MudButton>
+                        <MudButton onclick="async() => await DeleteAsync(context.Item.Id)" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Delete</MudButton>
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
     </MudDataGrid>
 
-    <MudButton OnClick="OpenEditPage" Color="Color.Dark" >Փոփոխել</MudButton>
+    <MudButton OnClick="OpenEditPage" Color="Color.Dark">Փոփոխել</MudButton>
     <MudButton OnClick="OpenStudent">Open</MudButton>
 }
 
 @code {
 
+
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
     private bool isLoading = true;
     public List<StudentModel> Students { get; set; } = new List<StudentModel>();
+    private HubConnection? hubConnection;
+    private string message = "";
 
     override protected async Task OnInitializedAsync()
     {
+        hubConnection = new HubConnectionBuilder()
+     .WithUrl("http://localhost:5260/studentHub")
+     .WithAutomaticReconnect()
+     .Build();
+
+        hubConnection.On<string>("ReceiveMessage", async (m) =>
+        {
+            message = m;
+            await GetStudents();
+            await InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
         await GetStudents();
     }
     private StudentModel? Selected { get; set; }
@@ -70,7 +88,7 @@ else
         }
         NavigationManager.NavigateTo($"/student/edit/{Selected.Id}");
     }
-    
+
     private void OpenStudent()
     {
         if (Selected == null)

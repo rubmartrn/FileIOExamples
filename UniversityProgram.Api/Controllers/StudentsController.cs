@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using UniversityProgram.Api.AcaValidation;
+using UniversityProgram.Api.Hubs;
 using UniversityProgram.Api.Map;
 using UniversityProgram.BLL.Exceptions;
 using UniversityProgram.BLL.Models;
@@ -12,10 +14,12 @@ namespace UniversityProgram.Api.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _service;
+        private readonly IHubContext<StudentHub> _hub;
 
-        public StudentsController(IStudentService service)
+        public StudentsController(IStudentService service, IHubContext<StudentHub> hub)
         {
             _service = service;
+            _hub = hub;
         }
 
         [HttpPost]
@@ -45,6 +49,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
             var students = await _service.GetAll(token);
+            await _hub.Clients.All.SendAsync("ReceiveMessage", "Ինչ որ մեկը ուսանողներին գեթ արեց");
             return Ok(students);
             bool test = false;
             if (test)
@@ -135,6 +140,7 @@ namespace UniversityProgram.Api.Controllers
                 return BadRequest(result.Message);
             }
 
+            await _hub.Clients.All.SendAsync("ReceiveMessage", $" {id} այդիով Ուսանողը ջնջվեց");
             return Ok(result);
         }
 

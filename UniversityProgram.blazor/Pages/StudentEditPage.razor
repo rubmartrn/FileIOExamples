@@ -1,8 +1,10 @@
 ﻿@page "/student/edit/{id:int}"
+@using Microsoft.AspNetCore.SignalR.Client
 @using UniversityProgram.blazor.Apis
 @using UniversityProgram.blazor.Models
 
 <h3>StudentEditPage</h3>
+
 
 @if (Student == null)
 {
@@ -26,6 +28,7 @@ else
     [Parameter] public int Id { get; set; }
 
     private StudentModel Student { get; set; } = new StudentModel();
+
 
     override protected async Task OnInitializedAsync()
     {
