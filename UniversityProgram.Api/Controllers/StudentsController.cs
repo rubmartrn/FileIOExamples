@@ -49,23 +49,21 @@ namespace UniversityProgram.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
+            //Response.Cookies.Append("SaHastatArajChkar", "test value", new CookieOptions
+            //{
+            //    Secure = true,
+            //    Expires = DateTimeOffset.Now.AddDays(1)
+            //});
+            Response.Headers.Add("Set-Cookie", "AvelacelEHeaderOv=true");
             var students = await _service.GetAll(token);
-            await Task.Delay(2000);
+            
             return Ok(students);
-            bool test = false;
-            if (test)
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw new Exception("սխալ գնաց մի բան");
-            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken token)
         {
+            var cookie = Request.Cookies["SaHastatArajChkar"];
             var student = await _service.GetById(id, token);
 
             if (student == null)
