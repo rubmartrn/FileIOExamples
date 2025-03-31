@@ -12,11 +12,9 @@
 }
 else
 {
-
     <MudTextField @bind-Value="Student.Name" Label="Name" />
     <MudTextField @bind-Value="Student.Email" Label="Email" />
     <MudNumericField @bind-Value="Student.Money" Label="Outlined" Min="0" Variant="Variant.Outlined" Step="500M" />
-
     <MudButton OnClick="SaveAsync" Color="Color.Success">Save</MudButton>
 })
 

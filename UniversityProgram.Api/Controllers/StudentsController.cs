@@ -35,6 +35,7 @@ namespace UniversityProgram.Api.Controllers
 
             await _service.Add(model, token);
 
+            await _hub.Clients.All.SendAsync("OnUpdate", $"ուսանողների ցանկը թարմացվեց");
             return Ok();
 
             bool CheckEmailNotNull(StudentAddModel model)
@@ -49,7 +50,7 @@ namespace UniversityProgram.Api.Controllers
         public async Task<IActionResult> GetAll(CancellationToken token)
         {
             var students = await _service.GetAll(token);
-            await _hub.Clients.All.SendAsync("ReceiveMessage", "Ինչ որ մեկը ուսանողներին գեթ արեց");
+            await Task.Delay(2000);
             return Ok(students);
             bool test = false;
             if (test)
@@ -123,6 +124,8 @@ namespace UniversityProgram.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            await _hub.Clients.All.SendAsync("OnUpdate", $"ուսանողների ցանկը թարմացվեց");
+
             return Ok();
         }
 
@@ -140,7 +143,7 @@ namespace UniversityProgram.Api.Controllers
                 return BadRequest(result.Message);
             }
 
-            await _hub.Clients.All.SendAsync("ReceiveMessage", $" {id} այդիով Ուսանողը ջնջվեց");
+            await _hub.Clients.All.SendAsync("OnUpdate", $" {id} այդիով Ուսանողը ջնջվեց");
             return Ok(result);
         }
 

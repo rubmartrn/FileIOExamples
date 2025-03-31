@@ -10,7 +10,7 @@
 
 @if (isLoading)
 {
-    <p>Loading..</p>
+    <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
 }
 else if (Students.Count == 0)
 {
@@ -58,6 +58,11 @@ else
         hubConnection.On<string>("ReceiveMessage", async (m) =>
         {
             message = m;
+            await InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<string>("OnUpdate", async (m) =>
+        {
             await GetStudents();
             await InvokeAsync(StateHasChanged);
         });
@@ -69,6 +74,8 @@ else
 
     private async Task GetStudents()
     {
+        isLoading = true;
+        await InvokeAsync(StateHasChanged);
         Students = (await StudentApi.GetAll()).ToList();
         isLoading = false;
     }
