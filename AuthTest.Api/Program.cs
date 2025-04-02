@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDataProtection();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -20,30 +22,55 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Use((ctx, next) =>
+{
+    var provider = ctx.RequestServices.GetService<IDataProtectionProvider>();
+    var authCookie = ctx.Request.Cookies["auth"];
+    if (authCookie == null)
+    {
+        throw new UnauthorizedAccessException();
+    }
+    var protector = provider.CreateProtector("auth-cookie");
+    var unprotectedValue = protector.Unprotect(authCookie);
+    return next.Invoke();
+});
+
 app.MapGet("/secret",
     (HttpContext ctx, IDataProtectionProvider provider) =>
     {
-        var authCookie = ctx.Request.Cookies["auth"];
-        if (authCookie == null)
-        {
-            ctx.Response.StatusCode = 401;
-            return "";
-        }
-        var protector = provider.CreateProtector("auth-cookie");
-        var unprotectedValue = protector.Unprotect(authCookie);
-        return unprotectedValue;
+        
+        return "a";
     });
 
 app.MapGet("/login",
-    (HttpContext ctx, IDataProtectionProvider provider) =>
+    (AuthService auth) =>
     {
-        string cookieValue = "email:Ruben";
-        var protector = provider.CreateProtector("auth-cookie");
-        var protectedValue = protector.Protect(cookieValue);
-        ctx.Response.Headers.Add("Set-Cookie", $"auth={protectedValue}");
+        auth.SignIn();
         return "Ok";
     });
 
 app.MapControllers();
 
 app.Run();
+
+
+public class AuthService
+{
+    private readonly IHttpContextAccessor _accessor;
+    private readonly IDataProtectionProvider _provider;
+
+    public AuthService(IHttpContextAccessor accessor,
+        IDataProtectionProvider provider)
+    {
+        _accessor = accessor;
+        _provider = provider;
+    }
+
+    public void SignIn()
+    {
+        string cookieValue = "email:Ruben";
+        var protector = _provider.CreateProtector("auth-cookie");
+        var protectedValue = protector.Protect(cookieValue);
+        _accessor.HttpContext!.Response.Headers.Add("Set-Cookie", $"auth={protectedValue}");
+    }
+}
