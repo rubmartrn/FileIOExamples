@@ -15,11 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(AuthScheme)
     .AddCookie(AuthScheme, e=>
     {
-        e.Events.OnRedirectToAccessDenied = context =>
-        {
-            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            return Task.CompletedTask;
-        };
+        e.AccessDeniedPath = "/login";
+        e.LoginPath = "/login";
     })
     .AddCookie("UrishCookie");
 
