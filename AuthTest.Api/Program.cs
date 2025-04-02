@@ -13,7 +13,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(AuthScheme)
-    .AddCookie(AuthScheme)
+    .AddCookie(AuthScheme, e=>
+    {
+        e.Events.OnRedirectToAccessDenied = context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return Task.CompletedTask;
+        };
+    })
     .AddCookie("UrishCookie");
 
 var app = builder.Build();
@@ -33,11 +40,27 @@ app.MapGet("/secret",
         return ctx.User.FindFirst("email")!.Value;
     });
 
+app.MapGet("/studentInfo", (HttpContext ctx) =>
+{
+    if (!ctx.User.Identities.Any(e=>e.AuthenticationType == AuthScheme))
+    {
+        return Results.Forbid();
+    }
+
+    if(!ctx.User.HasClaim("UserType", "Student"))
+    {
+        return Results.Forbid();
+    }
+
+    return Results.Ok();
+});
+
 app.MapGet("/login",
    async (HttpContext ctx) =>
     {
         var claim = new Claim("Email", "Ruben@gmail.ru");
-        var identity = new ClaimsIdentity(new List<Claim>() { claim }, AuthScheme);
+        var claim1 = new Claim("UserType", "Student");
+        var identity = new ClaimsIdentity(new List<Claim>() { claim, claim1 }, AuthScheme);
         var user = new ClaimsPrincipal(identity);
         await ctx.SignInAsync(user);
         return "Ok";
