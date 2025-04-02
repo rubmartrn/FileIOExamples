@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,22 +25,32 @@ if (app.Environment.IsDevelopment())
 
 app.Use((ctx, next) =>
 {
-    var provider = ctx.RequestServices.GetService<IDataProtectionProvider>();
-    var authCookie = ctx.Request.Cookies["auth"];
-    if (authCookie == null)
+    if (!ctx.Request.Path.StartsWithSegments("/login"))
     {
-        throw new UnauthorizedAccessException();
+        var provider = ctx.RequestServices.GetService<IDataProtectionProvider>();
+        var authCookie = ctx.Request.Cookies["auth"];
+        if (authCookie == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        var protector = provider.CreateProtector("auth-cookie");
+        var unprotectedValue = protector.Unprotect(authCookie);
+        var values = unprotectedValue.Split(":");
+
+        var claims = new List<Claim>()
+        {
+            new Claim(values[0], values[1])
+        };
+        var identity = new ClaimsIdentity(claims);
+        ctx.User = new ClaimsPrincipal(identity);
     }
-    var protector = provider.CreateProtector("auth-cookie");
-    var unprotectedValue = protector.Unprotect(authCookie);
     return next.Invoke();
 });
 
 app.MapGet("/secret",
     (HttpContext ctx, IDataProtectionProvider provider) =>
     {
-        
-        return "a";
+        return ctx.User.FindFirst("email")!.Value;
     });
 
 app.MapGet("/login",
@@ -68,7 +79,7 @@ public class AuthService
 
     public void SignIn()
     {
-        string cookieValue = "email:Ruben";
+        string cookieValue = "email:Ruben@gmail.ru";
         var protector = _provider.CreateProtector("auth-cookie");
         var protectedValue = protector.Protect(cookieValue);
         _accessor.HttpContext!.Response.Headers.Add("Set-Cookie", $"auth={protectedValue}");
