@@ -26,6 +26,14 @@ namespace AuthTest.Api.Controllers
             return Ok("Ուսանողի մասին ինֆո կոնտրոլլերից");
         }
 
+
+        [HttpDelete]
+        [Authorize(Roles = "admin")]
+        public IActionResult Delete()
+        {
+            return Ok("Ուսանողը ջնջվեց");
+        }
+
         [HttpGet("test")]
         [AllowAnonymous]
         public IActionResult Test()
