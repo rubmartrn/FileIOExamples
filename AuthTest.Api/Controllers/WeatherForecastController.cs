@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthTest.Api.Controllers
@@ -19,9 +20,17 @@ namespace AuthTest.Api.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [Authorize(policy: "Only Students")]
         public IActionResult Get()
         {
-            return Ok("");
+            return Ok("Ուսանողի մասին ինֆո կոնտրոլլերից");
+        }
+
+        [HttpGet("test")]
+        [AllowAnonymous]
+        public IActionResult Test()
+        {
+            return Ok("Test");
         }
     }
 }

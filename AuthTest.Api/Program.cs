@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Security.Claims;
@@ -13,12 +13,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(AuthScheme)
-    .AddCookie(AuthScheme, e=>
-    {
-        e.AccessDeniedPath = "/login";
-        e.LoginPath = "/login";
-    })
+    .AddCookie(AuthScheme)
     .AddCookie("UrishCookie");
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Only Students", policy =>
+    {
+        policy.AddAuthenticationSchemes(AuthScheme)
+        .RequireAuthenticatedUser()
+        .RequireClaim("usertype", "student");
+    });
+});
 
 var app = builder.Build();
 
@@ -30,6 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/secret",
     (HttpContext ctx, IDataProtectionProvider provider) =>
@@ -39,29 +46,19 @@ app.MapGet("/secret",
 
 app.MapGet("/studentInfo", (HttpContext ctx) =>
 {
-    if (!ctx.User.Identities.Any(e=>e.AuthenticationType == AuthScheme))
-    {
-        return Results.Forbid();
-    }
-
-    if(!ctx.User.HasClaim("UserType", "Student"))
-    {
-        return Results.Forbid();
-    }
-
-    return Results.Ok();
-});
+    return Results.Ok("Ուսանողի անունը՝ Պողո");
+}).RequireAuthorization("Only Students");
 
 app.MapGet("/login",
    async (HttpContext ctx) =>
     {
         var claim = new Claim("Email", "Ruben@gmail.ru");
-        var claim1 = new Claim("UserType", "Student");
+        var claim1 = new Claim("usertype", "student");
         var identity = new ClaimsIdentity(new List<Claim>() { claim, claim1 }, AuthScheme);
         var user = new ClaimsPrincipal(identity);
         await ctx.SignInAsync(user);
         return "Ok";
-    });
+    }).AllowAnonymous();
 
 app.MapControllers();
 
