@@ -1,0 +1,6 @@
+@NewAuthTestApi_HostAddress = http://localhost:5290
+
+GET {{NewAuthTestApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

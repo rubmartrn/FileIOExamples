@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityProgram.blazor.te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthTest.Api", "AuthTest.Api\AuthTest.Api.csproj", "{8C92AF3A-3DE7-4F78-B642-76B72341BA7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewAuthTestApi", "NewAuthTestApi\NewAuthTestApi.csproj", "{644C4055-A980-4CFC-AED9-6A0AA7C9B189}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{8C92AF3A-3DE7-4F78-B642-76B72341BA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C92AF3A-3DE7-4F78-B642-76B72341BA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C92AF3A-3DE7-4F78-B642-76B72341BA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{644C4055-A980-4CFC-AED9-6A0AA7C9B189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644C4055-A980-4CFC-AED9-6A0AA7C9B189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644C4055-A980-4CFC-AED9-6A0AA7C9B189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644C4055-A980-4CFC-AED9-6A0AA7C9B189}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
