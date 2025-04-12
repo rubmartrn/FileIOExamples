@@ -50,6 +50,24 @@ app.MapGet("/seed", async (ctx) =>
     Console.Write("a");
 });
 
+app.MapGet("/seed2", async (ctx) =>
+{
+
+    var rlMng = ctx.RequestServices.GetRequiredService<RoleManager<IdentityRole>>();
+    await rlMng.CreateAsync(new IdentityRole("student"));
+
+    var mng = ctx.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+    var user = new IdentityUser()
+    {
+        UserName = "testuser1",
+        Email = "ruben1@gmail.com"
+    };
+
+    var result = await mng.CreateAsync(user, "Aa%12345");
+
+    await mng.AddToRoleAsync(user, "student");
+});
+
 app.MapControllers();
 
 app.Run();
