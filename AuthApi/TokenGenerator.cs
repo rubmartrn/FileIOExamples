@@ -10,7 +10,7 @@ namespace AuthApi
         public string Generate(string email, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = "sidushoaslkaosdosadjoijsaoisaiojdsdfhjfidushfuisdhfuisdf";
+            var key = "";
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
