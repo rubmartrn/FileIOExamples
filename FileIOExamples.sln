@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi", "AuthApi\AuthApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApi", "BankApi\BankApi.csproj", "{497C1DD5-E3A4-4C73-871E-A176148FF7C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth0", "Auth0", "{7EE0A11A-376C-4957-8634-323EB4BED6D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{F80D0F78-EF5A-44C0-B927-71E5E612A2BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +123,10 @@ Global
 		{497C1DD5-E3A4-4C73-871E-A176148FF7C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{497C1DD5-E3A4-4C73-871E-A176148FF7C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{497C1DD5-E3A4-4C73-871E-A176148FF7C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F80D0F78-EF5A-44C0-B927-71E5E612A2BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F80D0F78-EF5A-44C0-B927-71E5E612A2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F80D0F78-EF5A-44C0-B927-71E5E612A2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F80D0F78-EF5A-44C0-B927-71E5E612A2BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +134,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B5ED46A2-303C-4BD3-804D-37A116750CEC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{497C1DD5-E3A4-4C73-871E-A176148FF7C8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F80D0F78-EF5A-44C0-B927-71E5E612A2BA} = {7EE0A11A-376C-4957-8634-323EB4BED6D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98B54E6E-D5B3-42CB-8CAA-B367CC071DB0}
