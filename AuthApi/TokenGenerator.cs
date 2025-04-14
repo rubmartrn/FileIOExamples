@@ -7,10 +7,16 @@ namespace AuthApi
 {
     public class TokenGenerator
     {
+        private readonly IConfiguration _configuration;
+
+        public TokenGenerator(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public string Generate(string email, string role)
         {
+            var key = _configuration["IdentityKey"];
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = "";
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

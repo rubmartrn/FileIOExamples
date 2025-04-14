@@ -9,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var test = builder.Configuration["Id"];
+var key = builder.Configuration["IdentityKey"];
 builder.Services.AddScoped<TokenGenerator>();
 
 var app = builder.Build();
