@@ -34,11 +34,18 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-builder.Services.AddAuthorization(e=>e.AddPolicy("EmailUser", p=>p.RequireClaim("email", "ruben@gmail.com")));
+builder.Services.AddAuthorization(e => e.AddPolicy("EmailUser", p => p.RequireClaim("email", "ruben@gmail.com")));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>
     {
+        x.Events = new JwtBearerEvents();
+        x.Events.OnChallenge = context =>
+        {
+            context.HandleResponse();
+            context.Response.Redirect("http://localhost:5107/WeatherForecast/login");
+            return Task.CompletedTask;
+        };
         x.TokenValidationParameters = new TokenValidationParameters
         {
             IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["IdentityKey"])),

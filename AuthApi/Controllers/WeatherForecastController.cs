@@ -8,9 +8,17 @@ namespace AuthApi.Controllers
     {
        
         [HttpGet("login")]
-        public string Login([FromServices] TokenGenerator generator)
+        public IActionResult Login([FromServices] TokenGenerator generator)
         {
-            return generator.Generate("ruben@gmail.com", "admin");
+            var token = generator.Generate("ruben@gmail.com", "admin");
+            
+            var accessToken = Save(token);
+            return Redirect($"http://localhost:5125/user/login?token={accessToken}");
+        }
+
+        public string Save(string token)
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }
