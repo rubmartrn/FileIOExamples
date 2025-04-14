@@ -34,6 +34,8 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
+builder.Services.AddAuthorization(e=>e.AddPolicy("EmailUser", p=>p.RequireClaim("email", "ruben@gmail.com")));
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>
     {
@@ -46,6 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
+            RoleClaimType = "roletype"
         };
     });
 
