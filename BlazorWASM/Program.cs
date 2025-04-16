@@ -33,4 +33,9 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]!);
 });
 
+builder.Services.AddAuthorizationCore(op =>
+{
+    op.AddPolicy("nameruben", p => p.RequireClaim("nickname", "rubmartrn"));
+});
+
 await builder.Build().RunAsync();

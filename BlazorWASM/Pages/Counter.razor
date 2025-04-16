@@ -9,9 +9,28 @@
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCountOpen">Click Open</button>
+
 <AuthorizeView>
     <Authorized>
         <button class="btn btn-primary" @onclick="IncrementCount">Click Closed</button>
+    </Authorized>
+    <NotAuthorized>
+        <p> Խնդրում ենք մուտք կատարել այս կոճակը սեղմելու համար</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Policy="nameruben">
+    <Authorized>
+        նիքնեյմ փոլիսի
+    </Authorized>
+    <NotAuthorized>
+        <p> Խնդրում ենք մուտք կատարել այս կոճակը սեղմելու համար</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Barev">
+    <Authorized>
+        Բարև Ռոլ
     </Authorized>
     <NotAuthorized>
         <p> Խնդրում ենք մուտք կատարել այս կոճակը սեղմելու համար</p>
