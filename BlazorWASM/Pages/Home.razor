@@ -4,4 +4,32 @@
 
 <h1>Hello, world!</h1>
 
+<p role="status">Current count: @message</p>
+
 Welcome to your new app.
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    [Inject] AuthenticationStateProvider authenticationStateProvider { get; set; } = default!;
+    private string message = string.Empty;
+
+    private async Task IncrementCount()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity!.IsAuthenticated)
+        {
+            message = "կոճակը սեղմվեց քանի որ դուք մուտք էիք արել";
+            foreach (var claim in authState.User.Claims)
+            {
+                Console.WriteLine($"{claim.Type}: {claim.Value}");
+            }
+
+            Console.WriteLine("User is authenticated");
+        }
+        else
+        {
+            message = "խնդրում եմ մուտք անել";
+
+        }
+    }
+}
