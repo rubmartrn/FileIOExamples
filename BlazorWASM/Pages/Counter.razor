@@ -21,11 +21,12 @@
 @code {
     private int currentCount = 0;
 
-    [Inject] private HttpClient httpClient { get; set; } = default!;
+    [Inject] private IHttpClientFactory factory { get; set; } = default!;
     private async Task IncrementCountOpen()
     {
         try
         {
+            var httpClient = factory.CreateClient("ServerAPI");
             var model1 = await httpClient.GetFromJsonAsync<StudentModel>("Student/open");
             Console.WriteLine(model1!.Name);
         }

@@ -13,9 +13,6 @@ builder.Services.AddHttpClient("ServerAPI",
       client => client.BaseAddress = new Uri("http://localhost:5042"))
     .AddHttpMessageHandler<CustomAuthMessageHandler>();
 
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-  .CreateClient("ServerAPI"));
-
 builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("Auth0", options.ProviderOptions);
