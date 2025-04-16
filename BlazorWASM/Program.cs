@@ -1,4 +1,5 @@
 using BlazorWASM;
+using BlazorWASM.Clients;
 using BlazorWASM.Handlers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,8 +11,19 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<CustomAuthMessageHandler>();
 builder.Services.AddHttpClient("ServerAPI",
-      client => client.BaseAddress = new Uri("http://localhost:5042"))
+      client => client.BaseAddress = new Uri(builder.Configuration["BackendUrl"]!))
     .AddHttpMessageHandler<CustomAuthMessageHandler>();
+
+builder.Services.AddHttpClient<StudentClient>("ServerAPI");
+
+//builder.Services.AddHttpClient<StudentClient>(e=>e.BaseAddress = new Uri("http://localhost:5042"))
+//    .AddHttpMessageHandler<CustomAuthMessageHandler>();
+
+builder.Services.AddHttpClient("BankApi",
+      client => client.BaseAddress = new Uri("http://localhost:5042"));
+//builder.Services.AddHttpClient<BooklLient>("ServerAPI");
+
+//builder.Services.AddHttpClient<BankClient>("BankApi");
 
 builder.Services.AddOidcAuthentication(options =>
 {
