@@ -20,7 +20,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("Private")]
-        [Authorize(Roles = "student")]
+        [Authorize]
         public IActionResult Private()
         {
             var model = new StudentModel
@@ -28,6 +28,34 @@ namespace Backend.Controllers
                 Name = "Private Student",
                 Id = 400
             };
+            return Ok(model);
+        }
+
+        [HttpGet]
+        public IActionResult Get([FromQuery] int id)
+        {
+            var model = new StudentModel
+            {
+                Name = "Student",
+                Id = id
+            };
+            return Ok(model);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var model = new StudentModel
+            {
+                Name = "Student",
+                Id = id
+            };
+            return Ok(model);
+        }
+
+        [HttpPost]
+        public IActionResult Add([FromBody] StudentModel model, CancellationToken tk)
+        {
             return Ok(model);
         }
     }
