@@ -5,6 +5,7 @@ using BlazorWASM.Constants;
 using BlazorWASM.Handlers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Polly;
 using Refit;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -18,13 +19,18 @@ builder.Services.AddRefitClient<IStudentApi>()
     {
         c.BaseAddress = new Uri(builder.Configuration["BackendUrl"]!);
     })
-    .AddHttpMessageHandler<CustomAuthMessageHandler>();
+    .AddHttpMessageHandler<CustomAuthMessageHandler>()
+    .AddTransientHttpErrorPolicy(p =>
+        p.WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(Math.Pow(2, attempt))));
 
 //builder.Services.AddHttpClient("ServerAPI",
 //      client => client.BaseAddress = new Uri(builder.Configuration["BackendUrl"]!))
-//    .AddHttpMessageHandler<CustomAuthMessageHandler>();
+//    .AddHttpMessageHandler<CustomAuthMessageHandler>().AddTransientHttpErrorPolicy(p =>
+//        p.WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(Math.Pow(2, attempt))));
 
-//builder.Services.AddHttpClient<StudentClient>("ServerAPI");
+//builder.Services.AddHttpClient<StudentClient>("ServerAPI")
+//    .AddTransientHttpErrorPolicy(p =>
+//        p.WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(Math.Pow(2, attempt))));
 
 ////builder.Services.AddHttpClient<StudentClient>(e=>e.BaseAddress = new Uri("http://localhost:5042"))
 ////    .AddHttpMessageHandler<CustomAuthMessageHandler>();
