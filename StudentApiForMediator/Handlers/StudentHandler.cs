@@ -24,11 +24,7 @@ namespace StudentApiForMediator.Services
             };
             _database.Students.Add(student);
 
-            var response = new StudentAddResponse
-            {
-                Id = student.Id,
-                Success = true
-            };
+            var response = new StudentAddResponse(student.Id, true);
 
             return ValueTask.FromResult(response);
         }

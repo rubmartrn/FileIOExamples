@@ -18,11 +18,7 @@ namespace StudentApiForMediator.Handlers
             var student = _database.Students.FirstOrDefault(x => x.Email == message.Email);
             if (student != null)
             {
-                return new ValueTask<StudentAddResponse>(new StudentAddResponse
-                {
-                    Success = false,
-                    ErrorMessage = "Email is not unique"
-                });
+                return new ValueTask<StudentAddResponse>(new StudentAddResponse(0, false, "Email is not unique"));
             }
 
             return next(message, cancellationToken);

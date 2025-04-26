@@ -22,12 +22,7 @@ namespace StudentApiForMediator.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] StudentAddModel model)
         {
-            var request = new StudentAddRequest()
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Id = model.Id
-            };
+            var request = new StudentAddRequest(model.Id, model.Name, model.Email);
 
             var response = await _mediator.Send(request);
 

@@ -10,11 +10,7 @@ namespace StudentApiForMediator.Handlers
 
             if (string.IsNullOrEmpty(message.Name))
             {
-               return new ValueTask<StudentAddResponse>(new StudentAddResponse
-               {
-                   Success = false,
-                   ErrorMessage = "Name is required"
-               });
+                return new ValueTask<StudentAddResponse>(new StudentAddResponse(0, false, "Name is required"));
             }
             return next(message, cancellationToken);
         }

@@ -2,18 +2,7 @@
 
 namespace StudentApiForMediator.Requests
 {
-    public class StudentAddRequest : IRequest<StudentAddResponse>
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-    }
+    public sealed record StudentAddRequest(int Id, string Name, string Email) : IRequest<StudentAddResponse>;
 
-    public class StudentAddResponse
-    {
-        public int Id { get; set; }
-        public bool Success { get; set; }
-
-        public string ErrorMessage { get; set; } = default!;
-    }
+    public sealed record StudentAddResponse(int Id, bool Success, string? ErrorMessage = null);
 }
