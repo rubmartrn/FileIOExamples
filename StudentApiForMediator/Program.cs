@@ -1,3 +1,5 @@
+using StudentApiForMediator.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediator(e => e.ServiceLifetime = ServiceLifetime.Scoped);
+
+builder.Services.AddSingleton<Database>();
 
 var app = builder.Build();
 

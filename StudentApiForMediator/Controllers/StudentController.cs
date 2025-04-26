@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mediator;
+using Microsoft.AspNetCore.Mvc;
+using StudentApiForMediator.Data;
+using StudentApiForMediator.Models;
+using StudentApiForMediator.Requests;
+using System.Threading.Tasks;
 
 namespace StudentApiForMediator.Controllers
 {
@@ -6,5 +11,35 @@ namespace StudentApiForMediator.Controllers
     [Route("[controller]")]
     public class StudentController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public StudentController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] StudentAddModel model)
+        {
+            var request = new StudentAddRequest()
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Id = model.Id
+            };
+
+            var response = await _mediator.Send(request);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public void Test([FromServices] Database database)
+        {
+            var books = database.Books.ToList();
+            var courses = database.Courses.ToList();
+            var students = database.Students.ToList();
+            Console.WriteLine();
+        }
     }
 }
