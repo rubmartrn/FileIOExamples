@@ -1,0 +1,6 @@
+@StudentApiForMediator_HostAddress = http://localhost:5216
+
+GET {{StudentApiForMediator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

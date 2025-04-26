@@ -1,0 +1,3 @@
+﻿namespace StudentApiForMediator.Requests
+{
+}
