@@ -4,6 +4,7 @@ using UniversityProgram.BLL.Services;
 using UniversityProgram.Data.Repositories;
 using UniversityProgram.Domain.BaseRepositories;
 using UniversityProgram.Domain.Entities;
+using NSubstitute;
 
 namespace UniversityProgram.BLL.Tests
 {
@@ -11,20 +12,15 @@ namespace UniversityProgram.BLL.Tests
     {
         private IStudentService _studentService;
 
-        private Mock<IStudentRepository> _studentRepositoryMock = new Mock<IStudentRepository>(MockBehavior.Strict);
-        private Mock<ICourseStudentRepository> _courseStudentRepositoryMock = new Mock<ICourseStudentRepository>(MockBehavior.Strict);
-        private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>(MockBehavior.Strict);
-
-
-        public StudentServiceTests()
-        {
-            _studentService = new StudentService(_unitOfWorkMock.Object);
-        }
-
         [Fact]
         public async Task Payment_Success()
         {
             //Arrange
+            Mock<IStudentRepository> _studentRepositoryMock = new Mock<IStudentRepository>(MockBehavior.Strict);
+            Mock<ICourseStudentRepository> _courseStudentRepositoryMock = new Mock<ICourseStudentRepository>(MockBehavior.Strict);
+            Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>(MockBehavior.Strict);
+            _studentService = new StudentService(_unitOfWorkMock.Object);
+
             const int studentId = 1;
             const int courseId = 12;
             const decimal studentMoney = 500;
@@ -46,13 +42,13 @@ namespace UniversityProgram.BLL.Tests
                 },
                 Paid = false
             };
-            _unitOfWorkMock.Setup(e=>e.StudentRepository).Returns(_studentRepositoryMock.Object);
-            _unitOfWorkMock.Setup(e=>e.CourseStudentRepository).Returns(_courseStudentRepositoryMock.Object);
+            _unitOfWorkMock.Setup(e => e.StudentRepository).Returns(_studentRepositoryMock.Object);
+            _unitOfWorkMock.Setup(e => e.CourseStudentRepository).Returns(_courseStudentRepositoryMock.Object);
 
             _studentRepositoryMock.Setup(e => e.GetStudentById(studentId, It.IsAny<CancellationToken>())).ReturnsAsync(student);
             _courseStudentRepositoryMock.Setup(e => e.GetById(studentId, courseId, It.IsAny<CancellationToken>())).ReturnsAsync(courseStudent);
             _studentRepositoryMock.Setup(e => e.UpdateStudent(It.IsAny<Student>(), It.IsAny<CancellationToken>()));
-            _courseStudentRepositoryMock.Setup(e=>e.Update(It.IsAny<CourseStudent>(), It.IsAny<CancellationToken>()));
+            _courseStudentRepositoryMock.Setup(e => e.Update(It.IsAny<CourseStudent>(), It.IsAny<CancellationToken>()));
             _unitOfWorkMock.Setup(e => e.Save(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
             //Act
@@ -71,9 +67,14 @@ namespace UniversityProgram.BLL.Tests
         public async Task Payment_NullStudent_NotFoundResult()
         {
             //Arrange
+            Mock<IStudentRepository> _studentRepositoryMock = new Mock<IStudentRepository>(MockBehavior.Strict);
+            Mock<ICourseStudentRepository> _courseStudentRepositoryMock = new Mock<ICourseStudentRepository>(MockBehavior.Strict);
+            Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>(MockBehavior.Strict);
+            _studentService = new StudentService(_unitOfWorkMock.Object);
+
             const int studentId = 1;
             _unitOfWorkMock.Setup(e => e.StudentRepository).Returns(_studentRepositoryMock.Object);
-            _studentRepositoryMock.Setup(e => e.GetStudentById(studentId, It.IsAny<CancellationToken>())).ReturnsAsync((Student)null);
+            _studentRepositoryMock.Setup(e => e.GetStudentById(It.Is<int>(e => e == studentId), It.IsAny<CancellationToken>())).ReturnsAsync((Student)null);
 
             //Act
             var result = await _studentService.Pay(studentId, 100, CancellationToken.None);
@@ -81,6 +82,28 @@ namespace UniversityProgram.BLL.Tests
             //Assert
             Assert.False(result.Success);
             Assert.Equal(ErrorType.NotFound, result.ErrorType);
+        }
+
+        [Fact]
+        public async Task Payment_NullStudent_NotFoundResult_Subs()
+        {
+            //Arrange
+            var unitofWorkService = Substitute.For<IUnitOfWork>();
+            var studentRepository = Substitute.For<IStudentRepository>();
+            _studentService = new StudentService(unitofWorkService);
+
+            const int studentId = 1;
+
+            unitofWorkService.StudentRepository.Returns(studentRepository);
+            studentRepository.GetStudentById(Arg.Is<int>(e => e == studentId), Arg.Any<CancellationToken>()).Returns(Task.FromResult<Student>(null));
+
+            //Act
+            var result = await _studentService.Pay(studentId, 100, CancellationToken.None);
+
+            //Assert
+            Assert.False(result.Success);
+            Assert.Equal(ErrorType.NotFound, result.ErrorType);
+            studentRepository.Received(1).GetStudentById(Arg.Is<int>(e => e == studentId), Arg.Any<CancellationToken>());
         }
     }
 }
