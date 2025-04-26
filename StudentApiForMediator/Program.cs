@@ -1,4 +1,7 @@
+using Mediator;
 using StudentApiForMediator.Data;
+using StudentApiForMediator.Handlers;
+using StudentApiForMediator.Requests;
 using StudentApiForMediator.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediator(e => e.ServiceLifetime = ServiceLifetime.Scoped);
 
 builder.Services.AddSingleton<Database>();
+builder.Services.AddSingleton<IPipelineBehavior<StudentAddRequest, StudentAddResponse>, StudentFieldslValidationPipeLine>();
+builder.Services.AddSingleton<IPipelineBehavior<StudentAddRequest, StudentAddResponse>, StudentEmailUniqueValidationPipeLine>();
 
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<CourseService>();

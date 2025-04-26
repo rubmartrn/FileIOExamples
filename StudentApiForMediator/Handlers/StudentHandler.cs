@@ -27,6 +27,7 @@ namespace StudentApiForMediator.Services
             var response = new StudentAddResponse
             {
                 Id = student.Id,
+                Success = true
             };
 
             return ValueTask.FromResult(response);

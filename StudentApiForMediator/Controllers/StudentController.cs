@@ -33,7 +33,7 @@ namespace StudentApiForMediator.Controllers
 
             if (!response.Success)
             {
-                return BadRequest("սխալ գնաց մի բան");
+                return BadRequest(response.ErrorMessage);
             }
 
             var notification = new StudentAddedNotification
