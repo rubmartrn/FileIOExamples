@@ -14,14 +14,14 @@ namespace StudentApiForMediator.Services
         public void AddCourse(int id, int studentId)
         {
             var course = _database.Courses.FirstOrDefault(b => b.Id == id);
-            if (course != null)
+            if (course == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
 
             var student = _database.Students.FirstOrDefault(s => s.Id == studentId);
 
-            if (student != null)
+            if (student == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(studentId));
             }

@@ -1,4 +1,5 @@
 using StudentApiForMediator.Data;
+using StudentApiForMediator.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediator(e => e.ServiceLifetime = ServiceLifetime.Scoped);
 
 builder.Services.AddSingleton<Database>();
+
+builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<CourseService>();
 
 var app = builder.Build();
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentApiForMediator.Data;
 using StudentApiForMediator.Models;
+using StudentApiForMediator.Notifications;
 using StudentApiForMediator.Requests;
 using System.Threading.Tasks;
 
@@ -29,6 +30,20 @@ namespace StudentApiForMediator.Controllers
             };
 
             var response = await _mediator.Send(request);
+
+            if (!response.Success)
+            {
+                return BadRequest("սխալ գնաց մի բան");
+            }
+
+            var notification = new StudentAddedNotification
+            {
+                StudentId = response.Id,
+                BookId = model.BookId,
+                CourseId = model.CourseId
+            };
+
+            await _mediator.Publish(notification);
 
             return Ok();
         }
