@@ -16,8 +16,7 @@ namespace WebApiForLogs.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            _logger.Log(LogLevel.Information, "Get method called");
-            return Ok(new { Message = "Hello from CourseController" });
+            throw new ArgumentOutOfRangeException(nameof(Get));
         }
     }
 }
