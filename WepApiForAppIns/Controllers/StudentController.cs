@@ -10,10 +10,12 @@ namespace WepApiForAppIns.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _service;
+        private readonly HttpClient _client;
 
-        public StudentController(IStudentService service)
+        public StudentController(IStudentService service, HttpClient client)
         {
             _service = service;
+            _client = client;
         }
 
         [HttpGet]
@@ -51,6 +53,21 @@ namespace WepApiForAppIns.Controllers
         {
             await _service.Add(model, token);
             return Ok();
+        }
+
+        [HttpGet("External")]
+        public async Task<IActionResult> GetExternal()
+        {
+            var students = await _client.GetAsync("http://localhost:5260/Students");
+            return Ok(students);
+        }
+
+        [HttpGet("google")]
+        public async Task<IActionResult> GetGoogle()
+        {
+            var response = await _client.GetAsync("https://www.google.com");
+            var content = await response.Content.ReadAsStringAsync();
+            return Ok(content);
         }
     }
 }

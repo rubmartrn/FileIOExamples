@@ -18,6 +18,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddDbContext<StudentDbContext>(options =>
     options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Aca11"));
+
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
