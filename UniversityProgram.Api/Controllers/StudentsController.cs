@@ -54,7 +54,6 @@ namespace UniversityProgram.Api.Controllers
             //    Secure = true,
             //    Expires = DateTimeOffset.Now.AddDays(1)
             //});
-            Response.Headers.Add("Set-Cookie", "AvelacelEHeaderOv=true");
             var students = await _service.GetAll(token);
             
             return Ok(students);
