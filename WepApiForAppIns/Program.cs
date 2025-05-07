@@ -16,8 +16,11 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddApplicationInsightsTelemetry();
+
+var connectionString = builder.Configuration["AcaDbConectionString"];
+
 builder.Services.AddDbContext<StudentDbContext>(options =>
-    options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Aca11"));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddHttpClient();
 var app = builder.Build();
@@ -28,6 +31,20 @@ app.UseSwaggerUI();
 
 app.UseAuthorization();
 
+
+app.MapGet("/seed", (StudentDbContext context) =>
+{
+    context.Students.Add(
+        new UniversityProgram.Domain.Entities.Student
+        {
+            Name = "Poghos",
+            Email = "poghos@poghos.com",
+            Money = 700,
+            Address = "Yerevan"
+        });
+
+    context.SaveChanges();
+});
 app.MapControllers();
 
 app.Run();
