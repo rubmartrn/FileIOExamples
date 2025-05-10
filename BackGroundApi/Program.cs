@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ReportService>();
 builder.Services.AddSingleton<ReportJob>();
 builder.Services.AddHostedService<ReportBackgroundService>();
+builder.Services.AddHostedService<ReportHostedService>();
 
 var app = builder.Build();
 
