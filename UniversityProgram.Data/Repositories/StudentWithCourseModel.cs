@@ -1,6 +1,6 @@
 ﻿namespace UniversityProgram.BLL.Models
 {
-    public class StudentWithCourseModel : StudentModel
+    public class StudentWithCourseModel : StudentModelData
     {
         public List<CourseModel> Courses { get; set; } = new List<CourseModel>();
     }  
@@ -8,7 +8,7 @@
     {
         public List<CourseModel> Courses { get; set; } = new List<CourseModel>();
     }
-    public class StudentModel
+    public class StudentModelData
     {
         public int Id { get; set; }
         public string Name { get; set; } = default!;

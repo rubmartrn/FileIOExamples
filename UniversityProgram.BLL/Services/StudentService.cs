@@ -25,7 +25,6 @@ namespace UniversityProgram.BLL.Services
 
         public async Task<IEnumerable<StudentModel>> GetAll(CancellationToken token)
         {
-            Thread.Sleep(2000);
             var students = await _uow.StudentRepository.GetStudents(token);
             return students.Select(e => e.Map());
         }
