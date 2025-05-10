@@ -1,3 +1,4 @@
+using BackGroundApi.BackgroundServices;
 using BackGroundApi.Jobs;
 using BackGroundApi.Services;
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ReportService>();
 builder.Services.AddSingleton<ReportJob>();
+builder.Services.AddHostedService<ReportBackgroundService>();
 
 var app = builder.Build();
 

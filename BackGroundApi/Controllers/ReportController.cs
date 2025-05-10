@@ -1,4 +1,5 @@
-﻿using BackGroundApi.Jobs;
+﻿using BackGroundApi.Data;
+using BackGroundApi.Jobs;
 using BackGroundApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,6 +10,13 @@ namespace BackGroundApi.Controllers
     [Route("[controller]")]
     public class ReportController : ControllerBase
     {
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastReport()
+        {
+            var lastReport = Database.Reports.OrderBy(e=>e.UpdatedAt).Last();
+            return Ok(lastReport);
+        }
+
         [HttpGet]
         public async Task<IActionResult> CreateReport([FromServices] ReportService service)
         {
