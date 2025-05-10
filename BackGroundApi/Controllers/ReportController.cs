@@ -12,13 +12,17 @@ namespace BackGroundApi.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateReport([FromServices] ReportService service)
         {
-            await service.CreateAndSendReport(CancellationToken.None);
+            service.CreateAndSendReport(CancellationToken.None);
             return Ok();
         }  
         
         [HttpGet("job")]
         public Task<IActionResult> CreateReportJob([FromServices] ReportJob job)
         {
+            if (job.InProgress)
+            {
+                return Task.FromResult<IActionResult>(BadRequest("Report job already in progress"));
+            }
             job.Excecute(CancellationToken.None);
             return Task.FromResult<IActionResult>(Ok("Report job started.."));
         }
