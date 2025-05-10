@@ -14,15 +14,19 @@ namespace BackGroundApi.BackgroundServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogError("Report started" + DateTime.Now);
-            await Task.Delay(2000);
-            Database.Reports.Add(new Report
+            while (true)
             {
-                Name = "Report 1",
-                UpdatedAt = DateTime.UtcNow,
-                Information = "Report 1 information"
-            });
-            _logger.LogError("Report finished" + DateTime.Now);
+                await Task.Delay(5000, stoppingToken);
+                _logger.LogError("Report started" + DateTime.Now);
+                await Task.Delay(2000);
+                Database.Reports.Add(new Report
+                {
+                    Name = "Report 1",
+                    UpdatedAt = DateTime.UtcNow,
+                    Information = "Report 1 information"
+                });
+                _logger.LogError("Report finished" + DateTime.Now);
+            }
         }
     }
 }
