@@ -61,6 +61,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachingApi", "CachingApi\Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackGroundApi", "BackGroundApi\BackGroundApi.csproj", "{D4DA2A4E-8944-4E09-B34E-EA34A871CB2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProject.AppHost", "StudentProject.AppHost\StudentProject.AppHost.csproj", "{E2AAACA8-3180-4046-981A-B86AC9BF366C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentProject.ServiceDefaults", "StudentProject.ServiceDefaults\StudentProject.ServiceDefaults.csproj", "{1ABC58A2-57BA-6B99-5B31-897A2345611D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +179,14 @@ Global
 		{D4DA2A4E-8944-4E09-B34E-EA34A871CB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4DA2A4E-8944-4E09-B34E-EA34A871CB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4DA2A4E-8944-4E09-B34E-EA34A871CB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2AAACA8-3180-4046-981A-B86AC9BF366C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2AAACA8-3180-4046-981A-B86AC9BF366C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2AAACA8-3180-4046-981A-B86AC9BF366C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2AAACA8-3180-4046-981A-B86AC9BF366C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABC58A2-57BA-6B99-5B31-897A2345611D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ABC58A2-57BA-6B99-5B31-897A2345611D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ABC58A2-57BA-6B99-5B31-897A2345611D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ABC58A2-57BA-6B99-5B31-897A2345611D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,8 @@ using UniversityProgram.Domain.BaseRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -24,6 +26,8 @@ builder.Services.AddDbContext<StudentDbContext>(options =>
 
 builder.Services.AddHttpClient();
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
