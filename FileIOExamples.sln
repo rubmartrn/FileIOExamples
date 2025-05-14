@@ -77,6 +77,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.UserManagement.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Data", "Netflix.Rental.Data\Netflix.Rental.Data.csproj", "{E9597243-C711-4DFF-AD91-0ECBA825CD35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Api", "Netflix.Rental.Api\Netflix.Rental.Api.csproj", "{9C634BBF-916C-4BE3-84EC-981118CE9161}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.User.Api", "Netflix.User.Api\Netflix.User.Api.csproj", "{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +223,14 @@ Global
 		{E9597243-C711-4DFF-AD91-0ECBA825CD35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9597243-C711-4DFF-AD91-0ECBA825CD35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9597243-C711-4DFF-AD91-0ECBA825CD35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C634BBF-916C-4BE3-84EC-981118CE9161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C634BBF-916C-4BE3-84EC-981118CE9161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C634BBF-916C-4BE3-84EC-981118CE9161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C634BBF-916C-4BE3-84EC-981118CE9161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -233,6 +245,8 @@ Global
 		{B1944541-9E9E-4FE3-8A8D-07153AEBECDF} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 		{21DAF6C3-0ED9-4BA0-9E5A-7D2F1CA43CAB} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 		{E9597243-C711-4DFF-AD91-0ECBA825CD35} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
+		{9C634BBF-916C-4BE3-84EC-981118CE9161} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
+		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98B54E6E-D5B3-42CB-8CAA-B367CC071DB0}
