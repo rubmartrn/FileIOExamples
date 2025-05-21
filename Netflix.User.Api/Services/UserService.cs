@@ -32,5 +32,16 @@ namespace Netflix.User.Api.Services
             context.Users.Update(user);
             await context.SaveChangesAsync(token);
         }
+
+        public async Task Delete(int id, CancellationToken token)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(e => e.Id == id, token);
+            if (user == null)
+            {
+                throw new Exception($"User with ID {id} not found.");
+            }
+            context.Users.Remove(user);
+            await context.SaveChangesAsync(token);
+        }
     }
 }

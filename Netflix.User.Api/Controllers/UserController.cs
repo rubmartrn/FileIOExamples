@@ -38,5 +38,13 @@ namespace Netflix.User.Api.Controllers
             await service.Pay(id, money, token);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
+        {
+            await service.Delete(id, token);
+          
+            return Ok();
+        }
     }
 }

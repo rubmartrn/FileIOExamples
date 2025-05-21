@@ -38,5 +38,16 @@ namespace Netflix.MovieCatalog.Business
             context.Movies.Update(movie);
             await context.SaveChangesAsync(token);
         }
+
+        public async Task Delete(int id, CancellationToken token)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(e => e.Id == id, token);
+            if (movie == null)
+            {
+                throw new Exception($"Movie with ID {id} not found.");
+            }
+            context.Movies.Remove(movie);
+            await context.SaveChangesAsync(token);
+        }
     }
 }

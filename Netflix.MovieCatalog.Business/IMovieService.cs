@@ -8,5 +8,6 @@ namespace Netflix.MovieCatalog.Business
         Task Add(Movie movie, CancellationToken token);
         Task<Movie?> GetMovieByIdAsync(int id, CancellationToken token);
         Task RentMovie(int movieId, CancellationToken token);
+        Task Delete(int id, CancellationToken token);
     }
 }

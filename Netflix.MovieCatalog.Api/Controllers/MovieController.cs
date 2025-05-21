@@ -39,5 +39,12 @@ namespace Netflix.MovieCatalog.Api.Controllers
             await service.RentMovie(movieId, token);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken token)
+        {
+            await service.Delete(id, token);
+            return Ok();
+        }
     }
 }

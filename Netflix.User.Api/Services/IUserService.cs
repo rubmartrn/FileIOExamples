@@ -1,11 +1,4 @@
-﻿
-
-
-
-
-
-
-namespace Netflix.User.Api.Services
+﻿namespace Netflix.User.Api.Services
 {
     public interface IUserService
     {
@@ -13,5 +6,6 @@ namespace Netflix.User.Api.Services
         Task<List<UserManagement.Data.Entities.User>> GetAllUsersAsync(CancellationToken token);
         Task<UserManagement.Data.Entities.User?> GetUserByIdAsync(int id, CancellationToken token);
         Task Pay(int userId, decimal money, CancellationToken token);
+        Task Delete(int id, CancellationToken token);
     }
 }
