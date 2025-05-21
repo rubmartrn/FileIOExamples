@@ -6,5 +6,7 @@ namespace Netflix.MovieCatalog.Business
     {
         Task<List<Movie>> GetAllMoviesAsync(CancellationToken token);
         Task Add(Movie movie, CancellationToken token);
+        Task<Movie?> GetMovieByIdAsync(int id, CancellationToken token);
+        Task RentMovie(int movieId, CancellationToken token);
     }
 }

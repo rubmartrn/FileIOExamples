@@ -17,5 +17,26 @@ namespace Netflix.MovieCatalog.Business
             await context.Movies.AddAsync(movie, token);
             await context.SaveChangesAsync(token);
         }
+
+        public async Task<Movie?> GetMovieByIdAsync(int id, CancellationToken token)
+        {
+            return await context.Movies.FirstOrDefaultAsync(e => e.Id == id, token);
+        }
+
+        public async Task RentMovie(int movieId, CancellationToken token)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(e => e.Id == movieId, token);
+            if (movie == null)
+            {
+                throw new Exception($"Movie with ID {movieId} not found.");
+            }
+            movie.Amount -= 1;
+            if (movie.Amount < 0)
+            {
+                throw new Exception($"Movie with ID {movieId} is not available for rent.");
+            }
+            context.Movies.Update(movie);
+            await context.SaveChangesAsync(token);
+        }
     }
 }

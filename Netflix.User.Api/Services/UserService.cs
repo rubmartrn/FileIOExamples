@@ -15,5 +15,22 @@ namespace Netflix.User.Api.Services
             await context.Users.AddAsync(user, token);
             await context.SaveChangesAsync(token);
         }
+
+        public async Task<UserManagement.Data.Entities.User?> GetUserByIdAsync(int id, CancellationToken token)
+        {
+            return await context.Users.FirstOrDefaultAsync(e => e.Id == id, token);
+        }
+
+        public async Task Pay(int userId, decimal money, CancellationToken token)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(e => e.Id == userId, token);
+            if (user == null)
+            {
+                throw new Exception($"User with ID {userId} not found.");
+            }
+            user.Money -= money;
+            context.Users.Update(user);
+            await context.SaveChangesAsync(token);
+        }
     }
 }

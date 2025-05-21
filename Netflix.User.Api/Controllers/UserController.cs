@@ -20,5 +20,23 @@ namespace Netflix.User.Api.Controllers
             await service.Add(user, token);
             return Ok();
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetUserById([FromRoute] int id, CancellationToken token)
+        {
+            var user = await service.GetUserByIdAsync(id, token);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        [HttpGet("pay/{id:int}")]
+        public async Task<IActionResult> Pay([FromRoute] int id, [FromQuery] decimal money, CancellationToken token)
+        {
+            await service.Pay(id, money, token);
+            return Ok();
+        }
     }
 }
