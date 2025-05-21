@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Netflix.User.Api.Clients;
 using Netflix.UserManagement.Data;
 
 namespace Netflix.User.Api.Services
 {
-    public class UserService(UserDbContext context) : IUserService
+    public class UserService(UserDbContext context, RentClient client) : IUserService
     {
         public async Task<List<UserManagement.Data.Entities.User>> GetAllUsersAsync(CancellationToken token)
         {
@@ -35,13 +36,30 @@ namespace Netflix.User.Api.Services
 
         public async Task Delete(int id, CancellationToken token)
         {
-            var user = await context.Users.FirstOrDefaultAsync(e => e.Id == id, token);
-            if (user == null)
+            using var transaction = await context.Database.BeginTransactionAsync(token);
+
+            try
             {
-                throw new Exception($"User with ID {id} not found.");
+                var user = await context.Users.FirstOrDefaultAsync(e => e.Id == id, token);
+                if (user == null)
+                {
+                    throw new Exception($"User with ID {id} not found.");
+                }
+                context.Users.Remove(user);
+                await context.SaveChangesAsync(token);
+                var result = await client.DeleteRents(id, token);
+
+                if (!result)
+                {
+                    transaction.Rollback();
+                    return;
+                }
+                transaction.Commit();
             }
-            context.Users.Remove(user);
-            await context.SaveChangesAsync(token);
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+            }
         }
     }
 }

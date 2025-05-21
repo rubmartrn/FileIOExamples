@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Netflix.User.Api.Clients;
 using Netflix.User.Api.Services;
 using Netflix.UserManagement.Data;
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddHttpClient<RentClient>( e=> e.BaseAddress= new Uri("http://localhost:5160/"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

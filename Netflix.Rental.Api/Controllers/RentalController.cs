@@ -39,13 +39,20 @@ namespace Netflix.Rental.Api.Controllers
 
             if (user.Money < movie.Price)
             {
-               return BadRequest($"User with ID {userId} does not have enough money to rent the movie.");
+                return BadRequest($"User with ID {userId} does not have enough money to rent the movie.");
             }
 
             await movieApi.RentMovie(movieId, token);
             await userApi.Pay(userId, movie.Price, token);
             var rental = new Data.Entities.Rental { UserId = userId, MovieId = movieId };
             await service.Add(rental, token);
+            return Ok();
+        }
+
+        [HttpDelete("user/{userId}")]
+        public async Task<IActionResult> DeleteByUser(int userId, CancellationToken token)
+        {
+            await service.DeleteByUser(userId, token);
             return Ok();
         }
     }
