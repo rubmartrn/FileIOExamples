@@ -5,6 +5,9 @@ namespace Netflix.MovieCatalog.Data
     public class MovieDbContext : DbContext
     {
         public DbSet<Entities.Movie> Movies { get; set; } = default!;
+
+        public DbSet<Entities.OutBox> OutBoxes { get; set; } = default!;
+
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options)
         {
         }
@@ -15,6 +18,8 @@ namespace Netflix.MovieCatalog.Data
             modelBuilder.Entity<Entities.Movie>().Property(m => m.Title).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<Entities.Movie>().Property(m => m.Amount).IsRequired();
             modelBuilder.Entity<Entities.Movie>().Property(m => m.Price).IsRequired().HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Entities.OutBox>().HasKey(o => o.Id);
         }
     }
 }

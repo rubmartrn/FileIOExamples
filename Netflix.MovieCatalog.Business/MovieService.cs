@@ -47,6 +47,13 @@ namespace Netflix.MovieCatalog.Business
                 throw new Exception($"Movie with ID {id} not found.");
             }
             context.Movies.Remove(movie);
+            var outbox = new OutBox
+            {
+                Type = Data.Enums.OutBoxType.MovieDeleted,
+                Data = movie.Id.ToString(),
+                CreatedAt = DateTime.UtcNow,
+            };
+            context.OutBoxes.Add(outbox);
             await context.SaveChangesAsync(token);
         }
     }

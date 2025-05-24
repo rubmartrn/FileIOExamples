@@ -1,0 +1,6 @@
+@Netflix.Rental.Jobs_HostAddress = http://localhost:5236
+
+GET {{Netflix.Rental.Jobs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

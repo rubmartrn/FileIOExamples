@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
 
@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BackGroundApi\BackGroundApi.csproj" />
+    <ProjectReference Include="..\Netflix.Rental.Jobs\Netflix.Rental.Jobs.csproj" />
     <ProjectReference Include="..\WepApiForAppIns\WepApiForAppIns.csproj" />
   </ItemGroup>
 
