@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.User.Api", "Netflix
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Jobs", "Netflix.Rental.Jobs\Netflix.Rental.Jobs.csproj", "{31B42443-3F6D-1BD2-6297-0AAED458E251}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangFireJobs", "HangFireJobs\HangFireJobs.csproj", "{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,6 +239,10 @@ Global
 		{31B42443-3F6D-1BD2-6297-0AAED458E251}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31B42443-3F6D-1BD2-6297-0AAED458E251}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31B42443-3F6D-1BD2-6297-0AAED458E251}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
