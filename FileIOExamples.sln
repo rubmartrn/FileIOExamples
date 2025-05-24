@@ -85,6 +85,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Jobs", "Netf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangFireJobs", "HangFireJobs\HangFireJobs.csproj", "{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpTestFunction", "HttpTestFunction\HttpTestFunction.csproj", "{23330778-DE58-44B9-A9B1-9CD81B9E2FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionApp1", "FunctionApp1\FunctionApp1.csproj", "{245563A0-C1B9-3806-EC0F-1C822C9D34F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -243,6 +247,14 @@ Global
 		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F312249-3659-4DAE-A9B3-DFFC956ADEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23330778-DE58-44B9-A9B1-9CD81B9E2FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23330778-DE58-44B9-A9B1-9CD81B9E2FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23330778-DE58-44B9-A9B1-9CD81B9E2FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23330778-DE58-44B9-A9B1-9CD81B9E2FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{245563A0-C1B9-3806-EC0F-1C822C9D34F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245563A0-C1B9-3806-EC0F-1C822C9D34F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245563A0-C1B9-3806-EC0F-1C822C9D34F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245563A0-C1B9-3806-EC0F-1C822C9D34F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

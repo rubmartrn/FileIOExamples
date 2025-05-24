@@ -13,10 +13,12 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Functions" Version="(9.0-*,9.1]" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BackGroundApi\BackGroundApi.csproj" />
+    <ProjectReference Include="..\FunctionApp1\FunctionApp1.csproj" />
     <ProjectReference Include="..\Netflix.Rental.Jobs\Netflix.Rental.Jobs.csproj" />
     <ProjectReference Include="..\WepApiForAppIns\WepApiForAppIns.csproj" />
   </ItemGroup>
