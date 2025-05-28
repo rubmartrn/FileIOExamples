@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Netflix.MovieCatalog.Business\Netflix.MovieCatalog.Business.csproj" />
+	  <ProjectReference Include="..\StudentProject.ServiceDefaults\StudentProject.ServiceDefaults.csproj" />
 	</ItemGroup>
 
 </Project>

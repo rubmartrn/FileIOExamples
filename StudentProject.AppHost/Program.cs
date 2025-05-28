@@ -8,4 +8,6 @@ builder.AddProject<Projects.Netflix_Rental_Jobs>("netflix-rental-jobs");
 
 builder.AddAzureFunctionsProject<Projects.FunctionApp1>("functionapp1");
 
+builder.AddProject<Projects.Netflix_MovieCatalog_Api>("netflix-moviecatalog-api");
+
 builder.Build().Run();

@@ -91,6 +91,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionApp1", "FunctionApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewAPITest", "NewAPITest\NewAPITest.csproj", "{C2880303-9B36-42EC-8371-EEACCE126B60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Client", "Netflix.Rental.Client\Netflix.Rental.Client\Netflix.Rental.Client.csproj", "{406AEE1C-265C-4B18-855F-2B5BB91D55CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netflix.Rental.Client.Client", "Netflix.Rental.Client\Netflix.Rental.Client.Client\Netflix.Rental.Client.Client.csproj", "{7262E7B5-C3CB-4733-B226-B9C6D047CA47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -261,6 +265,14 @@ Global
 		{C2880303-9B36-42EC-8371-EEACCE126B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2880303-9B36-42EC-8371-EEACCE126B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2880303-9B36-42EC-8371-EEACCE126B60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{406AEE1C-265C-4B18-855F-2B5BB91D55CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{406AEE1C-265C-4B18-855F-2B5BB91D55CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{406AEE1C-265C-4B18-855F-2B5BB91D55CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{406AEE1C-265C-4B18-855F-2B5BB91D55CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7262E7B5-C3CB-4733-B226-B9C6D047CA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7262E7B5-C3CB-4733-B226-B9C6D047CA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7262E7B5-C3CB-4733-B226-B9C6D047CA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7262E7B5-C3CB-4733-B226-B9C6D047CA47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -278,6 +290,8 @@ Global
 		{9C634BBF-916C-4BE3-84EC-981118CE9161} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 		{E80E0F06-CDDE-4117-9D5C-23325D2AA8F9} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 		{31B42443-3F6D-1BD2-6297-0AAED458E251} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
+		{406AEE1C-265C-4B18-855F-2B5BB91D55CB} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
+		{7262E7B5-C3CB-4733-B226-B9C6D047CA47} = {5D1F91E9-2DA0-F2E3-B754-1515806542E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98B54E6E-D5B3-42CB-8CAA-B367CC071DB0}

@@ -21,6 +21,13 @@ builder.Services.AddHttpClient<MovieApi>(e => e.BaseAddress = new Uri(builder.Co
 builder.Services.AddHttpClient<UserApi>(e => e.BaseAddress = new Uri(builder.Configuration["userApi"]!));
 var app = builder.Build();
 
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BackGroundApi\BackGroundApi.csproj" />
     <ProjectReference Include="..\FunctionApp1\FunctionApp1.csproj" />
+    <ProjectReference Include="..\Netflix.MovieCatalog.Api\Netflix.MovieCatalog.Api.csproj" />
     <ProjectReference Include="..\Netflix.Rental.Jobs\Netflix.Rental.Jobs.csproj" />
     <ProjectReference Include="..\WepApiForAppIns\WepApiForAppIns.csproj" />
   </ItemGroup>
