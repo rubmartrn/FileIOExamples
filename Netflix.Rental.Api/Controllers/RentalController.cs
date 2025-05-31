@@ -50,15 +50,15 @@ namespace Netflix.Rental.Api.Controllers
         }
 
         [HttpDelete("user/{userId}")]
-        public async Task<IActionResult> DeleteByUser(int userId, CancellationToken token)
+        public async Task DeleteByUser(int userId, [FromServices] HttpClient client, CancellationToken token)
         {
-            await service.DeleteByUser(userId, token);
-            return Ok();
+            throw new ArgumentOutOfRangeException(nameof(userId));
         }
 
         [HttpDelete("movie/{movieId}")]
         public async Task<IActionResult> DeleteByMovie(int movieId, CancellationToken token)
         {
+            throw new ArgumentOutOfRangeException(nameof(movieId));
             await service.DeleteByMovie(movieId, token);
             return Ok();
         }

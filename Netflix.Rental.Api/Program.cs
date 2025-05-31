@@ -5,6 +5,8 @@ using Netflix.Rental.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<RentalDbContext>(options =>
 builder.Services.AddHttpClient<MovieApi>(e => e.BaseAddress = new Uri(builder.Configuration["movieApi"]!));
 builder.Services.AddHttpClient<UserApi>(e => e.BaseAddress = new Uri(builder.Configuration["userApi"]!));
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseCors(options =>
 {

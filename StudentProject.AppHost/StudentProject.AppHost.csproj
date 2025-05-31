@@ -20,7 +20,10 @@
     <ProjectReference Include="..\BackGroundApi\BackGroundApi.csproj" />
     <ProjectReference Include="..\FunctionApp1\FunctionApp1.csproj" />
     <ProjectReference Include="..\Netflix.MovieCatalog.Api\Netflix.MovieCatalog.Api.csproj" />
+    <ProjectReference Include="..\Netflix.Rental.Api\Netflix.Rental.Api.csproj" />
+    <ProjectReference Include="..\Netflix.Rental.Client\Netflix.Rental.Client\Netflix.Rental.Client.csproj" />
     <ProjectReference Include="..\Netflix.Rental.Jobs\Netflix.Rental.Jobs.csproj" />
+    <ProjectReference Include="..\Netflix.User.Api\Netflix.User.Api.csproj" />
     <ProjectReference Include="..\WepApiForAppIns\WepApiForAppIns.csproj" />
   </ItemGroup>
 

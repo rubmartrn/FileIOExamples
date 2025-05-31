@@ -19,7 +19,6 @@
 
     private async Task IncrementCount()
     {
-        var result = await client.DeleteRents(userId, CancellationToken.None);
-        message = result ? "ջնջվեց" : "չջնջվեց";
+        await client.DeleteRents(userId, CancellationToken.None);
     }
 }

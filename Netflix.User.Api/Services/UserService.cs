@@ -47,13 +47,7 @@ namespace Netflix.User.Api.Services
                 }
                 context.Users.Remove(user);
                 await context.SaveChangesAsync(token);
-                var result = await client.DeleteRents(id, token);
-
-                if (!result)
-                {
-                    transaction.Rollback();
-                    return;
-                }
+                await client.DeleteRents(id, token);
                 transaction.Commit();
             }
             catch (Exception ex)

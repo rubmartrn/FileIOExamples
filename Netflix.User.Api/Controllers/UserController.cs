@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Netflix.User.Api.Clients;
 using Netflix.User.Api.Services;
 
 namespace Netflix.User.Api.Controllers
@@ -45,6 +46,12 @@ namespace Netflix.User.Api.Controllers
             await service.Delete(id, token);
           
             return Ok();
+        }
+
+        [HttpGet("delete-rents/{id}")]
+        public async Task RentalDelete(int id, [FromServices] RentClient client)
+        {
+            await client.DeleteRents(id, CancellationToken.None);
         }
     }
 }
