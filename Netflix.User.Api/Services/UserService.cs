@@ -24,6 +24,8 @@ namespace Netflix.User.Api.Services
 
         public async Task Pay(int userId, decimal money, CancellationToken token)
         {
+            using var transaction2 = await context.Database.BeginTransactionAsync(token);
+
             var user = await context.Users.FirstOrDefaultAsync(e => e.Id == userId, token);
             if (user == null)
             {
@@ -31,28 +33,25 @@ namespace Netflix.User.Api.Services
             }
             user.Money -= money;
             context.Users.Update(user);
+            var user1 = await context.Users.FirstOrDefaultAsync(e => e.Id == userId, token);
+
             await context.SaveChangesAsync(token);
         }
 
         public async Task Delete(int id, CancellationToken token)
         {
-            using var transaction = await context.Database.BeginTransactionAsync(token);
-
+            using var transaction1 = await context.Database.BeginTransactionAsync(token);
             try
             {
                 var user = await context.Users.FirstOrDefaultAsync(e => e.Id == id, token);
-                if (user == null)
-                {
-                    throw new Exception($"User with ID {id} not found.");
-                }
-                context.Users.Remove(user);
-                await context.SaveChangesAsync(token);
-                await client.DeleteRents(id, token);
-                transaction.Commit();
+                user.UserName = "Deleted User"; // soft delete
+                //context.Users.Remove(user);
+                await context.SaveChangesAsync(token);// uncommitted changes
+                transaction1.Commit();// commit changes to the database
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
+                transaction1.Rollback();
             }
         }
     }
